@@ -1,4 +1,6 @@
-main( )
+#include "DxLib.h"
+
+void main( )
 {
-  printf("hello, world\n");
+  printf("Check hello, world\n");
 }
