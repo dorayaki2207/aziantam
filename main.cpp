@@ -1,7 +1,9 @@
 #include "DxLib.h"
 #include "main.h"
 
-void main( )
+int  main( )
 {
-  printf("Check hello, world\n");
+    int a;
+  a = printf("Check hello, world\n");
+  return a;
 }
