@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 bool SystemInit(void)
 {
 	//--------ºΩ√—èàóù
-	SetWindowText("1916045_YAMAMOTO_MIYUKI");
+	SetWindowText("åéñÈ");
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16);
 	ChangeWindowMode(true);
 	if (DxLib_Init() == -1)return false;
