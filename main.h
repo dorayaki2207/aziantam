@@ -1,32 +1,24 @@
 //#pragma once
-//-------------------------
-// AsoulQuest = main.h
-// 2019.09.26
-// 山本美由紀
-//-------------------------
 
-//定数の定義
-//--------------
-//画面サイズ
-#define SCREEN_SIZE_X 800	//画面ｻｲｽﾞ横
-#define SCREEN_SIZE_Y 600	//画面ｻｲｽﾞ縦
-#define TITLE_SIZE_X  600	//ﾀｲﾄﾙの横ｻｲｽﾞ
-#define TITLE_SIZE_Y  250	//ﾀｲﾄﾙの縦ｻｲｽﾞ
-#define GAMEOVER_SIZE_X 457	//ｹﾞｰﾑｵｰﾊﾞｰの横ｻｲｽﾞ
-#define GAMEOVER_SIZE_Y 81	//ｹﾞｰﾑｵｰﾊﾞｰの縦ｻｲｽﾞ
-#define HITSTARTKEY_SIZE_X 337	//hitstartkeyの横ｻｲｽﾞ
-#define HITSTARTKEY_SIZE_Y 53	//hitstartkeyの縦ｻｲｽﾞ
+//---定義
+#define SCREEN_SIZE_X 500
+#define SCREEN_SIZE_Y 700
+//#define SCREEN_SIZE_X 600
+//#define SCREEN_SIZE_Y 800
+//#define SCREEN_SIZE_X 700
+//#define SCREEN_SIZE_Y 900
+//#define SCREEN_SIZE_X 800
+//#define SCREEN_SIZE_Y 1000
+
 
 //列挙型の定義
-//-----------------
-//ｼｰﾝ管理用
-enum SCENE_ID
+enum SCENE				//ｼｰﾝ管理用
 {
-	SCENE_ID_INIT,			//初期化
-	SCENE_ID_TITLE,			//タイトル
-	SCENE_ID_GAME,			//ゲーム
-	SCENE_ID_GAMEOVER,		//ゲームオーバー
-	SCENE_ID_MAX
+	SCENE_INIT,			//初期化ｼｰﾝ
+	SCENE_TITLE,		//ﾀｲﾄﾙｼｰﾝ
+	SCENE_GAME,			//ｹﾞｰﾑｼｰﾝ
+	SCENE_GAMEOVER,		//ｹﾞｰﾑｵｰﾊﾞｰｼｰﾝ
+	SCENE_MAX
 };
 //向き管理用
 enum DIR
@@ -38,15 +30,15 @@ enum DIR
 	DIR_MAX
 };
 //ｷｬﾗｸﾀの種類管理用
-enum CHARACTER_TYPE
-{
-	CHARACTER_PLAYER,
-	CHARACTER_ENEMY,
-	CHARACTER_SHOT,
-	CHARACTER_MAX,
-};
+//enum CHARACTER_TYPE
+//{
+//	CHARACTER_PLAYER,
+//	CHARACTER_ENEMY,
+//	CHARACTER_SHOT,
+//	CHARACTER_MAX,
+//};
 
-//構造体
+//---構造体
 //----------------
 //得点管理用
 struct FILE_DATA
@@ -72,27 +64,16 @@ struct CHARACTER
 	int LifeMax;	//ｷｬﾗｸﾀの体力最大値
 	int Life;		//ｷｬﾗｸﾀの体力
 	int AnimCnt;	//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
-	
+
 	int point;		//ｷｬﾗｸﾀの得点
 };
 
-
-
-//プロトタイプ宣言
-//---------------
-//ｼｽﾃﾑ
-bool SystemInit(void);					//ｼｽﾃﾑの初期化
-void InitScene(void);					//初期化ｼｰﾝ
-//タイトル
-void TitleScene(void);					//ﾀｲﾄﾙｼｰﾝ
-void TitleDraw(void);					//ﾀｲﾄﾙｼｰﾝの描画用ｼｰﾝ
-//ゲーム
-void GameScene(void);					//ｹﾞｰﾑｼｰﾝ
-void GameDraw(void);					//ｹﾞｰﾑｼｰﾝの描画用ｼｰﾝ
-//ｹﾞｰﾑｵｰﾊﾞｰ
-void GameOverScene(void);				//ｹﾞｰﾑｵｰﾊﾞｰ
-void GameOverDraw(void);				//ｹﾞｰﾑｵｰﾊﾞｰの描画用ｼｰﾝ
-void AddScore(int point);				//得点を追加
-bool SaveData(void);					//ﾌｧｲﾙからスコアを保存する
-bool LoadData(void);					//ﾌｧｲﾙからスコアを読み込む
-void AddCharOrder(CHARACTER_TYPE characterType, int index, int y);		//ｷｬﾗｸﾀ情報をdrawOrderListに追加する
+//---プロトタイプ宣言
+bool SystemInit(void);
+void InitScene(void);
+void TitleScene(void);
+void TitleDraw(void);
+void GameScene(void);
+void GameDraw(void);
+void GameOverScene(void);
+void GameOverDraw(void);
