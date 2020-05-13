@@ -2,8 +2,12 @@
 #include "main.h"
 
 //変数
-SCENE systemScene;
-int sceneCun;
+SCENE SceneID;
+SCENE ScenePreID;	//過去のｼｰﾝ格納用
+int SceneCounter;
+
+//ｸﾗｽからｲﾝｽﾀﾝｽを生成
+
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -16,7 +20,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ｰｰｰｰｰｰｰｹﾞｰﾑﾙｰﾌﾟ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
-
+		//ｼｰﾝｶｳﾝﾄﾘｾｯﾄ
+		if (SceneID != ScenePreID)
+		{
+			ScenePreID = SceneID;
+			SceneCounter = 0;
+		}
 		//ｰｰｰｰ画面描画処理
 		ClsDrawScreen();	//画面消去
 		//ｼｰﾝ選択
@@ -38,9 +47,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			return -1;
 			break;
 		}
-		sceneCun++;
+		SceneCounter++;
 		ScreenFlip();		//　裏画面を表画面に瞬間ｺﾋﾟｰ
 	}
+	//ｲﾝｽﾀﾝｽの解放
+
+
 	DxLib_End();			// DXﾗｲﾌﾞﾗﾘの終了処理
 	return 0;				// このﾌﾟﾛｸﾞﾗﾑの終了
 
@@ -55,6 +67,15 @@ bool SystemInit(void)
 	if (DxLib_Init() == -1)return false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	
+	//ｲﾝｽﾀﾝｽの生成
+
+	//ｸﾞﾗﾌｨｯｸ登録
+
+	//変数の初期化
+	SceneCounter = 0;
+	SceneID = SCENE_ID_INIT;
+	ScenePreID = SCENE_ID_MAX;
+
 	return true;
 }
 //初期化ｼｰﾝ
