@@ -4,6 +4,9 @@
 //////////　エスケープシーケンス　\n
 //////////	fgetc 一文字ごと読み込む
 //////////	fgets 一行ごと読み込む
+//////////	drawtext
+
+
 
 #include "DxLib.h"
 #include "test.h"
@@ -15,12 +18,8 @@ int SceneCounter;			//	gameLoop動作確認用
 SCENE_ID sceneID;
 SCENE_ID preSceneID;
 
+
 int testImage;
-int test1Image;
-
-//-----file情報定義
-//char name[] = "0930.txt";
-
 
 //-----WinMain
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -101,14 +100,11 @@ bool SystemInit(void)
 	if (DxLib_Init() == -1) return -1;
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	testImage = LoadGraph("御札案/B_small_B.png");
 
-	testImage = LoadGraph("御札案/御札・火・改1.png");
-	test1Image = LoadGraph("御札案/御札・火・改.png");
 	//-----変数の初期化
 	SceneCounter = 0;
-
-
-
+	
 
 
 	return retFlag;
@@ -123,38 +119,19 @@ void InitScene(void)
 
 void GameScene(void)
 {
-	//	
-	//	FILE *fp;	// FILE型構造体
 
-	//	fopen_s(&fp, "0930.txt", "r");
-	//	if (fp == NULL)
-	//	{
-	//		printf("%s file not open!\n", name);
-	//	
-	//	}
-	//	else
-	//	{
-	//		printf("%s file opened!\n", name);
-	//	}
+	FILE *fp;
+	fopen_s(&fp, "dafafile.txt", "w");
+	fprintf(fp, "HelloWorld!!!!");
+	//fwrite(&fileData, sizeof(fikeName), size_t(2), fp);
 
-	//	fclose(fp);		//	fileを閉じる
+	fclose(fp);
 
-	/*
-	FILE *file;
-	char line[256];
-	line[0] = '\0';
-	file = fopen("c:\\ノベル風文字列描画 - コピー\\0930.txr", "r");
-	if (file == NULL)
-	{
-	printf("file not open\n");
-	exit(1);
-	}
-	while (fgets(line, 256, file) != NULL)
-	{
-	printf("%s", line);
-	}
-	fclose(file);
-	*/
+	//FILE *file;
+	//file = fopen("test.txt", "w");
+	////fprintf(file, "Hello");
+	//fclose(file);
+	
 
 	GameDraw();
 }
@@ -167,9 +144,6 @@ void GameDraw(void)
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 
 	DrawBox(15, SCREEN_SIZE_Y - 220, SCREEN_SIZE_X - 15, SCREEN_SIZE_Y - 5, 0xFF22FF, false);
-
-	DrawGraph(400, (SCREEN_SIZE_Y - (SCREEN_SIZE_Y - 220)) / 2, test1Image, true);
-	DrawGraph(10, (SCREEN_SIZE_Y - (SCREEN_SIZE_Y - 220)) / 2, testImage, true);
+	DrawGraph(50, 50, testImage, true);
 }
-
 
