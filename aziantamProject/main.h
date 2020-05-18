@@ -1,8 +1,8 @@
 //#pragma once
 
 //---定義
-#define SCREEN_SIZE_X 500
-#define SCREEN_SIZE_Y 700
+#define SCREEN_SIZE_X 800
+#define SCREEN_SIZE_Y 650
 //#define SCREEN_SIZE_X 600
 //#define SCREEN_SIZE_Y 800
 //#define SCREEN_SIZE_X 700
@@ -11,8 +11,9 @@
 //#define SCREEN_SIZE_Y 1000
 
 
-//列挙型の定義
-enum SCENE				//ｼｰﾝ管理用
+//-----列挙型の定義
+//ｼｰﾝ管理用
+enum SCENE				
 {
 	SCENE_INIT,			//初期化ｼｰﾝ
 	SCENE_TITLE,		//ﾀｲﾄﾙｼｰﾝ
@@ -20,6 +21,7 @@ enum SCENE				//ｼｰﾝ管理用
 	SCENE_GAMEOVER,		//ｹﾞｰﾑｵｰﾊﾞｰｼｰﾝ
 	SCENE_MAX
 };
+
 //向き管理用
 enum DIR
 {
@@ -29,6 +31,20 @@ enum DIR
 	DIR_LEFT,		//左
 	DIR_MAX
 };
+
+//敵
+enum ENEMY	
+{
+	ENEMY_ONI,		//鬼
+	ENEMY_TENG,		//天狗
+	ENEMY_KAPPA,	//河童
+	ENEMY_NUE,		//鵺
+	ENEMY_I_MOB,	//石橋担当
+	ENEMY_Y_MOB,	//山本担当
+	ENEMY_A_MOB,	//荒木担当
+	ENEMY_MAX
+};
+
 //ｷｬﾗｸﾀの種類管理用
 //enum CHARACTER_TYPE
 //{
@@ -38,7 +54,7 @@ enum DIR
 //	CHARACTER_MAX,
 //};
 
-//---構造体
+//-----構造体
 //----------------
 //得点管理用
 struct FILE_DATA
@@ -46,12 +62,14 @@ struct FILE_DATA
 	int Score;				//現在得点
 	int hiScore;			//最高得点
 };
-//ポジション
+
+//ﾎﾟｼﾞｼﾞｮﾝ
 struct XY
 {
 	int x;
 	int y;
 };
+
 //ｷｬﾗｸﾀ
 struct CHARACTER
 {
@@ -64,16 +82,29 @@ struct CHARACTER
 	int LifeMax;	//ｷｬﾗｸﾀの体力最大値
 	int Life;		//ｷｬﾗｸﾀの体力
 	int AnimCnt;	//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
-
 	int point;		//ｷｬﾗｸﾀの得点
 };
 
-//---プロトタイプ宣言
+struct KEY_LIST
+{
+	int up;
+	int right;
+	int down;
+	int left;
+	int shot;
+};
+
+
+//-----ﾌﾟﾛﾄﾀｲﾌﾟ宣言
+//初期化
 bool SystemInit(void);
 void InitScene(void);
+//ﾀｲﾄﾙ
 void TitleScene(void);
 void TitleDraw(void);
+//ｹﾞｰﾑ
 void GameScene(void);
 void GameDraw(void);
+//ｹﾞｰﾑｵｰﾊﾞｰ
 void GameOverScene(void);
 void GameOverDraw(void);
