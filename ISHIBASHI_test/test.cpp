@@ -24,6 +24,7 @@ SCENE_ID preSceneID;
 //PAUSE
 int pCnt;
 bool pauseFlag;
+bool iventFlag;
 //御札
 int hiImage;
 int hiCnt;
@@ -126,9 +127,9 @@ bool SystemInit(void)
 	//-----変数の初期化
 	SceneCounter = 0;
 	
-	//PAUSE関連
+	//ｲﾍﾞﾝﾄﾘ関連
 	pCnt = 0;
-	pauseFlag = false;
+	iventFlag = false;
 	FILE* fp;
 	// ﾌｧｲﾙ読み込み失敗した場合 0以外
 	if (fopen_s(&fp, "scr.dat", "w+") != NULL)
@@ -155,7 +156,8 @@ bool SystemInit(void)
 		// 失敗している場合再度閉じる必要がないからこの位置で閉じる
 		fclose(fp);
 	}
-	
+	//PAUSE機能
+	pauseFlag = false;
 	
 	file = "dafafile.txt";
 
@@ -251,37 +253,42 @@ void GameScene()
 	fclose(fp);
 	
 	
-	//-----PAUSE機能
+	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
-	if (keyDownTrigger[KEY_ID_PAUSE])
+	if (keyDownTrigger[KEY_ID_IVENT])
 	{
-		pauseFlag = !pauseFlag;
+		iventFlag = !iventFlag;
 
 	}
-
+	//ﾌﾗｸﾞ処理
+	if (iventFlag)
+	{
+		SetDrawBright(128, 128, 128);
+		pauseFlag = false;
+	}
+	
+	//-----POSE機能
+	if (keyDownTrigger[KEY_ID_PAUSE]) pauseFlag = !pauseFlag;
 	if (pauseFlag)
 	{
 		SetDrawBright(128, 128, 128);
+		iventFlag = false;
+	}
 	
 
-
-	}
-	else
+	//通常時動作
+	if (!iventFlag && !pauseFlag)
 	{
-		//-----通常時動作
+
 		//各種機能
 		pCnt++;
-	
+
 		if (keyDownTrigger[KEY_ID_UP])hiCnt++;
 		if (keyDownTrigger[KEY_ID_RIGHT])mizuCnt++;
 		if (keyDownTrigger[KEY_ID_DOWN])kazeCnt++;
 		if (keyDownTrigger[KEY_ID_LEFT])kaifukuCnt++;
 
 	}
-
-
-
-
 
 	GameDraw();
 	
@@ -299,13 +306,12 @@ void GameDraw()
 	
 	DrawBox(15, SCREEN_SIZE_Y - 220, SCREEN_SIZE_X - 15, SCREEN_SIZE_Y - 5, 0xFF22FF, false);
 
-	//-----PAUSE関連
-	DrawFormatString(0, 12, 0xFFFFFF, "pCnt : %d", pCnt);
-
-	if (pauseFlag)
+	DrawFormatString(0, 24, 0xFFFFFF, "pCnt : %d", pCnt);
+	//-----ｲﾍﾞﾝﾄﾘ関連
+	if (iventFlag)
 	{
 		SetDrawBright(255, 255, 255);
-		DrawBox(100, 100, 700, 500, 0xFFFFFF, true);
+		DrawBox(100, 100, 700, 600, 0xFFFFFF, true);
 //		DrawString((SCREEN_SIZE_X - 9 * 8) / 2, (SCREEN_SIZE_Y - 16) / 2, "PAUSE", 0xFFFFFF);
 
 		//御札
@@ -327,7 +333,16 @@ void GameDraw()
 
 
 	}
-	else
+	//-----PAUSE関連		
+	if (pauseFlag)
+	{
+		SetDrawBright(255, 255, 255);
+		DrawBox(100, 100, 700, 600, 0x222222, true);
+	}
+
+
+
+	if (!iventFlag && !pauseFlag)
 	{
 		//通常時動作
 		DrawFormatString(0, 32, 0xFFFFFF, "%s\n", words);
@@ -339,8 +354,6 @@ void GameDraw()
 
 
 	}
-
-		
 
 
 }
