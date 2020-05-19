@@ -5,7 +5,7 @@
 
 
 //-----ºÝ½Ä×¸À
-enemy::enemy(ENEMY no, int posX, int posY
+Enemy::Enemy(ENEMY no, int posX, int posY
 	, const char filename[], int max
 	, int MaxX, int MaxY, int sizeX, int sizeY): START_POS_X(posX), START_POS_Y(posY)
 {
@@ -23,29 +23,29 @@ enemy::enemy(ENEMY no, int posX, int posY
 
 }
 
-enemy::~enemy()
+Enemy::~Enemy()
 {
 	DeleteGraph(enemyImage[0], true);
 }
 
-void enemy::SystemInit(void)
+void Enemy::SystemInit(void)
 {
 	enemyPos = { START_POS_X,START_POS_Y };
 	enemyMov = DIR_DOWN;
 }
 
-void enemy::GameInit(void)
+void Enemy::GameInit(void)
 {
 }
 
 //enemy‘€ì
-void enemy::Control(void)
+void Enemy::Control(void)
 {
 }
 
 
 //•`‰æˆ—
-void enemy::GameDraw(void)
+void Enemy::GameDraw(void)
 {
 	if (enemyHert > 0)
 	{

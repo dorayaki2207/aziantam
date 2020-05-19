@@ -44,6 +44,32 @@ enum ENEMY
 	ENEMY_A_MOB,	//荒木担当
 	ENEMY_MAX
 };
+//ｱｲﾃﾑ
+enum ITEM
+{					//-----角が曲がった素材-----
+	ITEM_HI,		//火の御札：ドロップ
+	ITEM_MIZU,		//水の御札：ドロップ
+	ITEM_KAZE,		//風の御札：ドロップ
+	ITEM_KAIFUKU,	//回復の御札：ドロップ
+					//-----ﾃﾞﾌｫﾙﾄ素材-----
+	ITEM_M_HI,		//火の御札：イベントリ
+	ITEM_M_MIZU,	//水の御札：イベントリ
+	ITEM_M_KAZE,	//風の御札：イベントリ
+	ITEM_M_KAIFUKU,	//回復の御札：イベントリ
+					//-----大きいｻｲｽﾞの素材-----
+	ITEM_B_HI,		//火の御札：ボス戦用
+	ITEM_B_MIZU,	//水の御札：ボス戦用
+	ITEM_B_KAZE,	//風の御札：ボス戦用
+	ITEM_B_KAIFUKU,	//回復の御札：ボス戦用
+					//-----必須ｱｲﾃﾑ素材-----
+	ITEM_KEN,		//三種の神器：剣
+	ITEM_KAGAMI,	//三種の神器：鏡
+	ITEM_MAGATAMA,	//三種の神器：勾玉
+	ITEM_MAX
+};
+
+
+
 
 //ｷｬﾗｸﾀの種類管理用
 //enum CHARACTER_TYPE

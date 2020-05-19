@@ -13,9 +13,9 @@ SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
 
 //ｸﾗｽからｲﾝｽﾀﾝｽを生成
-enemy* enemyI;
-enemy* enemyY;
-enemy* enemyA;
+Enemy* enemyI;
+Enemy* enemyY;
+Enemy* enemyA;
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -60,7 +60,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		ScreenFlip();		//　裏画面を表画面に瞬間ｺﾋﾟｰ
 	}
 	//ｲﾝｽﾀﾝｽの解放
-
+	delete enemyI;
+	delete enemyY;
+	delete enemyA;
 
 	DxLib_End();			// DXﾗｲﾌﾞﾗﾘの終了処理
 	return 0;				// このﾌﾟﾛｸﾞﾗﾑの終了
@@ -77,19 +79,19 @@ bool SystemInit(void)
 	SetDrawScreen(DX_SCREEN_BACK);
 	
 	//-----ｲﾝｽﾀﾝｽの生成
-	enemyI = new enemy(ENEMY_I_MOB
+	enemyI = new Enemy(ENEMY_I_MOB
 		, 100, 100
 		, "char/妖狐.png", 16
 		,4, 4
 		,32, 32
 	);
-	enemyY = new enemy(ENEMY_Y_MOB
+	enemyY = new Enemy(ENEMY_Y_MOB
 		, 150, 100
 		, "char/wind_mob_enemy1.png", 16
 		, 4, 4
 		, 32, 32
 	);
-	enemyA = new enemy(ENEMY_A_MOB
+	enemyA = new Enemy(ENEMY_A_MOB
 		, 200, 100
 		, "char/umi0.png", 16
 		, 4, 4

@@ -1,8 +1,8 @@
 
-class enemy
+class Enemy
 {
 public:
-	//-----ÒİÊŞ•Ï”
+	//-----ÒİÊŞ°•Ï”
 
 private:
 	const int START_POS_X;
@@ -19,8 +19,8 @@ private:
 //	KEY_LIST keyID;
 
 public:
-	enemy(ENEMY no, int posX, int posY, const char filename[],int max, int MaxX,int MaxY,int sizeX, int sizeY);
-	~enemy();
+	Enemy(ENEMY no, int posX, int posY, const char filename[],int max, int MaxX,int MaxY,int sizeX, int sizeY);
+	~Enemy();
 
 	//-----ÒİÊŞŠÖ”
 	void SystemInit(void);
