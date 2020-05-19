@@ -18,7 +18,7 @@ Enemy* enemyI;		//石橋担当MOB
 Enemy* enemyY;		//山本担当MOB
 Enemy* enemyA;		//荒木担当MOB
 //ｱｲﾃﾑ
-Item* d_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
+Item* item_m_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
 
 
 //Win関数
@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete enemyY;			//山本担当MOB
 	delete enemyA;			//荒木担当MOB
 	//ｱｲﾃﾑ
-	delete d_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
+	delete item_m_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
 
 	DxLib_End();			//DXﾗｲﾌﾞﾗﾘの終了処理
 	return 0;				//このﾌﾟﾛｸﾞﾗﾑの終了
@@ -106,8 +106,8 @@ bool SystemInit(void)
 		, 32, 32
 	);
 	//ｱｲﾃﾑ
-	d_hi = new Item(ITEM_M_HI, 150, 150
-		, "itam/fuda.png", 8, 4, 2, 20, 20);
+	item_m_hi = new Item(ITEM_M_HI, 150, 150
+		, "item/fuda.png", 8, 4, 2, 20, 20);
 
 
 
@@ -117,7 +117,7 @@ bool SystemInit(void)
 	enemyY->SystemInit();	//山本担当MOB
 	enemyA->SystemInit();	//荒木担当MOB
 	//ｱｲﾃﾑ
-	d_hi->SystemInit();		//火の御札：ﾃﾞﾌｫﾙﾄ
+	item_m_hi->SystemInit();		//火の御札：ﾃﾞﾌｫﾙﾄ
 
 	//ｸﾞﾗﾌｨｯｸ登録
 
@@ -137,7 +137,7 @@ void InitScene(void)
 	enemyY->GameInit();		//山本担当MOB	
 	enemyA->GameInit();		//荒木担当MOB	
 	//ｱｲﾃﾑ
-	d_hi->GameInit();			//火の御札：ﾃﾞﾌｫﾙﾄ
+	item_m_hi->GameInit();			//火の御札：ﾃﾞﾌｫﾙﾄ
 
 	//-----ｼｰﾝ遷移
 	SceneID = SCENE_TITLE;
@@ -180,7 +180,7 @@ void GameScene(void)
 	enemyY->Control();		//山本担当MOB	
 	enemyA->Control();		//荒木担当MOB
 	//ｱｲﾃﾑ
-	d_hi->Control();		//火の御札：ﾃﾞﾌｫﾙﾄ
+	item_m_hi->Control();		//火の御札：ﾃﾞﾌｫﾙﾄ
 
 	//-----描画
 	GameDraw();
@@ -197,7 +197,7 @@ void GameDraw(void)
 	enemyY->GameDraw();		//山本担当MOB
 	enemyA->GameDraw();		//荒木担当MOB
 	//ｱｲﾃﾑ
-	d_hi->GameDraw(ITEM_M_HI);		//火の御札：ﾃﾞﾌｫﾙﾄ
+	item_m_hi->GameDraw(ITEM_M_HI);		//火の御札：ﾃﾞﾌｫﾙﾄ
 	
 
 	//-----情報処理

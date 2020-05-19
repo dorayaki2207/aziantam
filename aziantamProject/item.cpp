@@ -28,6 +28,8 @@ Item::~Item()
 //-----‰Šú‰»
 void Item::SystemInit(void)
 {
+	itemPos = { 20,20 };
+
 }
 
 
