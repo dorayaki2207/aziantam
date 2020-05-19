@@ -13,9 +13,13 @@ SCENE ScenePreID;	//‰ß‹‚Ì¼°İŠi”[—p
 int SceneCounter;
 
 //¸×½‚©‚ç²İ½Àİ½‚ğ¶¬
-Enemy* enemyI;
-Enemy* enemyY;
-Enemy* enemyA;
+//“G
+Enemy* enemyI;		//Î‹´’S“–MOB
+Enemy* enemyY;		//R–{’S“–MOB
+Enemy* enemyA;		//r–Ø’S“–MOB
+//±²ÃÑ
+Item* d_hi;			//‰Î‚ÌŒäDFÃŞÌ«ÙÄ
+
 
 //WinŠÖ”
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -57,15 +61,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 		SceneCounter++;		
-		ScreenFlip();		//@— ‰æ–Ê‚ğ•\‰æ–Ê‚ÉuŠÔºËß°
+		ScreenFlip();		//— ‰æ–Ê‚ğ•\‰æ–Ê‚ÉuŠÔºËß°
 	}
-	//²İ½Àİ½‚Ì‰ğ•ú
-	delete enemyI;
-	delete enemyY;
-	delete enemyA;
+	//-----²İ½Àİ½‚Ì‰ğ•ú
+	//“G
+	delete enemyI;			//Î‹´’S“–MOB
+	delete enemyY;			//R–{’S“–MOB
+	delete enemyA;			//r–Ø’S“–MOB
+	//±²ÃÑ
+	delete d_hi;			//‰Î‚ÌŒäDFÃŞÌ«ÙÄ
 
-	DxLib_End();			// DX×²ÌŞ×Ø‚ÌI—¹ˆ—
-	return 0;				// ‚±‚ÌÌßÛ¸Ş×Ñ‚ÌI—¹
+	DxLib_End();			//DX×²ÌŞ×Ø‚ÌI—¹ˆ—
+	return 0;				//‚±‚ÌÌßÛ¸Ş×Ñ‚ÌI—¹
 
 }
 //¼½ÃÑ‚Ì‰Šú‰»
@@ -79,30 +86,38 @@ bool SystemInit(void)
 	SetDrawScreen(DX_SCREEN_BACK);
 	
 	//-----²İ½Àİ½‚Ì¶¬
-	enemyI = new Enemy(ENEMY_I_MOB
+	//“G
+	enemyI = new Enemy(ENEMY_I_MOB			//Î‹´’S“–MOB
 		, 100, 100
 		, "char/—dŒÏ.png", 16
 		,4, 4
 		,32, 32
-	);
-	enemyY = new Enemy(ENEMY_Y_MOB
+	);										
+	enemyY = new Enemy(ENEMY_Y_MOB			//R–{’S“–MOB
 		, 150, 100
 		, "char/wind_mob_enemy1.png", 16
 		, 4, 4
 		, 32, 32
 	);
-	enemyA = new Enemy(ENEMY_A_MOB
+	enemyA = new Enemy(ENEMY_A_MOB			//r–Ø’S“–MOB
 		, 200, 100
 		, "char/umi0.png", 16
 		, 4, 4
 		, 32, 32
 	);
+	//±²ÃÑ
+	d_hi = new Item(ITEM_M_HI, 150, 150
+		, "itam/fuda.png", 8, 4, 2, 20, 20);
+
 
 
 	//-----ŠeÓ¼Ş­°Ù‚Ì‰Šú‰»
+	//“G
 	enemyI->SystemInit();	//Î‹´’S“–MOB
 	enemyY->SystemInit();	//R–{’S“–MOB
 	enemyA->SystemInit();	//r–Ø’S“–MOB
+	//±²ÃÑ
+	d_hi->SystemInit();		//‰Î‚ÌŒäDFÃŞÌ«ÙÄ
 
 	//¸Ş×Ì¨¯¸“o˜^
 
@@ -117,9 +132,12 @@ bool SystemInit(void)
 void InitScene(void)
 {
 	//-----ŠeµÌŞ¼Şª¸Äˆ—
+	//“G
 	enemyI->GameInit();		//Î‹´’S“–MOB	
 	enemyY->GameInit();		//R–{’S“–MOB	
 	enemyA->GameInit();		//r–Ø’S“–MOB	
+	//±²ÃÑ
+	d_hi->GameInit();			//‰Î‚ÌŒäDFÃŞÌ«ÙÄ
 
 	//-----¼°İ‘JˆÚ
 	SceneID = SCENE_TITLE;
@@ -157,10 +175,12 @@ void TitleDraw(void)
 void GameScene(void)
 {
 	//-----ŠeµÌŞ¼Şª¸Ä‘€ì
+	//“G
 	enemyI->Control();		//Î‹´’S“–MOB
 	enemyY->Control();		//R–{’S“–MOB	
 	enemyA->Control();		//r–Ø’S“–MOB
-
+	//±²ÃÑ
+	d_hi->Control();		//‰Î‚ÌŒäDFÃŞÌ«ÙÄ
 
 	//-----•`‰æ
 	GameDraw();
@@ -172,9 +192,14 @@ void GameDraw(void)
 {
 
 	//-----•`‰æˆ—
+	//“G
 	enemyI->GameDraw();		//Î‹´’S“–MOB
 	enemyY->GameDraw();		//R–{’S“–MOB
 	enemyA->GameDraw();		//r–Ø’S“–MOB
+	//±²ÃÑ
+	d_hi->GameDraw(ITEM_M_HI);		//‰Î‚ÌŒäDFÃŞÌ«ÙÄ
+	
+
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
 
