@@ -7,7 +7,8 @@
 #include "item.h"
 #include "stage.h"
 
-//変数
+//-----変数
+//ｼｰﾝ関連
 SCENE SceneID;
 SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
@@ -21,6 +22,9 @@ Enemy* enemyA;		//荒木担当MOB
 Item* item_m_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
 Item* zingi_ken20;			//三種の神器：剣(ｻｲｽﾞ20)
 
+//PAUSE
+bool paseFlag;
+
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -30,6 +34,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//-----ｹﾞｰﾑﾙｰﾌﾟ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
+		//keyの情報取得
+		KeyCheck();
 		//ｼｰﾝｶｳﾝﾄﾘｾｯﾄ
 		if (SceneID != ScenePreID)
 		{
@@ -86,6 +92,11 @@ bool SystemInit(void)
 	if (DxLib_Init() == -1)return false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	
+	//-----key情報の初期化
+	KeyInit();
+
+
+
 	//-----ｲﾝｽﾀﾝｽの生成
 	//敵
 	enemyI = new Enemy(ENEMY_I_MOB			//石橋担当MOB
@@ -126,10 +137,12 @@ bool SystemInit(void)
 
 
 	//-----変数の初期化
+	//ｼｰﾝ関連
 	SceneCounter = 0;
 	SceneID = SCENE_INIT;
 	ScenePreID = SCENE_MAX;
-
+	//PAUSE
+	pauseFlag = false;
 	return true;
 }
 //初期化ｼｰﾝ
@@ -157,7 +170,7 @@ void InitScene(void)
 void TitleScene(void)
 {
 	//-----ｼｰﾝ遷移
-	SceneID = SCENE_GAME;
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAME;
 
 	//-----描画
 	TitleDraw();
@@ -179,6 +192,21 @@ void TitleDraw(void)
 //ｹﾞｰﾑｼｰﾝ
 void GameScene(void)
 {
+	//ｼｰﾝ遷移
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAMEOVER;
+
+	//PAUSE
+	if (KeyDownTrigger[KEY_ID_PAUSE]) pauseFlag = !pauseFlag;
+	if (pauseFlag)
+	{
+		SetDrawBright(128, 128, 128);
+	}
+	//通常時操作
+	else
+	{
+		//各種機能
+	}
+
 	//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 	//敵
 	enemyI->Control();		//石橋担当MOB
@@ -206,6 +234,18 @@ void GameDraw(void)
 	item_m_hi->GameDraw(ITEM_M_HI);		//火の御札：ﾃﾞﾌｫﾙﾄ
 	zingi_ken20->GameDraw(ITEM_KEN);	//三種の神器：剣（ｻｲｽﾞ20）
 
+	//PAUSE
+	if (pauseFlag)
+	{
+		SetDrawBright(255, 255, 255);
+
+	}
+	else
+	{
+
+	}
+
+
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
 
@@ -220,6 +260,9 @@ void GameDraw(void)
 //ｹﾞｰﾑｵｰﾊﾞｰｼｰﾝ
 void GameOverScene(void)
 {
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_INIT;
+
+
 	GameOverDraw();
 }
 
