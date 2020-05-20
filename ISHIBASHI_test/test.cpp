@@ -15,7 +15,8 @@
 #include "stdio.h"
 #include "test.h"
 #include "KeyCheck.h"
-
+#include "Player.h"
+#include "Item.h"
 
 //-----外部変数宣言
 int SceneCounter;			//	gameLoop動作確認用
@@ -35,6 +36,9 @@ int kazeCnt;
 int kaifukuImage;
 int kaifukuCnt;
 
+//当たり判定用
+XY playerSize;
+int testCnt;
 
 //会話システム
 const char *file;
@@ -115,7 +119,9 @@ bool SystemInit(void)
 
 	//-----入力情報初期化
 	KeyInit();
-
+	//-----各ｵﾌﾞｼﾞｪｸﾄの初期化
+	PlayerSystmeInit();
+	ItemSystmeInit();
 
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	hiImage = LoadGraph("御札案/R_small.png");
@@ -159,6 +165,11 @@ bool SystemInit(void)
 	//PAUSE機能
 	pauseFlag = false;
 	
+	//当たり判定用
+	playerSize = { 20,20 };
+	
+
+
 	file = "dafafile.txt";
 
 	return retFlag;
@@ -168,45 +179,19 @@ bool SystemInit(void)
 void InitScene(void)
 {
 	//-----各ｵﾌﾞｼﾞｪｸﾄ処理
+	ItemGameInit();
+	PlayerGameInit();
+	
 	//御札枚数用
 	hiCnt = 0;
 	mizuCnt = 0;
 	kazeCnt = 0;
 	kaifukuCnt = 0;
 
+	testCnt = 0;
 
 
-
-	for (int j = 0; j < SCR_MAX; j++)
-	{
-		if (totalScrNew > totalScr[j])
-		{
-			if (j < SCR_MAX - 1)
-			{
-				for (int f = SCR_MAX - 2; f >= j; f--)
-				{
-					totalScr[j + 1] = totalScr[j];
-				}
-			}
-			totalScr[j] = totalScrNew;
-			break;
-		}
-	}
-	FILE* fp = NULL;
-	//	ﾌｧｲﾙﾎﾟｲﾝﾀ、ﾌｧｲﾙ名、ﾌｧｲﾙｵｰﾌﾟﾝ形式
-	// ﾌｧｲﾙが開けたときの処理
-	if (fopen_s(&fp, "scr.dat", "w+") == 0)
-	{
-		// 配列の先頭を渡す、
-		fwrite(
-			totalScr,
-			sizeof(totalScr[0]),
-			SCR_MAX,
-			fp
-		);
-		fclose(fp);
-	}
-
+	
 
 	sceneID = SCENE_ID_TITLE;
 }
@@ -226,9 +211,13 @@ void TitleScene()
 
 void GameScene()
 {
+	XY playerPos;
+
+
 	if (keyDownTrigger[KEY_ID_SPACE])
 	{
-		sceneID = SCENE_ID_INIT;
+		sceneID 
+			= SCENE_ID_INIT;
 	}
 
 	
@@ -242,13 +231,13 @@ void GameScene()
 	fread(words, sizeof(words), size_t(2), fp);
 //	fprintf(fp, "HelloWorld!!!!むずかしいなぁ");
 
-	for (int a = 0; a < words[a]; a++)
-	{
-		if (CheckHitKey(KEY_INPUT_A))
-		{
-			printf("%s\n", words);
-		}
-	}
+	//for (int a = 0; a < words[a]; a++)
+	//{
+	//	if (CheckHitKey(KEY_INPUT_A))
+	//	{
+	//		printf("%s\n", words);
+	//	}
+	//}
 
 	fclose(fp);
 	
@@ -283,10 +272,18 @@ void GameScene()
 		//各種機能
 		pCnt++;
 
-		if (keyDownTrigger[KEY_ID_UP])hiCnt++;
+		playerPos = PlayerControl();
+		ItemControl();
+
+		//ﾌﾟﾚｲﾔｰとｴﾈﾐｰとの当たり判定
+		if (ItemHitCheck(playerPos, playerSize.x))
+		{
+			testCnt++;
+		}
+		/*if (keyDownTrigger[KEY_ID_UP])hiCnt++;
 		if (keyDownTrigger[KEY_ID_RIGHT])mizuCnt++;
 		if (keyDownTrigger[KEY_ID_DOWN])kazeCnt++;
-		if (keyDownTrigger[KEY_ID_LEFT])kaifukuCnt++;
+		if (keyDownTrigger[KEY_ID_LEFT])kaifukuCnt++;*/
 
 	}
 
@@ -298,10 +295,14 @@ void GameScene()
 
 void GameDraw()
 {
-
+	//-----各ｵﾌﾞｼﾞｪｸﾄ描画処理
+	ItemGameDraw();
+	PlayerGameDraw();
+	
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);
+	DrawFormatString(0, 200, 0xFF22FF, "%d", testCnt);
 
 	
 	DrawBox(15, SCREEN_SIZE_Y - 220, SCREEN_SIZE_X - 15, SCREEN_SIZE_Y - 5, 0xFF22FF, false);
@@ -317,19 +318,19 @@ void GameDraw()
 		//御札
 		DrawGraph(350, 250, hiImage, true);
 		DrawFormatString(380, 254, 0xFF22FF, "＠", true);
-		DrawFormatString(410, 253, 0xFF22FF, "%d", hiCnt);
+		DrawFormatString(410, 253, 0xFF22FF, "%d", itemF[ITEM_TYPE_HI].point);
 
 		DrawGraph(350, 300, mizuImage, true);
 		DrawFormatString(380, 304, 0xFF22FF, "＠", true);
-		DrawFormatString(410, 303, 0xFF22FF, "%d", mizuCnt);
+		DrawFormatString(410, 303, 0xFF22FF, "%d", itemF[ITEM_TYPE_MIZU].point);
 
 		DrawGraph(350, 350, kazeImage, true);
 		DrawFormatString(380, 354, 0xFF22FF, "＠", true);
-		DrawFormatString(410, 353, 0xFF22FF, "%d", kazeCnt);
+		DrawFormatString(410, 353, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAZE].point);
 
 		DrawGraph(350, 400, kaifukuImage, true);
 		DrawFormatString(380, 404, 0xFF22FF, "＠", true);
-		DrawFormatString(410, 403, 0xFF22FF, "%d", kaifukuCnt);
+		DrawFormatString(410, 403, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
 
 
 	}
@@ -347,10 +348,10 @@ void GameDraw()
 		//通常時動作
 		DrawFormatString(0, 32, 0xFFFFFF, "%s\n", words);
 
-		DrawFormatString(0, 150, 0xFF22FF, "%d", hiCnt);
-		DrawFormatString(0, 165, 0xFF22FF, "%d", mizuCnt);
-		DrawFormatString(0, 177, 0xFF22FF, "%d", kazeCnt);
-		DrawFormatString(0, 189, 0xFF22FF, "%d", kaifukuCnt);
+		DrawFormatString(0, 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_HI].point);
+		DrawFormatString(0, 165, 0xFF22FF, "%d", itemF[ITEM_TYPE_MIZU].point);
+		DrawFormatString(0, 177, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAZE].point);
+		DrawFormatString(0, 189, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
 
 
 	}
