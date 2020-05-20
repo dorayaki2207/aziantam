@@ -19,7 +19,7 @@ Enemy* enemyY;		//山本担当MOB
 Enemy* enemyA;		//荒木担当MOB
 //ｱｲﾃﾑ
 Item* item_m_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
-
+Item* zingi_ken20;			//三種の神器：剣(ｻｲｽﾞ20)
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -69,7 +69,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete enemyY;			//山本担当MOB
 	delete enemyA;			//荒木担当MOB
 	//ｱｲﾃﾑ
-	delete item_m_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
+	delete item_m_hi;		//火の御札：ﾃﾞﾌｫﾙﾄ
+	delete zingi_ken20;		//三種の神器：剣（ｻｲｽﾞ20）	
 
 	DxLib_End();			//DXﾗｲﾌﾞﾗﾘの終了処理
 	return 0;				//このﾌﾟﾛｸﾞﾗﾑの終了
@@ -106,9 +107,10 @@ bool SystemInit(void)
 		, 32, 32
 	);
 	//ｱｲﾃﾑ
-	item_m_hi = new Item(ITEM_M_HI, 150, 150
+	item_m_hi = new Item(ITEM_M_HI, 150, 150	//火の御札：ﾃﾞﾌｫﾙﾄ
 		, "item/fuda.png", 8, 4, 2, 20, 20);
-
+	zingi_ken20 = new Item(ITEM_KEN, 150, 200	//三種の神器：剣（ｻｲｽﾞ20）
+		, "item/zingi20.png", 3, 3, 1, 20, 20);
 
 
 	//-----各ﾓｼﾞｭｰﾙの初期化
@@ -118,10 +120,12 @@ bool SystemInit(void)
 	enemyA->SystemInit();	//荒木担当MOB
 	//ｱｲﾃﾑ
 	item_m_hi->SystemInit();		//火の御札：ﾃﾞﾌｫﾙﾄ
+	zingi_ken20->SystemInit();		//三種の神器：剣（ｻｲｽﾞ20）
 
-	//ｸﾞﾗﾌｨｯｸ登録
+	//-----ｸﾞﾗﾌｨｯｸ登録
 
-	//変数の初期化
+
+	//-----変数の初期化
 	SceneCounter = 0;
 	SceneID = SCENE_INIT;
 	ScenePreID = SCENE_MAX;
@@ -138,6 +142,7 @@ void InitScene(void)
 	enemyA->GameInit();		//荒木担当MOB	
 	//ｱｲﾃﾑ
 	item_m_hi->GameInit();			//火の御札：ﾃﾞﾌｫﾙﾄ
+	zingi_ken20->GameInit();		//三種の神器：剣（ｻｲｽﾞ20）
 
 	//-----ｼｰﾝ遷移
 	SceneID = SCENE_TITLE;
@@ -181,9 +186,10 @@ void GameScene(void)
 	enemyA->Control();		//荒木担当MOB
 	//ｱｲﾃﾑ
 	item_m_hi->Control();		//火の御札：ﾃﾞﾌｫﾙﾄ
+	zingi_ken20->Control();		//三種の神器：剣（ｻｲｽﾞ20）
 
 	//-----描画
-	GameDraw();
+	GameDraw(); 
 }
 
 
@@ -198,7 +204,7 @@ void GameDraw(void)
 	enemyA->GameDraw();		//荒木担当MOB
 	//ｱｲﾃﾑ
 	item_m_hi->GameDraw(ITEM_M_HI);		//火の御札：ﾃﾞﾌｫﾙﾄ
-	
+	zingi_ken20->GameDraw(ITEM_KEN);	//三種の神器：剣（ｻｲｽﾞ20）
 
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);

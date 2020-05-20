@@ -1,3 +1,5 @@
+///////////////	hairetugakabutterukara,zinngigahyouzisarenai
+
 #include "DxLib.h"
 #include "main.h"
 #include "item.h"
