@@ -1,0 +1,73 @@
+アイテムのイベントリ
+ｗ+　ファイルを作成して、読込と書込両方のﾓｰﾄﾞで開く
+　　ファイルが存在する時は内容を破壊する
+
+testCnt1;
+testCnt2;
+testCnt3;
+testCnt4;
+
+
+#define SCR_MAX 3
+int totalScrNew;　　　　　　　　//全ての合計？　bikuminでは、敵のポイント全てを表示
+int totalScr[SCR_MAX];
+
+SystemInitにて
+
+FILE* fp;
+	// ﾌｧｲﾙ読み込み失敗した場合 0以外
+	if (fopen_s(&fp, "scr.dat", "w+") != NULL)
+	{
+		//ｸﾘｯｸ数の初期化
+		// 大きい値を入れて更新していく
+		for (int j = 0; j < SCR_MAX; j++)
+		{
+			// ﾀﾞﾐｰの初期化
+			totalScr[j] = 0;
+
+		}
+	}
+	// ﾌｧｲﾙ読み込み成功
+	else
+	{
+		//書き込みたいｱﾄﾞﾚｽの先頭ｱﾄﾞﾚｽ
+		fread(
+			totalScr,
+			sizeof(totalScr[0]),
+			SCR_MAX,
+			fp
+		);
+		// 失敗している場合再度閉じる必要がないからこの位置で閉じる
+		fclose(fp);
+	}
+	
+InitSceneにて
+for (int j = 0; j < SCR_MAX; j++)
+	{
+		if (totalScrNew > totalScr[j])
+		{
+			if (j < SCR_MAX - 1)
+			{
+				for (int f = SCR_MAX - 2; f >= j; f--)
+				{
+					totalScr[j + 1] = totalScr[j];
+				}
+			}
+			totalScr[j] = totalScrNew;
+			break;
+		}
+	}
+	FILE* fp = NULL;
+	//	ﾌｧｲﾙﾎﾟｲﾝﾀ、ﾌｧｲﾙ名、ﾌｧｲﾙｵｰﾌﾟﾝ形式
+	// ﾌｧｲﾙが開けたときの処理
+	if (fopen_s(&fp, "scr.dat", "w+") == 0)
+	{
+		// 配列の先頭を渡す、
+		fwrite(
+			totalScr,
+			sizeof(totalScr[0]),
+			SCR_MAX,
+			fp
+		);
+		fclose(fp);
+	}
