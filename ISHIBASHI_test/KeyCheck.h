@@ -12,10 +12,10 @@ enum KEY_ID
 	KEY_ID_DOWN,					//	↓
 	KEY_ID_LEFT,					//　←
 	KEY_ID_SHOT,					//	左Ctrl
-	KEY_ID_SPEEDUP,
-	KEY_ID_MOUSE_LEFT,				//	左ｸﾘｯｸ
-	KEY_ID_MOUSE_MIDDLE,			//　真ん中
-	KEY_ID_MOUSE_RIGHT,				//	右ｸﾘｯｸ
+	KEY_ID_FIRE,					//	攻撃：火
+	KEY_ID_WATER,					//	攻撃：水
+	KEY_ID_WIND,					//　攻撃：風
+	KEY_ID_HEAL,					//	回復
 	KEY_ID_MAX
 };
 

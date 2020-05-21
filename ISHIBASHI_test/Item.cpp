@@ -7,10 +7,11 @@
 //御札
 CHARACTER itemF[ITEM_MAX];					//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ変数格納用
 CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
-int itemFImage[ITEM_TYPE_F_MAX];					//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ画像：通常時
+int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
+int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
 //三種の神器
 CHARACTER itemB[ITEM_TYPE_B_MAX];
-int itemBImage[ITEM_TYPE_B_MAX];
+int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
 
 
 
@@ -51,11 +52,16 @@ void ItemSystmeInit(void)
 
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
-	//御札
+	//御札(ﾄﾞﾛｯﾌﾟ用
 	itemFImage[ITEM_TYPE_HI] = LoadGraph("御札案/R.png");			//	火の御札
 	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B.png");			//	水の御札
 	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G.png");			//	風の御札
 	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P.png");		//	回復の御札
+	//御札（ｲﾍﾞﾝﾄﾘ用
+	itemFIImage[ITEM_TYPE_HI] = LoadGraph("御札案/R_small.png");
+	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_small.png");
+	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_small.png");
+	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_small.png");
 	//三種の神器
 	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/剣20.png");		//	三種の神器　：　剣
 	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/鏡20.png");		//	三種の神器　：　鏡
@@ -83,35 +89,7 @@ void ItemGameInit(void)
 		itemB[i].life = itemB[i].lifeMax;							//	三種の神器の体力
 	}
 
-	for (int j = 0; j < SCR_MAX; j++)
-	{
-		if (totalScrNew > totalScr[j])
-		{
-			if (j < SCR_MAX - 1)
-			{
-				for (int f = SCR_MAX - 2; f >= j; f--)
-				{
-					totalScr[j + 1] = totalScr[j];
-				}
-			}
-			totalScr[j] = totalScrNew;
-			break;
-		}
-	}
-	FILE* fp = NULL;
-	//	ﾌｧｲﾙﾎﾟｲﾝﾀ、ﾌｧｲﾙ名、ﾌｧｲﾙｵｰﾌﾟﾝ形式
-	// ﾌｧｲﾙが開けたときの処理
-	if (fopen_s(&fp, "scr.dat", "w+") == 0)
-	{
-		// 配列の先頭を渡す、
-		fwrite(
-			totalScr,
-			sizeof(totalScr[0]),
-			SCR_MAX,
-			fp
-		);
-		fclose(fp);
-	}
+	
 
 }
 
@@ -159,6 +137,27 @@ void ItemGameDraw(void)
 
 		}
 	}
+}
+//-----ｲﾍﾞﾝﾄﾘ用描画
+void Item_IDraw(void)
+{
+	//火の御札
+	DrawGraph(350, 250, itemFIImage[ITEM_TYPE_HI], true);
+	DrawFormatString(380, 254, 0xFF22FF, "＠", true);
+	DrawFormatString(410, 253, 0xFF22FF, "%d", itemF[ITEM_TYPE_HI].point);
+	//水の御札
+	DrawGraph(350, 300, itemFIImage[ITEM_TYPE_MIZU], true);
+	DrawFormatString(380, 304, 0xFF22FF, "＠", true);
+	DrawFormatString(410, 303, 0xFF22FF, "%d", itemF[ITEM_TYPE_MIZU].point);
+	//風の御札
+	DrawGraph(350, 350, itemFIImage[ITEM_TYPE_KAZE], true);
+	DrawFormatString(380, 354, 0xFF22FF, "＠", true);
+	DrawFormatString(410, 353, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAZE].point);
+	//回復の御札
+	DrawGraph(350, 400, itemFIImage[ITEM_TYPE_KAIFUKU], true);
+	DrawFormatString(380, 404, 0xFF22FF, "＠", true);
+	DrawFormatString(410, 403, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
+
 }
 
 //-----弾と敵の当たり判定　(true : あたり, false : はずれ)

@@ -27,6 +27,7 @@ void ItemSystmeInit(void);		//@±²ÃÑî•ñ‚Ì‰Šú‰»
 void ItemGameInit(void);		//						
 void ItemControl(void);			//	±²ÃÑ‚Ì‘€ì
 void ItemGameDraw(void);		//@±²ÃÑ•`‰æˆ—
+void Item_IDraw(void);			//	²ÍŞİÄØ—p‚Ì±²ÃÑ‰æ‘œ•`‰æ
 bool ItemHitCheck(XY sPos, int sSize);
 void DeleteItem(int index);
 

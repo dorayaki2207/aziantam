@@ -5,8 +5,6 @@
 #define SCREEN_SIZE_X 800
 #define SCREEN_SIZE_Y 650
 
-#define SCR_MAX 3
-
 
 //-----—ñ‹“Œ^
 //¼°İ
@@ -15,6 +13,7 @@ enum SCENE_ID
 	SCENE_ID_INIT,					//	¼°İ‰Šú‰»
 	SCENE_ID_TITLE,					//	À²ÄÙ
 	SCENE_ID_GAME,					//	¹Ş°Ñ
+	SCENE_ID_BATTLE,				//	ÎŞ½í¼°İ
 	SCENE_ID_MAX
 };
 //Œü‚«
@@ -59,10 +58,9 @@ void GameDraw(void);
 
 void TitleScene(void);
 
+//-----¸ŞÛ°ÊŞÙ‰»
 
-extern int totalScrNew;
-extern int totalScr[SCR_MAX];
-extern int hiCnt;
-extern int mizuCnt;
-extern int kazeCnt;
-extern int kaifukuCnt;
+
+extern SCENE_ID sceneID;
+//Ã½Ä—p
+extern int SceneCounter;

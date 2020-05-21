@@ -41,7 +41,10 @@ void KeyCheck(void)
 	keyNew[KEY_ID_DOWN] = CheckHitKey(KEY_INPUT_DOWN);
 	keyNew[KEY_ID_LEFT] = CheckHitKey(KEY_INPUT_LEFT);
 	keyNew[KEY_ID_SHOT] = CheckHitKey(KEY_INPUT_LCONTROL);
-	keyNew[KEY_ID_SPEEDUP] = CheckHitKey(KEY_INPUT_V);
+	keyNew[KEY_ID_FIRE] = CheckHitKey(KEY_INPUT_Z);
+	keyNew[KEY_ID_WATER] = CheckHitKey(KEY_INPUT_X);
+	keyNew[KEY_ID_WIND] = CheckHitKey(KEY_INPUT_C);
+	keyNew[KEY_ID_HEAL] = CheckHitKey(KEY_INPUT_V);
 
 	//ÉgÉäÉKÅ[ÇÃéZèo
 	for (int keyID = 0; keyID < KEY_ID_MAX; keyID++)
