@@ -278,7 +278,7 @@ void GameDraw()
 //		DrawString((SCREEN_SIZE_X - 9 * 8) / 2, (SCREEN_SIZE_Y - 16) / 2, "PAUSE", 0xFFFFFF);
 
 		//ŒäŽD
-		Item_IDraw();
+		ItemI_Draw();
 
 	}
 	//-----PAUSEŠÖ˜A		

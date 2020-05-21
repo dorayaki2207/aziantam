@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "test.h"
 #include "Item.h"
+#include "Battle.h"
 
 //-----外部変数宣言
 //ｱｲﾃﾑ関連
@@ -9,6 +10,8 @@ CHARACTER itemF[ITEM_MAX];					//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ変数格納用
 CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
 int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
 int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
+int itemFBImage[ITEM_TYPE_F_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
+bool itemFBFlag;							//	表示,非表示用
 //三種の神器
 CHARACTER itemB[ITEM_TYPE_B_MAX];
 int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
@@ -19,7 +22,7 @@ int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
 void ItemSystmeInit(void)
 {
 	//-----変数の初期化
-	//御札
+	//御札（ﾄﾞﾛｯﾌﾟ用
 	itemFmaster[ITEM_TYPE_HI].charType = ITEM_TYPE_HI;				//	御札の種類	：	火
 	itemFmaster[ITEM_TYPE_MIZU].charType = ITEM_TYPE_MIZU;			//	御札の種類	：	水
 	itemFmaster[ITEM_TYPE_KAZE].charType = ITEM_TYPE_KAZE;			//	御札の種類	：	風
@@ -33,8 +36,10 @@ void ItemSystmeInit(void)
 		itemFmaster[i].point = 0;																	//	御札の枚数
 		itemFmaster[i].lifeMax = 20;																//	御札の体力最大値（表示時間）
 		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	御札の体力
-
 	}
+
+	//御札（ﾎﾞｽﾊﾞﾄﾙ用
+	itemFBFlag = false;												//	初期：非表示
 
 	//三種の神器
 	itemB[ITEM_TYPE_KEN].charType = ITEM_TYPE_KEN;					//	三種の神器　：　剣
@@ -62,6 +67,11 @@ void ItemSystmeInit(void)
 	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_small.png");
 	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_small.png");
 	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_small.png");
+	//御札（ﾎﾞｽﾊﾞﾄﾙ用
+	itemFBImage[ITEM_TYPE_HI] = LoadGraph("御札案/R_big.png");
+	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_big.png");
+	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_big.png");
+	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_big.png");
 	//三種の神器
 	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/剣20.png");		//	三種の神器　：　剣
 	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/鏡20.png");		//	三種の神器　：　鏡
@@ -70,7 +80,7 @@ void ItemSystmeInit(void)
 
 void ItemGameInit(void)
 {
-	//御札
+	//御札（ﾄﾞﾛｯﾌﾟ用
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
 		itemF[i] = itemFmaster[GetRand(ITEM_TYPE_F_MAX - 1)];
@@ -100,7 +110,7 @@ void ItemControl(void)
 void ItemGameDraw(void)
 {
 	//-----描画処理
-	//御札
+	//御札（ﾄﾞﾛｯﾌﾟ用
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
 		//生きてる御札のみ表示
@@ -139,7 +149,7 @@ void ItemGameDraw(void)
 	}
 }
 //-----ｲﾍﾞﾝﾄﾘ用描画
-void Item_IDraw(void)
+void ItemI_Draw(void)
 {
 	//火の御札
 	DrawGraph(350, 250, itemFIImage[ITEM_TYPE_HI], true);
@@ -157,6 +167,36 @@ void Item_IDraw(void)
 	DrawGraph(350, 400, itemFIImage[ITEM_TYPE_KAIFUKU], true);
 	DrawFormatString(380, 404, 0xFF22FF, "＠", true);
 	DrawFormatString(410, 403, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
+
+}
+
+void ItemB_Draw(void)
+{
+	//攻撃時表示用
+	if (!itemFBFlag)
+	{
+		for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+		{
+			DrawGraph((SCREEN_SIZE_X - ITEM_B_SIZE) / 2, (BOX_Y - ITEM_B_SIZE) / 2, itemFBImage[type], true);
+		}
+	}
+	//所持ｱｲﾃﾑ残量表示用
+	//火の御札
+	DrawGraph(350, BOX_Y +120, itemFIImage[ITEM_TYPE_HI], true);
+	DrawFormatString(352, BOX_Y + 150, 0xFF22FF, "×", true);
+	DrawFormatString(380, BOX_Y + 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_HI].point);
+	//水の御札
+	DrawGraph(450, BOX_Y + 120, itemFIImage[ITEM_TYPE_MIZU], true);
+	DrawFormatString(452, BOX_Y + 150, 0xFF22FF, "×", true);
+	DrawFormatString(480, BOX_Y + 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_MIZU].point);
+	//風の御札
+	DrawGraph(550, BOX_Y + 120, itemFIImage[ITEM_TYPE_KAZE], true);
+	DrawFormatString(552, BOX_Y + 150, 0xFF22FF, "×", true);
+	DrawFormatString(580, BOX_Y + 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAZE].point);
+	//回復の御札
+	DrawGraph(650, BOX_Y + 120, itemFIImage[ITEM_TYPE_KAIFUKU], true);
+	DrawFormatString(652, BOX_Y + 150, 0xFF22FF, "×", true);
+	DrawFormatString(680, BOX_Y + 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
 
 }
 

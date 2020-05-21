@@ -2,7 +2,10 @@
 
 
 //-----定数定義
-#define ITEM_MAX 50
+#define ITEM_MAX    50
+#define ITEM_M_SIZE 20			//	ｲﾍﾞﾝﾄﾘ用御札ｻｲｽﾞ
+#define ITEM_B_SIZE 150			//	ﾊﾞﾄﾙ用御札ｻｲｽﾞ
+
 
 //-----列挙型
 enum ITEM_TYPE_F
@@ -27,7 +30,8 @@ void ItemSystmeInit(void);		//　ｱｲﾃﾑ情報の初期化
 void ItemGameInit(void);		//						
 void ItemControl(void);			//	ｱｲﾃﾑの操作
 void ItemGameDraw(void);		//　ｱｲﾃﾑ描画処理
-void Item_IDraw(void);			//	ｲﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
+void ItemI_Draw(void);			//	ｲﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
+void ItemB_Draw(void);			//	ﾎﾞｽﾊﾞﾄﾙ用のｱｲﾃﾑ画像描画
 bool ItemHitCheck(XY sPos, int sSize);
 void DeleteItem(int index);
 
