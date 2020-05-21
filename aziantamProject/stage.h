@@ -14,10 +14,19 @@
 #define MAPY_Y 25
 #define MAPA_X 25
 #define MAPA_Y 25
+#define MAPB_X 25
+#define MAPB_Y 25
+#define MAP_CHIP_X 9
+#define MAP_CHIP_Y 9
+#define CHIP_SIZE_X 32
+#define CHIP_SIZE_Y 32
 
 //ｲﾍﾞﾝﾄID
 enum STAGE_ID {
 	STAGE_ID_START,
+	STAGE_ID_ONI,
+	STAGE_ID_TENGU,
+	STAGE_ID_KAPPA,
 	STAGE_ID_MAX
 };
 
