@@ -58,20 +58,20 @@ void ItemSystmeInit(void)
 
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
 	//ŒäD(ÄŞÛ¯Ìß—p
-	itemFImage[ITEM_TYPE_HI] = LoadGraph("ŒäDˆÄ/R.png");			//	‰Î‚ÌŒäD
-	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("ŒäDˆÄ/B.png");			//	…‚ÌŒäD
-	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("ŒäDˆÄ/G.png");			//	•—‚ÌŒäD
-	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("ŒäDˆÄ/P.png");		//	‰ñ•œ‚ÌŒäD
+	itemFImage[ITEM_TYPE_HI] = LoadGraph("aitem/R.png");			//	‰Î‚ÌŒäD
+	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B.png");			//	…‚ÌŒäD
+	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G.png");			//	•—‚ÌŒäD
+	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P.png");		//	‰ñ•œ‚ÌŒäD
 	//ŒäDi²ÍŞİÄØ—p
-	itemFIImage[ITEM_TYPE_HI] = LoadGraph("ŒäDˆÄ/R_small.png");
-	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("ŒäDˆÄ/B_small.png");
-	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("ŒäDˆÄ/G_small.png");
-	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("ŒäDˆÄ/P_small.png");
+	itemFIImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_small.png");
+	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_small.png");
+	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_small.png");
+	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_small.png");
 	//ŒäDiÎŞ½ÊŞÄÙ—p
-	itemFBImage[ITEM_TYPE_HI] = LoadGraph("ŒäDˆÄ/R_big.png");
-	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("ŒäDˆÄ/B_big.png");
-	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("ŒäDˆÄ/G_big.png");
-	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("ŒäDˆÄ/P_big.png");
+	itemFBImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_big.png");
+	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_big.png");
+	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_big.png");
+	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_big.png");
 	//Oí‚Ì_Ší
 	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/Œ•20.png");		//	Oí‚Ì_Ší@F@Œ•
 	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/‹¾20.png");		//	Oí‚Ì_Ší@F@‹¾
