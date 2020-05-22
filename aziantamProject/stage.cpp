@@ -245,8 +245,6 @@ bool IsPass(XY pos)
 
 	default:
 
-		break;.
-
 		break;
 
 	}
@@ -363,16 +361,13 @@ void SetMapData(STAGE_ID stage_ID)
 //ｹﾞｰﾑ画面の表示処理
 void StageGameDraw(void)
 {
-	for (int y = 0; t < mapSize.y; y++)
+	for (int y = 0; y < mapSize.y; y++)
 	{
-		for (int y = 0; y < mapSize.y; y++)
+		for (int x = 0; x < mapSize.x; x++)
 		{
-			for (int x = 0; x < mapSize.x; x++)
-			{
-				DrawGraph(x*CHIP_SIZE_X + -mapPos.x
-					, y*CHIP_SIZE_Y + -mapPos.y
-					, chipImage[map[y][x]], true);
-			}
+			DrawGraph(x*CHIP_SIZE_X + -mapPos.x
+				, y*CHIP_SIZE_Y + -mapPos.y
+				, chipImage[map[y][x]], true);
 		}
 	}
 }
