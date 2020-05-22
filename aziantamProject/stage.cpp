@@ -159,7 +159,7 @@ void StageSystemInit(void)
 {
 	//グラフィックの登録
 	//ﾏｯﾌﾟﾁｯﾌﾟの画像を読み込む
-	LoadDivGraph("bmp/map.bmp"
+	LoadDivGraph("char/map.png"
 		, MAP_CHIP_X*MAP_CHIP_Y, MAP_CHIP_X, MAP_CHIP_Y
 		, CHIP_SIZE_X, CHIP_SIZE_Y
 		, chipImage);
@@ -244,7 +244,9 @@ bool IsPass(XY pos)
 		break;
 
 	default:
+
 		break;
+
 	}
 	return true;
 }
