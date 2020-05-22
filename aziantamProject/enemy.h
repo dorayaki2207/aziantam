@@ -1,37 +1,30 @@
 
-class Enemy
+
+//-----’è”’è‹`
+#define ENEMY_MAX 20		//	“G‚Ì”
+
+
+//-----—ñ‹“Œ^
+//ƒ‚ƒu
+enum ENEMY_MOB
 {
-public:
-	//-----ÒİÊŞ°•Ï”
-
-private:
-	const int START_POS_X;
-	const int START_POS_Y;
-
-	int enemyImage[16];
-	XY  enemyPos;
-	int enemySpeed;
-	DIR enemyMov;
-	int enemyCount;
-	int enemyHert;
-	bool enemyFlag;
-	ENEMY enemyNo;
-//	KEY_LIST keyID;
-
-public:
-	Enemy(ENEMY no, int posX, int posY, const char filename[],int max, int MaxX,int MaxY,int sizeX, int sizeY);
-	~Enemy();
-
-	//-----ÒİÊŞŠÖ”
-	void SystemInit(void);
-	void GameInit(void);
-	void Control(void);
-	void GameDraw(void);
-
-
+	ENEMY_I_MOB,	//Î‹´’S“–
+	ENEMY_Y_MOB,	//R–{’S“–
+	ENEMY_A_MOB,	//r–Ø’S“–
+	ENEMY_M_MAX
 };
-//#pragma once
+//ƒ{ƒX
+enum ENEMY_BOSS
+{
+	ENEMY_ONI,		//‹S
+	ENEMY_TENG,		//“V‹ç
+	ENEMY_KAPPA,	//‰Í“¶
+	ENEMY_NUE,		//êK
+	ENEMY_B_MAX
+};
 
-
-
-
+//-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
+void EnemySystemInit(void);		//	´ÈĞ°î•ñ‚Ì‰Šú‰»
+void EnemyGameInit(void);		//	
+void EnemyControl(void);		//	´ÈĞ°‚Ì‘€ì
+void EnemyGameDraw(void);		//	´ÈĞ°‚Ì•`‰æˆ—
