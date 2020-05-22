@@ -11,7 +11,7 @@ CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
 int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
 int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
 int itemFBImage[ITEM_TYPE_F_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
-bool itemFBFlag[ITEM_TYPE_F_MAX];			//	表示,非表示用
+bool itemFBFlag;							//	表示,非表示用
 //三種の神器
 CHARACTER itemB[ITEM_TYPE_B_MAX];
 int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
@@ -39,10 +39,8 @@ void ItemSystmeInit(void)
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
-	{
-		itemFBFlag[type] = false;									//	true : 表示，false : 非表示
-	}
+	itemFBFlag = false;												//	初期：非表示
+
 	//三種の神器
 	itemB[ITEM_TYPE_KEN].charType = ITEM_TYPE_KEN;					//	三種の神器　：　剣
 	itemB[ITEM_TYPE_KAGAMI].charType = ITEM_TYPE_KAGAMI;			//	三種の神器　：　鏡
@@ -60,20 +58,20 @@ void ItemSystmeInit(void)
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//御札(ﾄﾞﾛｯﾌﾟ用
-	itemFImage[ITEM_TYPE_HI] = LoadGraph("aitem/R.png");			//	火の御札
-	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B.png");			//	水の御札
-	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G.png");			//	風の御札
-	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P.png");		//	回復の御札
+	itemFImage[ITEM_TYPE_HI] = LoadGraph("御札案/R.png");			//	火の御札
+	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B.png");			//	水の御札
+	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G.png");			//	風の御札
+	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P.png");		//	回復の御札
 	//御札（ｲﾍﾞﾝﾄﾘ用
-	itemFIImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_small.png");
-	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_small.png");
-	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_small.png");
-	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_small.png");
+	itemFIImage[ITEM_TYPE_HI] = LoadGraph("御札案/R_small.png");
+	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_small.png");
+	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_small.png");
+	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_small.png");
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_big.png");
-	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_big.png");
-	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_big.png");
-	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_big.png");
+	itemFBImage[ITEM_TYPE_HI] = LoadGraph("御札案/R_big.png");
+	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_big.png");
+	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_big.png");
+	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_big.png");
 	//三種の神器
 	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/剣20.png");		//	三種の神器　：　剣
 	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/鏡20.png");		//	三種の神器　：　鏡
@@ -175,10 +173,9 @@ void ItemI_Draw(void)
 void ItemB_Draw(void)
 {
 	//攻撃時表示用
-	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	if (!itemFBFlag)
 	{
-
-		if (itemFBFlag[type])  //trueになったら表示する
+		for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
 		{
 			DrawGraph((SCREEN_SIZE_X - ITEM_B_SIZE) / 2, (BOX_Y - ITEM_B_SIZE) / 2, itemFBImage[type], true);
 		}
