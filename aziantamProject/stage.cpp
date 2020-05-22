@@ -244,7 +244,11 @@ bool IsPass(XY pos)
 		break;
 
 	default:
+<<<<<<< HEAD
 		break;.
+=======
+		break;
+>>>>>>> 3b77dbfd89e444ccb5cd6002dd4ac9ee053e96d2
 	}
 	return true;
 }
@@ -359,7 +363,11 @@ void SetMapData(STAGE_ID stage_ID)
 //ｹﾞｰﾑ画面の表示処理
 void StageGameDraw(void)
 {
+<<<<<<< HEAD
 	for (int y = 0; t < mapSize.y; y++)
+=======
+	for (int y = 0; y < mapSize.y; y++)
+>>>>>>> 3b77dbfd89e444ccb5cd6002dd4ac9ee053e96d2
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
