@@ -1,4 +1,4 @@
-/月夜
+//月夜
 //stage.cpp
 //2020.05.20
 
@@ -244,7 +244,7 @@ bool IsPass(XY pos)
 		break;
 
 	default:
-		break;.
+		break;
 	}
 	return true;
 }
@@ -359,7 +359,7 @@ void SetMapData(STAGE_ID stage_ID)
 //ｹﾞｰﾑ画面の表示処理
 void StageGameDraw(void)
 {
-	for (int y = 0; t < mapSize.y; y++)
+	for (int y = 0; y < mapSize.y; y++)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
