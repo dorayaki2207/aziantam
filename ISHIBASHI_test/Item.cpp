@@ -11,7 +11,7 @@ CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
 int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
 int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
 int itemFBImage[ITEM_TYPE_F_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
-bool itemFBFlag;							//	表示,非表示用
+bool itemFBFlag[ITEM_TYPE_F_MAX];			//	表示,非表示用
 //三種の神器
 CHARACTER itemB[ITEM_TYPE_B_MAX];
 int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
@@ -39,8 +39,10 @@ void ItemSystmeInit(void)
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBFlag = false;												//	初期：非表示
-
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	{
+		itemFBFlag[type] = false;									//	true : 表示，false : 非表示
+	}
 	//三種の神器
 	itemB[ITEM_TYPE_KEN].charType = ITEM_TYPE_KEN;					//	三種の神器　：　剣
 	itemB[ITEM_TYPE_KAGAMI].charType = ITEM_TYPE_KAGAMI;			//	三種の神器　：　鏡
@@ -173,9 +175,10 @@ void ItemI_Draw(void)
 void ItemB_Draw(void)
 {
 	//攻撃時表示用
-	if (!itemFBFlag)
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
 	{
-		for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+
+		if (itemFBFlag[type])  //trueになったら表示する
 		{
 			DrawGraph((SCREEN_SIZE_X - ITEM_B_SIZE) / 2, (BOX_Y - ITEM_B_SIZE) / 2, itemFBImage[type], true);
 		}

@@ -37,3 +37,4 @@ void DeleteItem(int index);
 
 //-----¸ÞÛ°ÊÞÙ‰»
 extern CHARACTER itemF[];
+extern bool itemFBFlag[];
