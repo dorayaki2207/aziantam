@@ -159,7 +159,7 @@ void StageSystemInit(void)
 {
 	//グラフィックの登録
 	//ﾏｯﾌﾟﾁｯﾌﾟの画像を読み込む
-	LoadDivGraph("bmp/map.bmp"
+	LoadDivGraph("Image/map.bmp"
 		, MAP_CHIP_X*MAP_CHIP_Y, MAP_CHIP_X, MAP_CHIP_Y
 		, CHIP_SIZE_X, CHIP_SIZE_Y
 		, chipImage);
@@ -244,11 +244,11 @@ bool IsPass(XY pos)
 		break;
 
 	default:
-<<<<<<< HEAD
+
 		break;.
-=======
+
 		break;
->>>>>>> 3b77dbfd89e444ccb5cd6002dd4ac9ee053e96d2
+
 	}
 	return true;
 }
@@ -363,17 +363,16 @@ void SetMapData(STAGE_ID stage_ID)
 //ｹﾞｰﾑ画面の表示処理
 void StageGameDraw(void)
 {
-<<<<<<< HEAD
 	for (int y = 0; t < mapSize.y; y++)
-=======
-	for (int y = 0; y < mapSize.y; y++)
->>>>>>> 3b77dbfd89e444ccb5cd6002dd4ac9ee053e96d2
 	{
-		for (int x = 0; x < mapSize.x; x++)
+		for (int y = 0; y < mapSize.y; y++)
 		{
-			DrawGraph(x*CHIP_SIZE_X + -mapPos.x
-				, y*CHIP_SIZE_Y + -mapPos.y
-				, chipImage[map[y][x]], true);
+			for (int x = 0; x < mapSize.x; x++)
+			{
+				DrawGraph(x*CHIP_SIZE_X + -mapPos.x
+					, y*CHIP_SIZE_Y + -mapPos.y
+					, chipImage[map[y][x]], true);
+			}
 		}
 	}
 }
