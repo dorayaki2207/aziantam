@@ -1,6 +1,8 @@
-///////////////	ｱｲﾃﾑ画像の修正が必要
-///////////////	修正未
-
+////	ﾄﾞﾛｯﾌﾟｱｲﾃﾑは敵が倒されたらその場に出現
+////	ｱｲﾃﾑHPを使って敵を倒して一定時間内に取らないと消えるようにする 
+////	敵の当たり判定に　狐だと火の御札、一反木綿だと風の御札、海坊主だと水の御札
+////	回復の御札は全部の敵MOBから確率で出現するようにする
+////	敵が倒されたら　ｱｲﾃﾑHPを減らしていく
 #include "DxLib.h"
 #include "main.h"
 #include "item.h"
@@ -34,7 +36,7 @@ void ItemSystmeInit(void)
 	//御札まとめて処理
 	for (int i = 0; i < ITEM_TYPE_F_MAX; i++)
 	{
-		itemFmaster[i].pos = { 50,50 };																//　御札の地図上の座標
+		itemFmaster[i].pos = { 0,0 };																//　御札の地図上の座標
 		itemFmaster[i].size = { 20,20 };															//	御札の画像ｻｲｽﾞ
 		itemFmaster[i].offsetSize = { itemFmaster[i].size.x / 2,itemFmaster[i].size.y / 2 };		//　御札のｵﾌｾｯﾄ
 		itemFmaster[i].point = 0;																	//	御札の枚数
@@ -58,29 +60,20 @@ void ItemSystmeInit(void)
 	}
 
 
-
-
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//御札(ﾄﾞﾛｯﾌﾟ用
-	itemFImage[ITEM_TYPE_HI] = LoadGraph("item/R.png");				//	火の御札
-	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("item/B.png");			//	水の御札
-	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("item/G.png");			//	風の御札
-	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("item/P.png");		//	回復の御札
+	LoadDivGraph("item/fudaD.png", 4, 4, 1
+		, ITEM_M_SIZE, ITEM_M_SIZE, itemFImage);
 	//御札（ｲﾍﾞﾝﾄﾘ用
-	itemFIImage[ITEM_TYPE_HI] = LoadGraph("item/R_small.png");
-	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("item/B_small.png");
-	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("item/G_small.png");
-	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("item/P_small.png");
+	LoadDivGraph("item/fudaI.png", 4, 4, 1
+		, ITEM_M_SIZE, ITEM_M_SIZE, itemFIImage);
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBImage[ITEM_TYPE_HI] = LoadGraph("item/R_big.png");
-	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("item/B_big.png");
-	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("item/G_big.png");
-	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("item/P_big.png");
+	LoadDivGraph("item/fuda_Big.png", 4, 4, 1
+		, ITEM_B_SIZE, ITEM_B_SIZE, itemFBImage);
 	//三種の神器
-	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/剣20.png");		//	三種の神器　：　剣
-	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/鏡20.png");		//	三種の神器　：　鏡
-	itemBImage[ITEM_TYPE_MAGATAMA] = LoadGraph("aitem/勾玉20.png");	//	三種の神器　：　勾玉
-}
+	LoadDivGraph("item/zingi20.png", 3, 3, 1
+		, ITEM_M_SIZE, ITEM_M_SIZE, itemBImage);
+	}
 
 void ItemGameInit(void)
 {
@@ -88,8 +81,8 @@ void ItemGameInit(void)
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
 		itemF[i] = itemFmaster[GetRand(ITEM_TYPE_F_MAX - 1)];
-		itemF[i].pos.x = GetRand(SCREEN_SIZE_X - 1);
-		itemF[i].pos.y = GetRand(SCREEN_SIZE_Y - 1);
+		//itemF[i].pos.x = GetRand(SCREEN_SIZE_X - 1);
+		//itemF[i].pos.y = GetRand(SCREEN_SIZE_Y - 1);
 		//	itemF[i].point = 0;																//	御札の枚数
 		//	itemF[i].lifeMax = 20;															//	御札の体力最大値（表示時間）
 		//	itemF[i].life = itemF[i].lifeMax;												//	御札の体力

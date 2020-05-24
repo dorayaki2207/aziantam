@@ -2,8 +2,8 @@
 
 //-----定数定義
 #define ITEM_MAX    20
-#define ITEM_M_SIZE 20			//	ｲﾍﾞﾝﾄﾘ用御札ｻｲｽﾞ
-#define ITEM_B_SIZE 150			//	ﾊﾞﾄﾙ用御札ｻｲｽﾞ
+#define ITEM_M_SIZE 20			//	ｲﾍﾞﾝﾄﾘ用御札ｻｲｽﾞ(M : ﾐﾆ
+#define ITEM_B_SIZE 150			//	ﾊﾞﾄﾙ用御札ｻｲｽﾞ(B : ﾋﾞｯｸﾞ
 
 
 
