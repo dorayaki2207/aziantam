@@ -236,18 +236,14 @@ void GameScene()
 		pCnt++;
 
 		playerPos = PlayerControl();
-		ItemControl();
+	//	ItemControl();
 
 		//ÌßÚ²Ô°‚Æ´ÈÐ°‚Æ‚Ì“–‚½‚è”»’è
 		if (ItemHitCheck(playerPos, playerSize.x))
 		{
 			testCnt++;
 		}
-		/*if (keyDownTrigger[KEY_ID_UP])hiCnt++;
-		if (keyDownTrigger[KEY_ID_RIGHT])mizuCnt++;
-		if (keyDownTrigger[KEY_ID_DOWN])kazeCnt++;
-		if (keyDownTrigger[KEY_ID_LEFT])kaifukuCnt++;*/
-
+		
 	}
 
 	GameDraw();

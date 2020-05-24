@@ -1,17 +1,26 @@
+///// ボス戦　当たり判定
+/////	keyを押されたら　御札が現れる
+/////	当たり判定作る？
+
 #include "DxLib.h"
 #include "test.h"
+#include "KeyCheck.h"
 #include "Item.h"
 #include "Battle.h"
 
 //-----外部変数宣言
 //ｱｲﾃﾑ関連
-//御札
+//御札（ﾄﾞﾛｯﾌﾟ
 CHARACTER itemF[ITEM_MAX];					//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ変数格納用
 CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
 int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
+//御札（ｲﾍﾞﾝﾄﾘ
 int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
+//御札（ﾎﾞｽﾊﾞﾄﾙ
 int itemFBImage[ITEM_TYPE_F_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
-bool itemFBFlag;							//	表示,非表示用
+int lookCnt;
+bool itemFBFlag[ITEM_TYPE_F_MAX];			//	表示,非表示用
+
 //三種の神器
 CHARACTER itemB[ITEM_TYPE_B_MAX];
 int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
@@ -39,8 +48,11 @@ void ItemSystmeInit(void)
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBFlag = false;												//	初期：非表示
-
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	{
+		itemFBFlag[type] = false;									//	true：表示, false：非表示 
+	}
+	lookCnt = 0;
 	//三種の神器
 	itemB[ITEM_TYPE_KEN].charType = ITEM_TYPE_KEN;					//	三種の神器　：　剣
 	itemB[ITEM_TYPE_KAGAMI].charType = ITEM_TYPE_KAGAMI;			//	三種の神器　：　鏡
@@ -58,20 +70,20 @@ void ItemSystmeInit(void)
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//御札(ﾄﾞﾛｯﾌﾟ用
-	itemFImage[ITEM_TYPE_HI] = LoadGraph("御札案/R.png");			//	火の御札
-	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B.png");			//	水の御札
-	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G.png");			//	風の御札
-	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P.png");		//	回復の御札
+	itemFImage[ITEM_TYPE_HI] = LoadGraph("aitem/R.png");			//	火の御札
+	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B.png");			//	水の御札
+	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G.png");			//	風の御札
+	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P.png");		//	回復の御札
 	//御札（ｲﾍﾞﾝﾄﾘ用
-	itemFIImage[ITEM_TYPE_HI] = LoadGraph("御札案/R_small.png");
-	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_small.png");
-	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_small.png");
-	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_small.png");
+	itemFIImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_small.png");
+	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_small.png");
+	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_small.png");
+	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_small.png");
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBImage[ITEM_TYPE_HI] = LoadGraph("御札案/R_big.png");
-	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("御札案/B_big.png");
-	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("御札案/G_big.png");
-	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("御札案/P_big.png");
+	itemFBImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_big.png");
+	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_big.png");
+	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_big.png");
+	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_big.png");
 	//三種の神器
 	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/剣20.png");		//	三種の神器　：　剣
 	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/鏡20.png");		//	三種の神器　：　鏡
@@ -105,6 +117,41 @@ void ItemGameInit(void)
 
 void ItemControl(void)
 {
+	
+	if (keyDownTrigger[KEY_ID_FIRE])
+	{
+		itemF[ITEM_TYPE_HI].point--;
+		itemFBFlag[ITEM_TYPE_HI] = true;
+	}
+	if (keyDownTrigger[KEY_ID_WATER])
+	{
+		itemF[ITEM_TYPE_MIZU].point--;
+		itemFBFlag[ITEM_TYPE_MIZU] = true;
+	}
+	if (keyDownTrigger[KEY_ID_WIND])
+	{
+		itemF[ITEM_TYPE_KAZE].point--;
+		itemFBFlag[ITEM_TYPE_KAZE] = true;
+	}
+	if (keyDownTrigger[KEY_ID_HEAL])
+	{
+		itemF[ITEM_TYPE_KAIFUKU].point--;
+		itemFBFlag[ITEM_TYPE_KAIFUKU] = true;
+	}
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	{
+		if (itemFBFlag[type])
+		{
+			lookCnt++;
+			if (lookCnt > 30)
+			{
+				lookCnt = 0;
+				itemFBFlag[type] = false;
+				
+			}
+		}
+	}
+
 }
 
 void ItemGameDraw(void)
@@ -173,9 +220,9 @@ void ItemI_Draw(void)
 void ItemB_Draw(void)
 {
 	//攻撃時表示用
-	if (!itemFBFlag)
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
 	{
-		for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+		if (itemFBFlag[type])
 		{
 			DrawGraph((SCREEN_SIZE_X - ITEM_B_SIZE) / 2, (BOX_Y - ITEM_B_SIZE) / 2, itemFBImage[type], true);
 		}
@@ -198,6 +245,8 @@ void ItemB_Draw(void)
 	DrawFormatString(652, BOX_Y + 150, 0xFF22FF, "×", true);
 	DrawFormatString(680, BOX_Y + 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
 
+
+	DrawFormatString(0, 100, 0xFFFFFF, "lookCnt:%d", lookCnt);
 }
 
 //-----弾と敵の当たり判定　(true : あたり, false : はずれ)
