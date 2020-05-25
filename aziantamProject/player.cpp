@@ -97,8 +97,8 @@ void PlayerGameDraw(void)
 {
 	player.animCnt++;
 	DrawGraph(player.pos.x, player.pos.y, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
-	DrawGraph(player1.pos.x - player1.offsetSize.y - mapPos.x
+	/*DrawGraph(player1.pos.x - player1.offsetSize.y - mapPos.x
 		, player1.pos.y - player1.offsetSize.y - mapPos.y
 		, playerImage[player1.moveDir][player1.animCnt / 10 % 4]
-		, true);
+		, true);*/
 }
