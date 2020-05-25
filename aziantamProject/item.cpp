@@ -14,7 +14,7 @@
 CHARACTER itemF[ITEM_MAX];					//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ変数格納用
 CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
 int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
-int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
+int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾝﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾝﾍﾞﾝﾄﾘの頭文字
 int itemFBImage[ITEM_TYPE_F_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
 bool itemFBFlag;							//	表示,非表示用
 //三種の神器
@@ -145,7 +145,7 @@ void ItemGameDraw(void)
 		}
 	}
 }
-//-----ｲﾍﾞﾝﾄﾘ用描画
+//-----ｲﾝﾍﾞﾝﾄﾘ用描画
 void ItemI_Draw(void)
 {
 	//火の御札

@@ -35,11 +35,11 @@ int stage[MAP_Y][MAP_X] = {
 {15,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,3,58,58,58, 58,58,58,58,17},
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,3,58,58,58, 58,58,58,58,26},
 
+{24,58,58,58,58, 58,58,58,66,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
-{24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
-{24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
+{24,58,58,58,58, 58,58,58,66,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
 };
 
 //紅鬼のﾏｯﾌﾟ
@@ -180,11 +180,11 @@ void StageGameInit(void)
 	mapPos.x = 0;
 	mapPos.y = 0;
 
-	stageOffset = 0;
+	//stageOffset = 0;
 
-	//ﾏｯﾌﾟ作成ﾃﾞｰﾀ
-	stageID = STAGE_ID_START;
-	SetMapData(STAGE_ID_START);
+	////ﾏｯﾌﾟ作成ﾃﾞｰﾀ
+	//stageID = STAGE_ID_START;
+	//SetMapData(STAGE_ID_START);
 }
 
 //ﾋﾟｸｾﾙ座標系ｶﾗﾏｯﾌﾟ配列座標系ﾆ変換する
@@ -198,6 +198,20 @@ XY Pos2Index(XY pos)
 	//変換した値を返す
 	return tmp;
 }
+
+//ﾏｯﾌﾟ配列座標系からﾋﾟｸｾﾙ座標系(左上)に変換する
+XY Index2Pos(XY index)
+{
+	XY tmp;
+
+	tmp.x = index.x * CHIP_SIZE_X;
+	tmp.y = index.y * CHIP_SIZE_Y;		//
+
+
+	return tmp;
+
+}
+
 
 //指定した座標が通過可能かを返す true:通過可能
 bool IsPass(XY pos)
@@ -244,7 +258,6 @@ bool IsPass(XY pos)
 		break;
 
 	default:
-
 		break;
 
 	}
@@ -296,9 +309,10 @@ EVENT_ID GetEvent(XY pos)
 //ｽﾃｰｼﾞﾃﾞｰﾀﾞをﾏｯﾌﾟ配列にｺﾋﾟｰする
 void SetMapData(STAGE_ID stage_ID)
 {
-	for (int y = 0; y < MAP_Y; y++)
+	//ﾏｯﾌﾟ配列の初期化
+	for (int y = 0; y < mapSize.y; y++)
 	{
-		for (int x = 0; x < MAP_X; x++)
+		for (int x = 0; x < mapSize.x; x++)
 		{
 			map[y][x] = 0;
 		}
@@ -365,9 +379,21 @@ void StageGameDraw(void)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
-			DrawGraph(x*CHIP_SIZE_X + -mapPos.x
-				, y*CHIP_SIZE_Y + -mapPos.y
+			DrawGraph(x*CHIP_SIZE_X  - mapPos.x
+				, y*CHIP_SIZE_Y  - mapPos.y
 				, chipImage[map[y][x]], true);
 		}
 	}
+}
+
+
+
+//ｽｸﾛｰﾙ制限(仮
+void MapRange()
+{
+	/*if (mapPos.x < 0) mapPos.x = 0;
+	if (mapPos.x > CHIP_SIZE_X* mapSize.x - SCREEN_SIZE_X) mapPos.x = CHIP_SIZE_X * mapSize.x - SCREEN_SIZE_X;
+	if (mapPos.y < 0) mapPos.y = 0;
+	if (mapPos.y > CHIP_SIZE_Y* mapSize.y - SCREEN_SIZE_Y) mapPos.y = CHIP_SIZE_Y * mapSize.y - SCREEN_SIZE_Y;*/
+
 }
