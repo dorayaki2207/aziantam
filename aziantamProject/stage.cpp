@@ -171,7 +171,7 @@ void StageSystemInit(void)
 
 	//ﾏｯﾌﾟ作成ﾃﾞｰﾀ
 	stageID = STAGE_ID_START;
-	SetMapData(STAGE_ID_START);
+	SetMapData(stageID);
 }
 
 //ｽﾃｰｼﾞ情報のｹﾞｰﾑ初期化
@@ -184,7 +184,7 @@ void StageGameInit(void)
 
 	//ﾏｯﾌﾟ作成ﾃﾞｰﾀ
 	stageID = STAGE_ID_START;
-	SetMapData(STAGE_ID_START);
+	//SetMapData(STAGE_ID_START);
 }
 
 //ﾋﾟｸｾﾙ座標系ｶﾗﾏｯﾌﾟ配列座標系ﾆ変換する
@@ -244,19 +244,17 @@ bool IsPass(XY pos)
 		break;
 
 	default:
-
+		return true;
 		break;
 
 	}
-	return true;
 }
 
 //指定した座標が特別にｲﾍﾞﾝﾄｦ起こすかを確認する 戻り値:ｲﾍﾞﾝﾄID
 EVENT_ID GetEvent(XY pos)
 {
-	XY indexPos;
+	XY indexPos = Pos2Index(pos);
 
-	indexPos = Pos2Index(pos);
 	switch (map[indexPos.y][indexPos.x])
 	{
 		//火
