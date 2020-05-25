@@ -6,6 +6,7 @@
 
 int testbkImage;
 int tBossImage[8];
+int BossImage;
 int bossCnt;
 
 void BattleSystmeInit(void)
@@ -13,7 +14,7 @@ void BattleSystmeInit(void)
 	//-----∏ﬁ◊Ã®Ø∏ÇÃìoò^
 	testbkImage = LoadGraph("aitem/bg.jpg");
 	LoadDivGraph("aitem/boss.png", 8, 4, 2, 400, 500, tBossImage);
-
+	BossImage = LoadGraph("aitem/boss2.png");
 	//-----èâä˙âª
 	bossCnt = 0;
 }
@@ -55,8 +56,8 @@ void BattleGameDraw(void)
 	DrawGraph(0, 0, testbkImage, true);
 	//ìG
 	bossCnt++;
-	DrawGraph((SCREEN_SIZE_X - 400) / 2, (BOX_Y - 500) / 2, tBossImage[(bossCnt / 16) % 8], true);
-
+//	DrawGraph((SCREEN_SIZE_X - 400) / 2, (BOX_Y - 500) / 2, tBossImage[(bossCnt / 16) % 8], true);
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, 0, BossImage, true);
 	//-----èÓïÒèàóù
 	DrawFormatString(0, 0, 0xFFFFFF, "Battle : %d", SceneCounter);
 
