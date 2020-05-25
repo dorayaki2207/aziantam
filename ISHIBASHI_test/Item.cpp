@@ -1,17 +1,31 @@
+///// ボス戦　当たり判定
+/////	keyを押されたら　御札が現れる
+/////	当たり判定作る？
+
+
+///// 連続で攻撃ができないようにｶｳﾝﾄで管理
+/////　ボスからの攻撃等が入り次第変更する可能性有り
+////	攻撃をくらったらKeyが押せるなど
+
 #include "DxLib.h"
 #include "test.h"
+#include "KeyCheck.h"
 #include "Item.h"
 #include "Battle.h"
 
 //-----外部変数宣言
 //ｱｲﾃﾑ関連
-//御札
+//御札（ﾄﾞﾛｯﾌﾟ
 CHARACTER itemF[ITEM_MAX];					//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ変数格納用
 CHARACTER itemFmaster[ITEM_TYPE_F_MAX];
 int itemFImage[ITEM_TYPE_F_MAX];			//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
-int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾍﾞﾝﾄﾘの頭文字
+//御札（ｲﾝﾍﾞﾝﾄﾘ
+int itemFIImage[ITEM_TYPE_F_MAX];			//	ｲﾝﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾝﾍﾞﾝﾄﾘの頭文字
+//御札（ﾎﾞｽﾊﾞﾄﾙ
 int itemFBImage[ITEM_TYPE_F_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
-bool itemFBFlag;							//	表示,非表示用
+int lookCnt;
+bool itemFBFlag[ITEM_TYPE_F_MAX];			//	表示,非表示用
+
 //三種の神器
 CHARACTER itemB[ITEM_TYPE_B_MAX];
 int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
@@ -39,8 +53,11 @@ void ItemSystmeInit(void)
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBFlag = false;												//	初期：非表示
-
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	{
+		itemFBFlag[type] = false;									//	true：表示, false：非表示 
+	}
+	lookCnt = 0;
 	//三種の神器
 	itemB[ITEM_TYPE_KEN].charType = ITEM_TYPE_KEN;					//	三種の神器　：　剣
 	itemB[ITEM_TYPE_KAGAMI].charType = ITEM_TYPE_KAGAMI;			//	三種の神器　：　鏡
@@ -62,7 +79,7 @@ void ItemSystmeInit(void)
 	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B.png");			//	水の御札
 	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G.png");			//	風の御札
 	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P.png");		//	回復の御札
-	//御札（ｲﾍﾞﾝﾄﾘ用
+	//御札（ｲﾝﾍﾞﾝﾄﾘ用
 	itemFIImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_small.png");
 	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_small.png");
 	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_small.png");
@@ -105,6 +122,65 @@ void ItemGameInit(void)
 
 void ItemControl(void)
 {
+	//攻撃札が表示されていないときのみKey押せる
+	if (lookCnt == 0)
+	{	
+		//火の御札
+		if (keyDownTrigger[KEY_ID_FIRE])
+		{
+			//御札が一枚以上ある場合、処理可能
+			if (itemF[ITEM_TYPE_HI].point > 0)
+			{
+				itemF[ITEM_TYPE_HI].point--;
+				itemFBFlag[ITEM_TYPE_HI] = true;
+			}
+		}
+		//水の御札
+		if (keyDownTrigger[KEY_ID_WATER])
+		{
+			//御札が一枚以上ある場合、処理可能
+			if (itemF[ITEM_TYPE_MIZU].point > 0)
+			{
+				itemF[ITEM_TYPE_MIZU].point--;
+				itemFBFlag[ITEM_TYPE_MIZU] = true;
+			}
+		}
+		//風の御札
+		if (keyDownTrigger[KEY_ID_WIND])
+		{
+			//御札が一枚上ある場合、処理可能
+			if (itemF[ITEM_TYPE_KAZE].point > 0)
+			{
+				itemF[ITEM_TYPE_KAZE].point--;
+				itemFBFlag[ITEM_TYPE_KAZE] = true;
+			}
+		}
+		//回復の御札
+		if (keyDownTrigger[KEY_ID_HEAL])
+		{
+			//御札が一枚以上ある場合、処理可能
+			if (itemF[ITEM_TYPE_KAIFUKU].point > 0)
+			{
+				itemF[ITEM_TYPE_KAIFUKU].point--;
+				itemFBFlag[ITEM_TYPE_KAIFUKU] = true;
+			}
+		}
+	}
+	//攻撃札の表示処理
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	{
+		if (itemFBFlag[type])
+		{
+			lookCnt++;
+			//ｶｳﾝﾄが50超えると非表示にする
+			if (lookCnt > 50)
+			{
+				itemFBFlag[type] = false;
+				lookCnt = 0;
+			}
+		}
+	}
+
 }
 
 void ItemGameDraw(void)
@@ -148,7 +224,7 @@ void ItemGameDraw(void)
 		}
 	}
 }
-//-----ｲﾍﾞﾝﾄﾘ用描画
+//-----ｲﾝﾍﾞﾝﾄﾘ用描画
 void ItemI_Draw(void)
 {
 	//火の御札
@@ -173,9 +249,9 @@ void ItemI_Draw(void)
 void ItemB_Draw(void)
 {
 	//攻撃時表示用
-	if (!itemFBFlag)
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
 	{
-		for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+		if (itemFBFlag[type])
 		{
 			DrawGraph((SCREEN_SIZE_X - ITEM_B_SIZE) / 2, (BOX_Y - ITEM_B_SIZE) / 2, itemFBImage[type], true);
 		}
@@ -198,6 +274,8 @@ void ItemB_Draw(void)
 	DrawFormatString(652, BOX_Y + 150, 0xFF22FF, "×", true);
 	DrawFormatString(680, BOX_Y + 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
 
+
+	DrawFormatString(0, 100, 0xFFFFFF, "lookCnt:%d", lookCnt);
 }
 
 //-----弾と敵の当たり判定　(true : あたり, false : はずれ)

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "keycheck.h"
 #include "effect.h"
+#include "player.h"
 #include "enemy.h"
 #include "shot.h"
 #include "item.h"
@@ -13,17 +14,11 @@ SCENE SceneID;
 SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
 
-//ｸﾗｽからｲﾝｽﾀﾝｽを生成
-//敵
-Enemy* enemyI;		//石橋担当MOB
-Enemy* enemyY;		//山本担当MOB
-Enemy* enemyA;		//荒木担当MOB
-//ｱｲﾃﾑ
-Item* item_m_hi;			//火の御札：ﾃﾞﾌｫﾙﾄ
-Item* zingi_ken20;			//三種の神器：剣(ｻｲｽﾞ20)
+
 
 //PAUSE
 bool paseFlag;
+bool iventFlag;
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -69,15 +64,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		SceneCounter++;		
 		ScreenFlip();		//裏画面を表画面に瞬間ｺﾋﾟｰ
 	}
-	//-----ｲﾝｽﾀﾝｽの解放
-	//敵
-	delete enemyI;			//石橋担当MOB
-	delete enemyY;			//山本担当MOB
-	delete enemyA;			//荒木担当MOB
-	//ｱｲﾃﾑ
-	delete item_m_hi;		//火の御札：ﾃﾞﾌｫﾙﾄ
-	delete zingi_ken20;		//三種の神器：剣（ｻｲｽﾞ20）	
-
+	
 	DxLib_End();			//DXﾗｲﾌﾞﾗﾘの終了処理
 	return 0;				//このﾌﾟﾛｸﾞﾗﾑの終了
 
@@ -97,42 +84,14 @@ bool SystemInit(void)
 
 
 
-	//-----ｲﾝｽﾀﾝｽの生成
-	//敵
-	enemyI = new Enemy(ENEMY_I_MOB			//石橋担当MOB
-		, 100, 100
-		, "char/妖狐.png", 16
-		,4, 4
-		,32, 32
-	);										
-	enemyY = new Enemy(ENEMY_Y_MOB			//山本担当MOB
-		, 150, 100
-		, "char/wind_mob_enemy1.png", 16
-		, 4, 4
-		, 32, 32
-	);
-	enemyA = new Enemy(ENEMY_A_MOB			//荒木担当MOB
-		, 200, 100
-		, "char/umi0.png", 16
-		, 4, 4
-		, 32, 32
-	);
-	//ｱｲﾃﾑ
-	item_m_hi = new Item(ITEM_M_HI, 150, 150	//火の御札：ﾃﾞﾌｫﾙﾄ
-		, "item/fuda.png", 8, 4, 2, 20, 20);
-	zingi_ken20 = new Item(ITEM_KEN, 150, 200	//三種の神器：剣（ｻｲｽﾞ20）
-		, "item/zingi20.png", 3, 3, 1, 20, 20);
-
-
+	
 	//-----各ﾓｼﾞｭｰﾙの初期化
-	//敵
-	enemyI->SystemInit();	//石橋担当MOB
-	enemyY->SystemInit();	//山本担当MOB
-	enemyA->SystemInit();	//荒木担当MOB
+	//ﾌﾟﾚｲﾔｰ
+	PlayerSystemInit();
+	//敵mob
+	EnemySystemInit();
 	//ｱｲﾃﾑ
-	item_m_hi->SystemInit();		//火の御札：ﾃﾞﾌｫﾙﾄ
-	zingi_ken20->SystemInit();		//三種の神器：剣（ｻｲｽﾞ20）
-
+	ItemSystmeInit();
 	//-----ｸﾞﾗﾌｨｯｸ登録
 
 
@@ -143,19 +102,20 @@ bool SystemInit(void)
 	ScenePreID = SCENE_MAX;
 	//PAUSE
 	pauseFlag = false;
+	//ｲﾍﾞﾝﾄリ
+	iventFlag = false;
+	
+	
 	return true;
 }
 //初期化ｼｰﾝ
 void InitScene(void)
 {
 	//-----各ｵﾌﾞｼﾞｪｸﾄ処理
-	//敵
-	enemyI->GameInit();		//石橋担当MOB	
-	enemyY->GameInit();		//山本担当MOB	
-	enemyA->GameInit();		//荒木担当MOB	
-	//ｱｲﾃﾑ
-	item_m_hi->GameInit();			//火の御札：ﾃﾞﾌｫﾙﾄ
-	zingi_ken20->GameInit();		//三種の神器：剣（ｻｲｽﾞ20）
+	PlayerGameInit();				//	プレイヤー
+	EnemyGameInit();				//	敵
+	ItemGameInit();					//	ｱｲﾃﾑ
+	
 
 	//-----ｼｰﾝ遷移
 	SceneID = SCENE_TITLE;
@@ -195,27 +155,37 @@ void GameScene(void)
 	//ｼｰﾝ遷移
 	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAMEOVER;
 
-	//PAUSE
+
+
+	//-----ｲﾍﾞﾝﾄﾘ機能
+	//ｷｰ処理
+	if (KeyDownTrigger[KEY_ID_IVENT]) iventFlag = !iventFlag;
+	//ﾌﾗｸﾞ処理
+	if (iventFlag)
+	{
+		SetDrawBright(128, 128, 128);
+		pauseFlag = false;
+	}
+
+	//-----PAUSE機能
 	if (KeyDownTrigger[KEY_ID_PAUSE]) pauseFlag = !pauseFlag;
 	if (pauseFlag)
 	{
 		SetDrawBright(128, 128, 128);
+		iventFlag = false;
 	}
+
 	//通常時操作
-	else
+	if(!iventFlag && !pauseFlag)
 	{
 		//各種機能
+		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
+		PlayerControl();		//　ﾌﾟﾚｲﾔｰ
+		EnemyControl();			//	敵
+		ItemControl();			//	ｱｲﾃﾑ
 	}
 
-	//-----各ｵﾌﾞｼﾞｪｸﾄ操作
-	//敵
-	enemyI->Control();		//石橋担当MOB
-	enemyY->Control();		//山本担当MOB	
-	enemyA->Control();		//荒木担当MOB
-	//ｱｲﾃﾑ
-	item_m_hi->Control();		//火の御札：ﾃﾞﾌｫﾙﾄ
-	zingi_ken20->Control();		//三種の神器：剣（ｻｲｽﾞ20）
-
+	
 	//-----描画
 	GameDraw(); 
 }
@@ -225,27 +195,26 @@ void GameScene(void)
 void GameDraw(void)
 {
 
-	//-----描画処理
-	//敵
-	enemyI->GameDraw();		//石橋担当MOB
-	enemyY->GameDraw();		//山本担当MOB
-	enemyA->GameDraw();		//荒木担当MOB
-	//ｱｲﾃﾑ
-	item_m_hi->GameDraw(ITEM_M_HI);		//火の御札：ﾃﾞﾌｫﾙﾄ
-	zingi_ken20->GameDraw(ITEM_KEN);	//三種の神器：剣（ｻｲｽﾞ20）
+	//-----各ｵﾌﾞｼﾞｪｸﾄ描画処理
+	PlayerGameDraw();			//ﾌﾟﾚｲﾔｰ
+	EnemyGameDraw();			//敵
+	ItemGameDraw();				//ｱｲﾃﾑ
+	//-----ｲﾍﾞﾝﾄﾘ関連
+	if (iventFlag)
+	{
+		SetDrawBright(255, 255, 255);
+		DrawBox(100, 100, 700, 600, 0xFFFFFF, true);
+		//御札
+		ItemI_Draw();
 
-	//PAUSE
+	}
+	//----PAUSE関連
 	if (pauseFlag)
 	{
 		SetDrawBright(255, 255, 255);
-
+		DrawBox(100, 100, 700, 600, 0x222222, true);
 	}
-	else
-	{
-
-	}
-
-
+	
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
 

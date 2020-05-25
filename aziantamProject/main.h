@@ -3,12 +3,6 @@
 //---定義
 #define SCREEN_SIZE_X 800
 #define SCREEN_SIZE_Y 650
-//#define SCREEN_SIZE_X 600
-//#define SCREEN_SIZE_Y 800
-//#define SCREEN_SIZE_X 700
-//#define SCREEN_SIZE_Y 900
-//#define SCREEN_SIZE_X 800
-//#define SCREEN_SIZE_Y 1000
 
 
 //-----列挙型の定義
@@ -32,53 +26,10 @@ enum DIR
 	DIR_MAX
 };
 
-//敵
-enum ENEMY	
-{
-	ENEMY_ONI,		//鬼
-	ENEMY_TENG,		//天狗
-	ENEMY_KAPPA,	//河童
-	ENEMY_NUE,		//鵺
-	ENEMY_I_MOB,	//石橋担当
-	ENEMY_Y_MOB,	//山本担当
-	ENEMY_A_MOB,	//荒木担当
-	ENEMY_MAX
-};
-//ｱｲﾃﾑ
-enum ITEM
-{					//-----角が曲がった素材-----
-	ITEM_HI,		//火の御札：ドロップ
-	ITEM_MIZU,		//水の御札：ドロップ
-	ITEM_KAZE,		//風の御札：ドロップ
-	ITEM_KAIFUKU,	//回復の御札：ドロップ
-					//-----ﾃﾞﾌｫﾙﾄ素材-----
-	ITEM_M_HI,		//火の御札：イベントリ
-	ITEM_M_MIZU,	//水の御札：イベントリ
-	ITEM_M_KAZE,	//風の御札：イベントリ
-	ITEM_M_KAIFUKU,	//回復の御札：イベントリ
-					//-----大きいｻｲｽﾞの素材-----
-	ITEM_B_HI,		//火の御札：ボス戦用
-	ITEM_B_MIZU,	//水の御札：ボス戦用
-	ITEM_B_KAZE,	//風の御札：ボス戦用
-	ITEM_B_KAIFUKU,	//回復の御札：ボス戦用
-					//-----必須ｱｲﾃﾑ素材-----
-	ITEM_KEN,		//三種の神器：剣
-	ITEM_KAGAMI,	//三種の神器：鏡
-	ITEM_MAGATAMA,	//三種の神器：勾玉
-	ITEM_MAX
-};
 
 
 
 
-//ｷｬﾗｸﾀの種類管理用
-//enum CHARACTER_TYPE
-//{
-//	CHARACTER_PLAYER,
-//	CHARACTER_ENEMY,
-//	CHARACTER_SHOT,
-//	CHARACTER_MAX,
-//};
 
 //-----構造体
 //----------------
@@ -99,15 +50,15 @@ struct XY
 //ｷｬﾗｸﾀ
 struct CHARACTER
 {
-	int CharType;	//ｷｬﾗｸﾀの種類
-	DIR MoveDir;	//ｷｬﾗｸﾀの向き
-	XY Pos;			//ｷｬﾗｸﾀの地図上の座標
-	XY Size;		//ｷｬﾗｸﾀ画像のｻｲｽﾞ
-	XY OffsetSize;	//ｷｬﾗｸﾀのｵﾌｾｯﾄ
-	int MoveSpeed;	//ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
-	int LifeMax;	//ｷｬﾗｸﾀの体力最大値
-	int Life;		//ｷｬﾗｸﾀの体力
-	int AnimCnt;	//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
+	int charType;	//ｷｬﾗｸﾀの種類
+	DIR moveDir;	//ｷｬﾗｸﾀの向き
+	XY pos;			//ｷｬﾗｸﾀの地図上の座標
+	XY size;		//ｷｬﾗｸﾀ画像のｻｲｽﾞ
+	XY offsetSize;	//ｷｬﾗｸﾀのｵﾌｾｯﾄ
+	int moveSpeed;	//ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
+	int lifeMax;	//ｷｬﾗｸﾀの体力最大値
+	int life;		//ｷｬﾗｸﾀの体力
+	int animCnt;	//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	int point;		//ｷｬﾗｸﾀの得点
 };
 

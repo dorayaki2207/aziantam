@@ -27,7 +27,7 @@ SCENE_ID preSceneID;
 int pCnt;
 bool pauseFlag;
 bool iventFlag;
-
+int keyImage;
 
 //当たり判定用
 XY playerSize;
@@ -121,7 +121,7 @@ bool SystemInit(void)
 	BattleSystmeInit();
 
 	//-----ｸﾞﾗﾌｨｯｸ登録
-	
+	keyImage = LoadGraph("aitem/図2.png");
 
 
 	//-----変数の初期化
@@ -236,18 +236,14 @@ void GameScene()
 		pCnt++;
 
 		playerPos = PlayerControl();
-		ItemControl();
+	//	ItemControl();
 
 		//ﾌﾟﾚｲﾔｰとｴﾈﾐｰとの当たり判定
 		if (ItemHitCheck(playerPos, playerSize.x))
 		{
 			testCnt++;
 		}
-		/*if (keyDownTrigger[KEY_ID_UP])hiCnt++;
-		if (keyDownTrigger[KEY_ID_RIGHT])mizuCnt++;
-		if (keyDownTrigger[KEY_ID_DOWN])kazeCnt++;
-		if (keyDownTrigger[KEY_ID_LEFT])kaifukuCnt++;*/
-
+		
 	}
 
 	GameDraw();
@@ -270,13 +266,13 @@ void GameDraw()
 	
 
 	DrawFormatString(0, 24, 0xFFFFFF, "pCnt : %d", pCnt);
-	//-----ｲﾍﾞﾝﾄﾘ関連
+	//-----ｲﾝﾍﾞﾝﾄﾘ関連
 	if (iventFlag)
 	{
 		SetDrawBright(255, 255, 255);
 		DrawBox(100, 100, 700, 600, 0xFFFFFF, true);
 //		DrawString((SCREEN_SIZE_X - 9 * 8) / 2, (SCREEN_SIZE_Y - 16) / 2, "PAUSE", 0xFFFFFF);
-
+		
 		//御札
 		ItemI_Draw();
 
@@ -284,8 +280,19 @@ void GameDraw()
 	//-----PAUSE関連		
 	if (pauseFlag)
 	{
-		SetDrawBright(255, 255, 255);
-		DrawBox(100, 100, 700, 600, 0x222222, true);
+		SetDrawBright(255, 255, 255);									//	暗くする
+		DrawBox(50, 50, 750, 600, 0x222222, true);						//	枠
+		DrawGraph((SCREEN_SIZE_X - 650) / 2, 180, keyImage, true);		//	ｲﾗｽﾄ
+		DrawString(100, 100, "KEY操作説明", 0xFFFFFF, true);			//	ｺﾒﾝﾄ
+		DrawString(99, 110, "------------", 0xFFFFFF, true);			//	ｺﾒﾝﾄ下線
+		
+		DrawString(150, 430, "Z : 火の攻撃", 0xFFFFFF, true);
+		DrawString(150, 460, "X : 水の攻撃", 0xFFFFFF, true);
+		DrawString(150, 490, "C : 風の攻撃", 0xFFFFFF, true);
+		DrawString(150, 520, "V : 回復", 0xFFFFFF, true);
+		DrawString(400, 430, "M : メニュー画面", 0xFFFFFF, true);
+		DrawString(400, 460, "I : アイテムメニュー", 0xFFFFFF, true);
+
 	}
 
 
