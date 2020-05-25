@@ -2,6 +2,7 @@
 #include "main.h"
 #include "player.h"
 #include "keycheck.h"
+#include "stage.h"
 
 //ïœêî
 int playerImage[16];
@@ -74,10 +75,30 @@ void PlayerControl(void)
 			break;
 		}
 	}
+	if (mapPos.x < 0)
+	{
+		mapPos.x = 0;
+	}
+	if (mapPos.x > CHIP_SIZE_X * MAP_X - SCREEN_SIZE_X)
+	{
+		mapPos.x = CHIP_SIZE_X * MAP_X - SCREEN_SIZE_X;
+	}
+	if (mapPos.y < 0)
+	{
+		mapPos.y = 0;
+	}
+	if (mapPos.y > CHIP_SIZE_Y * MAP_Y - SCREEN_SIZE_Y)
+	{
+		mapPos.y = CHIP_SIZE_Y * MAP_Y - SCREEN_SIZE_Y;
+	}
 }
 //ÉvÉåÉCÉÑÅ[ÇÃï`âÊ
 void PlayerGameDraw(void)
 {
 	player.animCnt++;
 	DrawGraph(player.pos.x, player.pos.y, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
+	DrawGraph(player1.pos.x - player1.offsetSize.y - mapPos.x
+		, player1.pos.y - player1.offsetSize.y - mapPos.y
+		, playerImage[player1.moveDir][player1.animCnt / 10 % 4]
+		, true);
 }
