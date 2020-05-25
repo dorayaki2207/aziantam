@@ -6,16 +6,16 @@
 
 //定数
 //ﾏｯﾌﾟﾁｯﾌﾟ画像
-#define MAP_X 25
-#define MAP_Y 25
-#define MAPI_X 25
-#define MAPI_Y 25
-#define MAPY_X 25
-#define MAPY_Y 25
-#define MAPA_X 25
-#define MAPA_Y 25
-#define MAPB_X 25
-#define MAPB_Y 25
+#define MAP_X 32
+#define MAP_Y 32
+#define MAPI_X 32
+#define MAPI_Y 32
+#define MAPY_X 32
+#define MAPY_Y 32
+#define MAPA_X 32
+#define MAPA_Y 32
+#define MAPB_X 32
+#define MAPB_Y 32
 #define MAP_CHIP_X 9
 #define MAP_CHIP_Y 9
 #define CHIP_SIZE_X 32
