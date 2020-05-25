@@ -72,6 +72,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 //¼½ÃÑ‚Ì‰Šú‰»
 bool SystemInit(void)
 {
+
 	//--------¼½ÃÑˆ—
 	SetWindowText("Œ–é`O‚Â‚Ì_•ó`");
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16);
@@ -92,6 +93,8 @@ bool SystemInit(void)
 	EnemySystemInit();
 	//±²ÃÑ
 	ItemSystmeInit();
+	//½Ã°¼Ş
+	StageSystemInit();
 	//-----¸Ş×Ì¨¯¸“o˜^
 
 
@@ -115,6 +118,7 @@ void InitScene(void)
 	PlayerGameInit();				//	ƒvƒŒƒCƒ„[
 	EnemyGameInit();				//	“G
 	ItemGameInit();					//	±²ÃÑ
+	StageGameInit();				//	½Ã°¼Ş
 	
 
 	//-----¼°İ‘JˆÚ
@@ -199,6 +203,7 @@ void GameDraw(void)
 	PlayerGameDraw();			//ÌßÚ²Ô°
 	EnemyGameDraw();			//“G
 	ItemGameDraw();				//±²ÃÑ
+	StageGameDraw();			//½Ã°¼Ş
 	//-----²ÍŞİÄØŠÖ˜A
 	if (iventFlag)
 	{
