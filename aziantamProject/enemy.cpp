@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "main.h"
 #include "enemy.h"
+#include "stage.h"
 
 
 
@@ -82,14 +83,14 @@ void EnemyGameDraw(void)
 		{
 		enemyMob[ene].animCnt++;
 			
-			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x
-				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y
+			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
+				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
 				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
 				, true);
 
 
-		//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x
-		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y
+		//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
+		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
 		//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
 		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
 		//		, 0xFF00FF, false);
