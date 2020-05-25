@@ -2,6 +2,7 @@
 #include "main.h"
 #include "keycheck.h"
 #include "effect.h"
+#include "player.h"
 #include "enemy.h"
 #include "shot.h"
 #include "item.h"
@@ -85,6 +86,8 @@ bool SystemInit(void)
 
 	
 	//-----各ﾓｼﾞｭｰﾙの初期化
+	//ﾌﾟﾚｲﾔｰ
+	PlayerSystemInit();
 	//敵mob
 	EnemySystemInit();
 	//ｱｲﾃﾑ
@@ -109,6 +112,7 @@ bool SystemInit(void)
 void InitScene(void)
 {
 	//-----各ｵﾌﾞｼﾞｪｸﾄ処理
+	PlayerGameInit();				//	プレイヤー
 	EnemyGameInit();				//	敵
 	ItemGameInit();					//	ｱｲﾃﾑ
 	
@@ -176,6 +180,7 @@ void GameScene(void)
 	{
 		//各種機能
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
+		PlayerControl();		//　ﾌﾟﾚｲﾔｰ
 		EnemyControl();			//	敵
 		ItemControl();			//	ｱｲﾃﾑ
 	}
@@ -191,6 +196,7 @@ void GameDraw(void)
 {
 
 	//-----各ｵﾌﾞｼﾞｪｸﾄ描画処理
+	PlayerGameDraw();			//ﾌﾟﾚｲﾔｰ
 	EnemyGameDraw();			//敵
 	ItemGameDraw();				//ｱｲﾃﾑ
 	//-----ｲﾍﾞﾝﾄﾘ関連
