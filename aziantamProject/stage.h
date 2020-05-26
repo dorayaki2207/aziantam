@@ -40,6 +40,7 @@ enum EVENT_ID {
 
 //extern宣言
 extern XY mapPos;
+extern XY mapSize;
 extern STAGE_ID stageID;		//ｽﾃｰｼﾞID
 
 //ﾌﾟﾛﾄﾀｲﾌﾟ宣言
@@ -48,13 +49,10 @@ void StageGameInit(void);					//ｽﾃｰｼﾞ情報のｹﾞｰﾑ初期化
 void StageGameDraw(void);					//ｹﾞｰﾑ画面の表示処理
 
 XY Pos2Index(XY pos);						//ﾋﾟｸｾﾙ座標系ｶﾗﾏｯﾌﾟ配列系ﾆ変換する
-XY Index2Pos(XY index);						//ﾏｯﾌﾟ配列座標系からﾋﾟｸｾﾙ座標系(左上)に変換する
-
 
 bool IsPass(XY pos);						//指定した座標が通過可能かを返す true:通過できる
 
 EVENT_ID GetEvent(XY pos);					//指定した座標が特別にｲﾍﾞﾝﾄを起こすかを確認する 戻り値:ｲﾍﾞﾝﾄID
 
 void SetMapData(STAGE_ID stageID);			//ｽﾃｰｼﾞﾃﾞｰﾀをﾏｯﾌﾟ配列ﾆｺﾋﾟｰする
-void MapRange(void);						//ｽｸﾛｰﾙ制限（仮
 

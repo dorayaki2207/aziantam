@@ -1,7 +1,7 @@
 //#pragma once
 
 //’è”
-#define PLAYER_DEF_SPEED  5		//ÌßÚ²Ô°‚Ì‰ŠúˆÚ“®—Ê
+#define PLAYER_DEF_SPEED  4		//ÌßÚ²Ô°‚Ì‰ŠúˆÚ“®—Ê
 #define PLAYER_MAX_LIFE  100	//ÌßÚ²Ô°‚ÌÅ‘å‘Ì—Í
 
 #define SCROLL_X_MIN	100		//½¸Û°Ù‰Â”\“ªÀ•WX

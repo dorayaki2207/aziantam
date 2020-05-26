@@ -1,3 +1,11 @@
-﻿  player.cpp
+﻿  enemy.cpp
 C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  main.cpp
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  player.cpp
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  stage.cpp
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
   BaseProject.vcxproj -> C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.exe

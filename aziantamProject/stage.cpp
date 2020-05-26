@@ -2,6 +2,7 @@
 //stage.cpp
 //2020.05.20
 
+////////////////////////////////ｽﾃｰｼﾞずれてる
 #include "DxLib.h"
 #include "main.h"
 #include "stage.h"
@@ -39,7 +40,8 @@ int stage[MAP_Y][MAP_X] = {
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
 {24,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
-{24,58,58,58,58, 58,58,58,66,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
+{24,6,6,58,58, 58,58,58,6,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,26},
+
 };
 
 //紅鬼のﾏｯﾌﾟ
@@ -180,11 +182,11 @@ void StageGameInit(void)
 	mapPos.x = 0;
 	mapPos.y = 0;
 
-	//stageOffset = 0;
+	stageOffset = 0;
 
-	////ﾏｯﾌﾟ作成ﾃﾞｰﾀ
-	//stageID = STAGE_ID_START;
-	//SetMapData(STAGE_ID_START);
+	//ﾏｯﾌﾟ作成ﾃﾞｰﾀ
+	stageID = STAGE_ID_START;
+	SetMapData(STAGE_ID_START);
 }
 
 //ﾋﾟｸｾﾙ座標系ｶﾗﾏｯﾌﾟ配列座標系ﾆ変換する
@@ -199,18 +201,6 @@ XY Pos2Index(XY pos)
 	return tmp;
 }
 
-//ﾏｯﾌﾟ配列座標系からﾋﾟｸｾﾙ座標系(左上)に変換する
-XY Index2Pos(XY index)
-{
-	XY tmp;
-
-	tmp.x = index.x * CHIP_SIZE_X;
-	tmp.y = index.y * CHIP_SIZE_Y;		//
-
-
-	return tmp;
-
-}
 
 
 //指定した座標が通過可能かを返す true:通過可能
@@ -379,21 +369,11 @@ void StageGameDraw(void)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
-			DrawGraph(x*CHIP_SIZE_X  - mapPos.x
-				, y*CHIP_SIZE_Y  - mapPos.y
+			DrawGraph(x*CHIP_SIZE_X  + mapPos.x
+				, y*CHIP_SIZE_Y  + mapPos.y
 				, chipImage[map[y][x]], true);
 		}
 	}
 }
 
 
-
-//ｽｸﾛｰﾙ制限(仮
-void MapRange()
-{
-	/*if (mapPos.x < 0) mapPos.x = 0;
-	if (mapPos.x > CHIP_SIZE_X* mapSize.x - SCREEN_SIZE_X) mapPos.x = CHIP_SIZE_X * mapSize.x - SCREEN_SIZE_X;
-	if (mapPos.y < 0) mapPos.y = 0;
-	if (mapPos.y > CHIP_SIZE_Y* mapSize.y - SCREEN_SIZE_Y) mapPos.y = CHIP_SIZE_Y * mapSize.y - SCREEN_SIZE_Y;*/
-
-}

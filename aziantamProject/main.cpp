@@ -184,8 +184,7 @@ void GameScene(void)
 		playerPos = PlayerControl();		//@ÌßÚ²Ô°
 		EnemyControl(playerPos);			//	“G
 		ItemControl();			//	±²ÃÑ
-		MapRange();
-	}
+		}
 
 	
 	//-----•`‰æ

@@ -82,8 +82,8 @@ void EnemyGameDraw(void)
 		{
 		enemyMob[ene].animCnt++;
 			
-			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
-				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
+			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
+				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
 				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
 				, true);
 
