@@ -2,7 +2,10 @@
 #include "main.h"
 #include "enemy.h"
 #include "stage.h"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
 
 
 //-----ŠO•”•Ï”éŒ¾
@@ -71,7 +74,7 @@ void EnemyGameInit(void)
 	}
 }
 
-void EnemyControl(void)
+void EnemyControl(XY pPos)
 {
 }
 
@@ -83,8 +86,13 @@ void EnemyGameDraw(void)
 		{
 		enemyMob[ene].animCnt++;
 			
+<<<<<<< HEAD
 			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
+=======
+			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
+				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
+>>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
 				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
 				, true);
 

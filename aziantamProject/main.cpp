@@ -2,11 +2,12 @@
 #include "main.h"
 #include "keycheck.h"
 #include "effect.h"
+#include "stage.h"
 #include "player.h"
 #include "enemy.h"
 #include "shot.h"
 #include "item.h"
-#include "stage.h"
+
 
 //-----変数
 //ｼｰﾝ関連
@@ -14,11 +15,12 @@ SCENE SceneID;
 SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
 
-
-
-//PAUSE
-bool paseFlag;
+//ｲﾝﾍﾞﾝﾄﾘ関連
 bool iventFlag;
+
+//PAUSE関連
+bool paseFlag;
+int keyImage;
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -83,9 +85,6 @@ bool SystemInit(void)
 	//-----key情報の初期化
 	KeyInit();
 
-
-
-	
 	//-----各ﾓｼﾞｭｰﾙの初期化
 	//ﾌﾟﾚｲﾔｰ
 	PlayerSystemInit();
@@ -96,7 +95,13 @@ bool SystemInit(void)
 	//ｽﾃｰｼﾞ
 	StageSystemInit();
 	//-----ｸﾞﾗﾌｨｯｸ登録
+	StageSystemInit();			//ｽﾃｰｼﾞ
+	PlayerSystemInit();			//ﾌﾟﾚｲﾔｰ
+	EnemySystemInit();			//敵mob
+	ItemSystmeInit();			//ｱｲﾃﾑ
 
+	//-----ｸﾞﾗﾌｨｯｸ登録
+	keyImage = LoadGraph("item/操作説明.png");
 
 	//-----変数の初期化
 	//ｼｰﾝ関連
@@ -105,7 +110,7 @@ bool SystemInit(void)
 	ScenePreID = SCENE_MAX;
 	//PAUSE
 	pauseFlag = false;
-	//ｲﾍﾞﾝﾄリ
+	//ｲﾝﾍﾞﾝﾄリ
 	iventFlag = false;
 	
 	
@@ -119,8 +124,11 @@ void InitScene(void)
 	EnemyGameInit();				//	敵
 	ItemGameInit();					//	ｱｲﾃﾑ
 	StageGameInit();				//	ｽﾃｰｼﾞ
+	StageGameInit();				//ｽﾃｰｼﾞ
+	PlayerGameInit();				//ﾌﾟﾚｲﾔｰ
+	EnemyGameInit();				//敵
+	ItemGameInit();					//ｱｲﾃﾑ
 	
-
 	//-----ｼｰﾝ遷移
 	SceneID = SCENE_TITLE;
 }
@@ -156,6 +164,9 @@ void TitleDraw(void)
 //ｹﾞｰﾑｼｰﾝ
 void GameScene(void)
 {
+	XY playerPos;		//ﾌﾟﾚｲﾔｰの座標格納領域
+
+
 	//ｼｰﾝ遷移
 	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAMEOVER;
 
@@ -184,10 +195,10 @@ void GameScene(void)
 	{
 		//各種機能
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
-		PlayerControl();		//　ﾌﾟﾚｲﾔｰ
-		EnemyControl();			//	敵
+		playerPos = PlayerControl();		//　ﾌﾟﾚｲﾔｰ
+		EnemyControl(playerPos);			//	敵
 		ItemControl();			//	ｱｲﾃﾑ
-	}
+		}
 
 	
 	//-----描画
@@ -200,11 +211,14 @@ void GameDraw(void)
 {
 
 	//-----各ｵﾌﾞｼﾞｪｸﾄ描画処理
+	StageGameDraw();			//ｽﾃｰｼﾞ
 	PlayerGameDraw();			//ﾌﾟﾚｲﾔｰ
 	EnemyGameDraw();			//敵
 	ItemGameDraw();				//ｱｲﾃﾑ
 	StageGameDraw();			//ｽﾃｰｼﾞ
 	//-----ｲﾍﾞﾝﾄﾘ関連
+=======
+	//-----ｲﾝﾍﾞﾝﾄﾘ関連
 	if (iventFlag)
 	{
 		SetDrawBright(255, 255, 255);
@@ -216,8 +230,19 @@ void GameDraw(void)
 	//----PAUSE関連
 	if (pauseFlag)
 	{
-		SetDrawBright(255, 255, 255);
-		DrawBox(100, 100, 700, 600, 0x222222, true);
+		SetDrawBright(255, 255, 255);									//	暗くする
+		DrawBox(50, 50, 750, 600, 0x222222, true);						//	枠
+		DrawGraph((SCREEN_SIZE_X - 650) / 2, 180, keyImage, true);		//	ｲﾗｽﾄ
+		DrawString(100, 100, "KEY操作説明", 0xFFFFFF, true);			//	ｺﾒﾝﾄ
+		DrawString(99, 110, "------------", 0xFFFFFF, true);			//	ｺﾒﾝﾄ下線
+
+		DrawString(150, 430, "Z : 火の攻撃", 0xFFFFFF, true);
+		DrawString(150, 460, "X : 水の攻撃", 0xFFFFFF, true);
+		DrawString(150, 490, "C : 風の攻撃", 0xFFFFFF, true);
+		DrawString(150, 520, "V : 回復", 0xFFFFFF, true);
+		DrawString(400, 430, "M : メニュー画面", 0xFFFFFF, true);
+		DrawString(400, 460, "I : アイテムメニュー", 0xFFFFFF, true);
+
 	}
 	
 	//-----情報処理
