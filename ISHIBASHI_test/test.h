@@ -46,6 +46,7 @@ struct CHARACTER
 	int life;						//	·¬×¸À‚Ì‘Ì—Í
 	int animCnt;					//	·¬×¸À‚Ì±ÆÒ°¼®İ
 	int point;						//	·¬×¸À‚Ì½º±
+	bool hitFlag;					//	·¬×¸À‚ªUŒ‚‚ğó‚¯‚½‚©‚Ç‚¤‚©
 };
 
 

@@ -25,7 +25,7 @@ void PlayerSystemInit(void)
 void PlayerGameInit(void)
 {
 	player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
-	player.pos = { 100,100 };									//ｷｬﾗｸﾀの地図上の座標
+	player.pos = { SCREEN_SIZE_X/2,SCREEN_SIZE_Y/2 };									//ｷｬﾗｸﾀの地図上の座標
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
 

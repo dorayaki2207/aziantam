@@ -1,11 +1,15 @@
 #include "DxLib.h"
 #include "main.h"
-#include "enemy.h"
 #include "stage.h"
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
 >>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
+=======
+#include "enemy.h"
+
+>>>>>>> 1e4394668a9d4a6500855ea392464b8aaba1a2f9
 
 
 //-----ŠO•”•Ï”éŒ¾
@@ -66,30 +70,39 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
+
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		enemyMob[ene] = enemyMobMaster[GetRand(ENEMY_M_MAX - 1)];
-		enemyMob[ene].pos.x = GetRand(SCREEN_SIZE_X - 1);
-		enemyMob[ene].pos.y = GetRand(SCREEN_SIZE_Y - 1);
+		enemyMob[ene].pos.x = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
+		enemyMob[ene].pos.y = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
 	}
+
 }
 
 void EnemyControl(XY pPos)
 {
 }
 
-void EnemyGameDraw(void)
+void EnemyGameDraw()
 {
+
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
+
 		if (enemyMob[ene].life > 0)
 		{
+<<<<<<< HEAD
 		enemyMob[ene].animCnt++;
 			
 <<<<<<< HEAD
 			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
 =======
+=======
+			enemyMob[ene].animCnt++;
+
+>>>>>>> 1e4394668a9d4a6500855ea392464b8aaba1a2f9
 			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
 >>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
@@ -97,12 +110,21 @@ void EnemyGameDraw(void)
 				, true);
 
 
+<<<<<<< HEAD
 		//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
 		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
 		//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
 		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
 		//		, 0xFF00FF, false);
+=======
+			//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x
+			//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y
+			//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
+			//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
+			//		, 0xFF00FF, false);
+>>>>>>> 1e4394668a9d4a6500855ea392464b8aaba1a2f9
 
 		}
 	}
+
 }
