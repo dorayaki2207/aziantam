@@ -7,7 +7,6 @@
 //·¬×¸ÀŠÖ˜A
 CHARACTER player;							//	ÌßÚ²Ô°•Ï”Ši”[—p
 int playerImage[DIR_MAX][PLAYER_MAX];		//	ÌßÚ²Ô°‰æ‘œF’Êí
-bool hitFlag;								//	UŒ‚‚ğó‚¯‚½‚©‚Ç‚¤‚©@true :UŒ‚‚ğó‚¯‚Ä‚¢‚é
 
 
 void PlayerSystmeInit(void)
@@ -17,7 +16,7 @@ void PlayerSystmeInit(void)
 	player.size = { 32,32 };											//	·¬×¸À‚Ì‰æ‘œ»²½Ş
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
 	player.moveSpeed = 4;												//	·¬×¸À‚ÌˆÚ“®½Ëß°ÄŞ
-	hitFlag = false;
+	player.hitFlag = false;
 
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
 	//·¬×¸ÀŠÖ˜A
@@ -107,7 +106,7 @@ void PlayerGameDraw(void)
 	{
 		//-----‰æ‘œ•`‰æ
 		//UŒ‚‚ğó‚¯‚Ä‚¢‚È‚¯‚ê‚Î
-		if (!hitFlag)
+		if (!player.hitFlag)
 		{
 			DrawGraph(player.pos.x - player.offsetSize.x
 				, player.pos.y - player.offsetSize.y

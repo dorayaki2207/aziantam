@@ -188,16 +188,14 @@ void GameScene(void)
 		{
 			if ((mapPos.x == 0 && mapPos.y == -116))
 			{
+				stageID = STAGE_ID_MOB;
 				SetMapData(STAGE_ID_MOB);
+				mapPos.x = 0;
+				mapPos.y = 0;
+
 			}
 		}
-		if (stageID == STAGE_ID_MOB)
-		{
-			if ((mapPos.x == 0 && mapPos.y == -312))
-			{
-				SetMapData(STAGE_ID_START);
-			}
-		}
+		
 	}
 
 	

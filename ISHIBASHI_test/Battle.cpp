@@ -4,23 +4,37 @@
 #include "Item.h"
 #include "Battle.h"
 
-int testbkImage;
-int tBossImage[8];
+int testbkImage;		//Ã½Ä—p”wŒi
+
+CHARACTER boss;
+int tBossImage[8];		//‚Ò‚¦‚ñ‹S’Êí
+int tBossDImage[2];		//‚Ò‚¦‚ñ‹SÀŞÒ°¼Ş
 int BossImage;
-int bossCnt;
+
 
 void BattleSystmeInit(void)
 {
+	//-----‰Šú‰»
+	boss.size = { 400,500 };							//	·¬×¸À‚Ì‰æ‘œ»²½Ş
+	boss.offsetSize = { boss.size.x / 2,boss.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
+	boss.hitFlag = false;			//UŒ‚‚ğó‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
 	testbkImage = LoadGraph("aitem/bg.jpg");
-	LoadDivGraph("aitem/boss.png", 8, 4, 2, 400, 500, tBossImage);
+	LoadDivGraph("aitem/boss.png", 8, 4, 2, boss.size.x, boss.size.y, tBossImage);
+	LoadDivGraph("aitem/bs_D.png", 2, 2, 1, boss.size.x, boss.size.y, tBossDImage);
+
 	BossImage = LoadGraph("aitem/boss2.png");
-	//-----‰Šú‰»
-	bossCnt = 0;
+
 }
 
 void BattleGameInit(void)
 {
+	boss.pos = { (SCREEN_SIZE_X - boss.size.x) / 2,(BOX_Y - boss.size.y) / 2 };				//@·¬×¸À‚Ì’n}ã‚ÌÀ•W
+	boss.lifeMax = 500;												//	·¬×¸À‚Ì‘Ì—ÍÅ‘å’l
+	boss.life = boss.lifeMax;										//	·¬×¸À‚Ì‘Ì—Í
+	boss.animCnt = 0;													//	·¬×¸À‚Ì±ÆÒ°¼®İ
+
 }
 
 
@@ -41,7 +55,13 @@ void BattleScene(void)
 void BattleControl(void)
 {
 
-
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+	{
+		if (itemF[type].point--)
+		{
+			boss.hitFlag = true;
+		}
+	}
 
 
 
@@ -55,9 +75,19 @@ void BattleGameDraw(void)
 	//”wŒi
 	DrawGraph(0, 0, testbkImage, true);
 	//“G
-	bossCnt++;
-//	DrawGraph((SCREEN_SIZE_X - 400) / 2, (BOX_Y - 500) / 2, tBossImage[(bossCnt / 16) % 8], true);
-	DrawGraph((SCREEN_SIZE_X - 400) / 2, 0, BossImage, true);
+	if (boss.life > 0)
+	{
+		boss.animCnt++;
+		if (!boss.hitFlag)
+		{
+			DrawGraph(boss.pos.x, boss.pos.y, tBossImage[(boss.animCnt / 16) % 8], true);
+		}
+		else if(boss.hitFlag)
+		{
+			DrawGraph(boss.pos.x, boss.pos.y, tBossDImage[(boss.animCnt / 10) % 2], true);
+		}
+		//	DrawGraph((SCREEN_SIZE_X - 400) / 2, 0, BossImage, true);
+	}
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "Battle : %d", SceneCounter);
 

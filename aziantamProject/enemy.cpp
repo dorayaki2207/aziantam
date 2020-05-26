@@ -63,6 +63,7 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
+
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		enemyMob[ene] = enemyMobMaster[GetRand(ENEMY_M_MAX - 1)];
