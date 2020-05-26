@@ -184,9 +184,19 @@ void GameScene(void)
 		playerPos = PlayerControl();		//Å@Ãﬂ⁄≤‘∞
 		EnemyControl(playerPos);			//	ìG
 		ItemControl();			//	±≤√—
-		if ((mapPos.x == 0 && mapPos.y == -116))
+		if (stageID == STAGE_ID_START)
 		{
-			SetMapData(STAGE_ID_MOB);
+			if ((mapPos.x == 0 && mapPos.y == -116))
+			{
+				SetMapData(STAGE_ID_MOB);
+			}
+		}
+		if (stageID == STAGE_ID_MOB)
+		{
+			if ((mapPos.x == 0 && mapPos.y == -312))
+			{
+				SetMapData(STAGE_ID_START);
+			}
 		}
 	}
 
@@ -204,6 +214,7 @@ void GameDraw(void)
 	StageGameDraw();			//Ω√∞ºﬁ
 	PlayerGameDraw();			//Ãﬂ⁄≤‘∞
 	EnemyGameDraw();			//ìG
+	
 	ItemGameDraw();				//±≤√—
 	//-----≤›Õﬁ›ƒÿä÷òA
 	if (iventFlag)

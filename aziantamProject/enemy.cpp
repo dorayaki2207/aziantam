@@ -63,46 +63,42 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
-	if (stageID == STAGE_ID_MOB)
+	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
-		for (int ene = 0; ene < ENEMY_MAX; ene++)
-		{
-			enemyMob[ene] = enemyMobMaster[GetRand(ENEMY_M_MAX - 1)];
-			enemyMob[ene].pos.x = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
-			enemyMob[ene].pos.y = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
-		}
+		enemyMob[ene] = enemyMobMaster[GetRand(ENEMY_M_MAX - 1)];
+		enemyMob[ene].pos.x = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
+		enemyMob[ene].pos.y = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
 	}
+
 }
 
 void EnemyControl(XY pPos)
 {
 }
 
-void EnemyGameDraw(void)
+void EnemyGameDraw()
 {
-	if (stageID == STAGE_ID_MOB)
-	{
 
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
-		
-			if (enemyMob[ene].life > 0)
-			{
-				enemyMob[ene].animCnt++;
 
-				DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
-					, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
-					, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
-					, true);
+		if (enemyMob[ene].life > 0)
+		{
+			enemyMob[ene].animCnt++;
+
+			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
+				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
+				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
+				, true);
 
 
-				//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x
-				//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y
-				//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
-				//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
-				//		, 0xFF00FF, false);
+			//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x
+			//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y
+			//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
+			//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
+			//		, 0xFF00FF, false);
 
-			}
 		}
 	}
+
 }

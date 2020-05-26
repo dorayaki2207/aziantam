@@ -60,6 +60,7 @@ struct CHARACTER
 	int life;		//·¬×¸À‚Ì‘Ì—Í
 	int animCnt;	//·¬×¸À‚Ì±ÆÒ°¼®Ý
 	int point;		//·¬×¸À‚Ì“¾“_
+
 };
 
 struct KEY_LIST
