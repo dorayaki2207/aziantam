@@ -184,7 +184,11 @@ void GameScene(void)
 		playerPos = PlayerControl();		//@ÌßÚ²Ô°
 		EnemyControl(playerPos);			//	“G
 		ItemControl();			//	±²ÃÑ
+		if ((mapPos.x == 0 && mapPos.y == -116))
+		{
+			SetMapData(STAGE_ID_MOB);
 		}
+	}
 
 	
 	//-----•`‰æ
@@ -230,6 +234,7 @@ void GameDraw(void)
 	
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
+	DrawFormatString(0, 120, 0xFFFFFF, "map:%d,%d", mapPos.x,mapPos.y);
 
 }
 

@@ -8,6 +8,8 @@
 //ﾏｯﾌﾟﾁｯﾌﾟ画像
 #define MAP_X 32
 #define MAP_Y 32
+#define MAP_M_X 25
+#define MAP_M_Y 30
 #define MAPI_X 32
 #define MAPI_Y 32
 #define MAPY_X 32
@@ -24,6 +26,7 @@
 //ｲﾍﾞﾝﾄID
 enum STAGE_ID {
 	STAGE_ID_START,
+	STAGE_ID_MOB,
 	STAGE_ID_ONI,
 	STAGE_ID_TENGU,
 	STAGE_ID_KAPPA,
