@@ -26,9 +26,9 @@ enum ITEM_TYPE_B
 
 
 //-----関数ﾌﾟﾛﾄﾀｲﾌﾟ宣言
-void ItemSystmeInit(void);		//　ｱｲﾃﾑ情報の初期化	
+void ItemSystemInit(void);		//　ｱｲﾃﾑ情報の初期化	
 void ItemGameInit(void);		//						
-void ItemControl(void);			//	ｱｲﾃﾑの操作
+void ItemControl(CHARACTER boss);			//	ｱｲﾃﾑの操作
 void ItemGameDraw(void);		//　ｱｲﾃﾑ描画処理
 void ItemI_Draw(void);			//	ｲﾝﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
 void ItemB_Draw(void);			//	ﾎﾞｽﾊﾞﾄﾙ用のｱｲﾃﾑ画像描画

@@ -10,6 +10,7 @@
 #include "DxLib.h"
 #include "test.h"
 #include "KeyCheck.h"
+#include "Stage.h"
 #include "Item.h"
 #include "Battle.h"
 
@@ -33,7 +34,7 @@ int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
 
 
 //-----ｱｲﾃﾑ情報の初期化
-void ItemSystmeInit(void)
+void ItemSystemInit(void)
 {
 	//-----変数の初期化
 	//御札（ﾄﾞﾛｯﾌﾟ用
@@ -44,7 +45,7 @@ void ItemSystmeInit(void)
 	//御札まとめて処理
 	for (int i = 0; i < ITEM_TYPE_F_MAX; i++)
 	{
-		itemFmaster[i].pos = { 50,50 };																//　御札の地図上の座標
+		itemFmaster[i].pos = { 250,250 };																//　御札の地図上の座標
 		itemFmaster[i].size = { 20,20 };															//	御札の画像ｻｲｽﾞ
 		itemFmaster[i].offsetSize = { itemFmaster[i].size.x / 2,itemFmaster[i].size.y / 2 };		//　御札のｵﾌｾｯﾄ
 		itemFmaster[i].point = 0;																	//	御札の枚数
@@ -75,24 +76,18 @@ void ItemSystmeInit(void)
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//御札(ﾄﾞﾛｯﾌﾟ用
-	itemFImage[ITEM_TYPE_HI] = LoadGraph("aitem/R.png");			//	火の御札
-	itemFImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B.png");			//	水の御札
-	itemFImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G.png");			//	風の御札
-	itemFImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P.png");		//	回復の御札
+	LoadDivGraph("aitem/fudaD.png", 4, 4, 1
+		, ITEM_M_SIZE, ITEM_M_SIZE, itemFImage);
 	//御札（ｲﾝﾍﾞﾝﾄﾘ用
-	itemFIImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_small.png");
-	itemFIImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_small.png");
-	itemFIImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_small.png");
-	itemFIImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_small.png");
+	LoadDivGraph("aitem/fudaI.png", 4, 4, 1
+		, ITEM_M_SIZE, ITEM_M_SIZE, itemFIImage);
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBImage[ITEM_TYPE_HI] = LoadGraph("aitem/R_big.png");
-	itemFBImage[ITEM_TYPE_MIZU] = LoadGraph("aitem/B_big.png");
-	itemFBImage[ITEM_TYPE_KAZE] = LoadGraph("aitem/G_big.png");
-	itemFBImage[ITEM_TYPE_KAIFUKU] = LoadGraph("aitem/P_big.png");
+	LoadDivGraph("aitem/fuda_Big.png", 4, 4, 1
+		, ITEM_B_SIZE, ITEM_B_SIZE, itemFBImage);
 	//三種の神器
-	itemBImage[ITEM_TYPE_KEN] = LoadGraph("aitem/剣20.png");		//	三種の神器　：　剣
-	itemBImage[ITEM_TYPE_KAGAMI] = LoadGraph("aitem/鏡20.png");		//	三種の神器　：　鏡
-	itemBImage[ITEM_TYPE_MAGATAMA] = LoadGraph("aitem/勾玉20.png");	//	三種の神器　：　勾玉
+	LoadDivGraph("aitem/zingi20.png", 3, 3, 1
+		, ITEM_M_SIZE, ITEM_M_SIZE, itemBImage);
+
 }
 
 void ItemGameInit(void)
@@ -100,12 +95,13 @@ void ItemGameInit(void)
 	//御札（ﾄﾞﾛｯﾌﾟ用
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
+
 		itemF[i] = itemFmaster[GetRand(ITEM_TYPE_F_MAX - 1)];
-		itemF[i].pos.x = GetRand(SCREEN_SIZE_X - 1);
-		itemF[i].pos.y = GetRand(SCREEN_SIZE_Y - 1);
-	//	itemF[i].point = 0;																//	御札の枚数
-	//	itemF[i].lifeMax = 20;															//	御札の体力最大値（表示時間）
-	//	itemF[i].life = itemF[i].lifeMax;												//	御札の体力
+		itemF[i].pos.x = GetRand(MAP_X * CHIP_SIZE_X - 1);
+		itemF[i].pos.y = GetRand(MAP_Y * CHIP_SIZE_Y - 1);
+		//	itemF[i].point = 0;																//	御札の枚数
+		//	itemF[i].lifeMax = 20;															//	御札の体力最大値（表示時間）
+		//	itemF[i].life = itemF[i].lifeMax;												//	御札の体力
 
 	}
 	//三種の神器
@@ -120,7 +116,7 @@ void ItemGameInit(void)
 
 }
 
-void ItemControl(void)
+void ItemControl(CHARACTER boss)
 {
 	//攻撃札が表示されていないときのみKey押せる
 	if (lookCnt == 0)
@@ -133,6 +129,8 @@ void ItemControl(void)
 			{
 				itemF[ITEM_TYPE_HI].point--;
 				itemFBFlag[ITEM_TYPE_HI] = true;
+				boss.life--;
+				boss.hitFlag = true;
 			}
 		}
 		//水の御札
@@ -143,6 +141,9 @@ void ItemControl(void)
 			{
 				itemF[ITEM_TYPE_MIZU].point--;
 				itemFBFlag[ITEM_TYPE_MIZU] = true;
+				boss.life--;
+				boss.hitFlag = true;
+
 			}
 		}
 		//風の御札
@@ -153,6 +154,9 @@ void ItemControl(void)
 			{
 				itemF[ITEM_TYPE_KAZE].point--;
 				itemFBFlag[ITEM_TYPE_KAZE] = true;
+				boss.life--;
+				boss.hitFlag = true;
+
 			}
 		}
 		//回復の御札
@@ -177,33 +181,37 @@ void ItemControl(void)
 			{
 				itemFBFlag[type] = false;
 				lookCnt = 0;
+				boss.hitFlag = false;
 			}
 		}
 	}
 
 }
-
+//-----ﾄﾞﾛｯﾌﾟ用
 void ItemGameDraw(void)
 {
 	//-----描画処理
 	//御札（ﾄﾞﾛｯﾌﾟ用
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
-		//生きてる御札のみ表示
-		if (itemF[i].life > 0)
-		{
-			//-----画像描画
-			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y
-				, itemFImage[itemF[i].charType]
-				, true);
+	//	if (Pass(itemF[i].pos) == PASS_OK)
+	//	{
+			//生きてる御札のみ表示
+			if (itemF[i].life > 0)
+			{
+				//-----画像描画
+				DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+					, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+					, itemFImage[itemF[i].charType]
+					, true);
 
-			DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y
-				, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y
-				, 0xFF00FF, false);
-		}
+				DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+					, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+					, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
+					, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
+					, 0xFF00FF, false);
+			}
+	//	}
 	}
 	//三種の神器
 	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)

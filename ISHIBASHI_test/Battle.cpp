@@ -9,10 +9,10 @@ int testbkImage;		//ﾃｽﾄ用背景
 CHARACTER boss;
 int tBossImage[8];		//ぴえん鬼通常時
 int tBossDImage[2];		//ぴえん鬼ﾀﾞﾒｰｼﾞ時
-int BossImage;
+int BossImage[8];
+int BossDImage[2];
 
-
-void BattleSystmeInit(void)
+void BattleSystemInit(void)
 {
 	//-----初期化
 	boss.size = { 400,500 };							//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
@@ -24,14 +24,17 @@ void BattleSystmeInit(void)
 	LoadDivGraph("aitem/boss.png", 8, 4, 2, boss.size.x, boss.size.y, tBossImage);
 	LoadDivGraph("aitem/bs_D.png", 2, 2, 1, boss.size.x, boss.size.y, tBossDImage);
 
-	BossImage = LoadGraph("aitem/boss2.png");
+	LoadDivGraph("aitem/boss2.png", 8, 4, 2, boss.size.x, boss.size.y, BossImage);
+	LoadDivGraph("aitem/boss2D.png", 2, 2, 1, boss.size.x, boss.size.y, BossDImage);
+
+	
 
 }
 
 void BattleGameInit(void)
 {
-	boss.pos = { (SCREEN_SIZE_X - boss.size.x) / 2,(BOX_Y - boss.size.y) / 2 };				//　ｷｬﾗｸﾀの地図上の座標
-	boss.lifeMax = 500;												//	ｷｬﾗｸﾀの体力最大値
+	boss.pos = { (SCREEN_SIZE_X - boss.size.x) / 2,0};				//　ｷｬﾗｸﾀの地図上の座標
+	boss.lifeMax = 100;												//	ｷｬﾗｸﾀの体力最大値
 	boss.life = boss.lifeMax;										//	ｷｬﾗｸﾀの体力
 	boss.animCnt = 0;													//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 
@@ -45,7 +48,7 @@ void BattleScene(void)
 	{
 		sceneID = SCENE_ID_INIT;
 	}
-	ItemControl();
+	ItemControl(boss);
 	BattleControl();
 	//描画処理
 	BattleGameDraw();
@@ -55,13 +58,13 @@ void BattleScene(void)
 void BattleControl(void)
 {
 
-	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
-	{
-		if (itemF[type].point--)
-		{
-			boss.hitFlag = true;
-		}
-	}
+//	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
+//	{
+//		if (itemF[type].point--)
+//		{
+//			boss.hitFlag = true;
+//		}
+//	}
 
 
 
@@ -84,9 +87,19 @@ void BattleGameDraw(void)
 		}
 		else if(boss.hitFlag)
 		{
-			DrawGraph(boss.pos.x, boss.pos.y, tBossDImage[(boss.animCnt / 10) % 2], true);
+			DrawGraph(boss.pos.x, boss.pos.y, tBossDImage[(boss.animCnt / 16) % 2], true);
 		}
+	
 		//	DrawGraph((SCREEN_SIZE_X - 400) / 2, 0, BossImage, true);
+		DrawBox(100, 20, boss.lifeMax*7, 50, 0x55FFFF, true);
+		DrawBox(100, 20, boss.life * 7, 50, 0xFF55FF, true);
+
+	//	DrawBox(50, 50, 70, boss.lifeMax * 13
+	//		, 0x55FFFF, true);
+	//	DrawBox(50, 50, 70, boss.life * 13
+	//		, 0xFF55FF, true);
+
+
 	}
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Battle : %d", SceneCounter);

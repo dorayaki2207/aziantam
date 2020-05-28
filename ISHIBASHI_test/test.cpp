@@ -15,7 +15,9 @@
 #include "stdio.h"
 #include "test.h"
 #include "KeyCheck.h"
+#include "Stage.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Item.h"
 #include "Battle.h"
 
@@ -116,9 +118,11 @@ bool SystemInit(void)
 	//-----“ü—Íî•ñ‰Šú‰»
 	KeyInit();
 	//-----ŠeµÌŞ¼Şª¸Ä‚Ì‰Šú‰»
-	PlayerSystmeInit();
-	ItemSystmeInit();
-	BattleSystmeInit();
+	StageSystemInit();
+	PlayerSystemInit();
+	EnemySystemInit();
+	ItemSystemInit();
+	BattleSystemInit();
 
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("aitem/}2.png");
@@ -126,7 +130,9 @@ bool SystemInit(void)
 
 	//-----•Ï”‚Ì‰Šú‰»
 	SceneCounter = 0;
-	
+	sceneID = SCENE_ID_INIT;
+	preSceneID = SCENE_ID_MAX;
+
 	//²ÍŞİÄØŠÖ˜A
 	pCnt = 0;
 	iventFlag = false;
@@ -148,8 +154,10 @@ bool SystemInit(void)
 void InitScene(void)
 {
 	//-----ŠeµÌŞ¼Şª¸Äˆ—
+	StageGameInit();
 	ItemGameInit();
 	PlayerGameInit();
+	EnemyGameInit();
 	BattleGameInit();
 	//ŒäD–‡”—p
 	testCnt = 0;
@@ -236,7 +244,7 @@ void GameScene()
 		pCnt++;
 
 		playerPos = PlayerControl();
-	//	ItemControl();
+		
 
 		//ÌßÚ²Ô°‚Æ´ÈĞ°‚Æ‚Ì“–‚½‚è”»’è
 		if (ItemHitCheck(playerPos, playerSize.x))
@@ -255,9 +263,10 @@ void GameScene()
 void GameDraw()
 {
 	//-----ŠeµÌŞ¼Şª¸Ä•`‰æˆ—
+	StageGameDraw();
 	ItemGameDraw();
 	PlayerGameDraw();
-	
+	EnemyGameDraw();
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);

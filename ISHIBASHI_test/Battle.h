@@ -8,7 +8,7 @@
 
 
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
-void BattleSystmeInit(void);		//@ÎŞ½íî•ñ‚Ì‰Šú‰»	
+void BattleSystemInit(void);		//@ÎŞ½íî•ñ‚Ì‰Šú‰»	
 void BattleGameInit(void);			//						
 void BattleControl(void);			//	ÎŞ½í‚Ì‘€ì
 void BattleScene(void);				//	ÎŞ½í‚Ì¼°İ
