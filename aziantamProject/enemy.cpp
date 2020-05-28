@@ -1,16 +1,7 @@
 #include "DxLib.h"
 #include "main.h"
 #include "stage.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
-=======
 #include "enemy.h"
-
->>>>>>> 1e4394668a9d4a6500855ea392464b8aaba1a2f9
-
 
 //-----ŠO•”•Ï”éŒ¾
 //ÓÌÞŠÖ˜A
@@ -92,37 +83,17 @@ void EnemyGameDraw()
 
 		if (enemyMob[ene].life > 0)
 		{
-<<<<<<< HEAD
-		enemyMob[ene].animCnt++;
-			
-<<<<<<< HEAD
-			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
-				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
-=======
-=======
-			enemyMob[ene].animCnt++;
-
->>>>>>> 1e4394668a9d4a6500855ea392464b8aaba1a2f9
+	
 			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
->>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
 				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
 				, true);
 
-
-<<<<<<< HEAD
 		//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
 		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
 		//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
 		//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
 		//		, 0xFF00FF, false);
-=======
-			//	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x
-			//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y
-			//		, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x
-			//		, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y
-			//		, 0xFF00FF, false);
->>>>>>> 1e4394668a9d4a6500855ea392464b8aaba1a2f9
 
 		}
 	}

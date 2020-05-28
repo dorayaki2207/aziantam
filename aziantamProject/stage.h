@@ -8,7 +8,7 @@
 //ﾏｯﾌﾟﾁｯﾌﾟ画像
 #define MAP_X 32
 #define MAP_Y 32
-#define MAP_M_X 25
+#define MAP_M_X 30
 #define MAP_M_Y 30
 #define MAPI_X 32
 #define MAPI_Y 32
@@ -38,6 +38,7 @@ enum EVENT_ID {
 	EVENT_ID_NON,
 	EVENT_ID_HONO,
 	EVENT_ID_MIZU,
+	EVENT_ID_ZAKO,
 	EVENT_ID_MAX
 };
 

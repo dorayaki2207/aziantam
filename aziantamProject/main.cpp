@@ -86,20 +86,11 @@ bool SystemInit(void)
 	KeyInit();
 
 	//-----ŠeÓ¼Ş­°Ù‚Ì‰Šú‰»
-	//ÌßÚ²Ô°
-	PlayerSystemInit();
-	//“Gmob
-	EnemySystemInit();
-	//±²ÃÑ
-	ItemSystmeInit();
-	//½Ã°¼Ş
-	StageSystemInit();
-	//-----¸Ş×Ì¨¯¸“o˜^
 	StageSystemInit();			//½Ã°¼Ş
 	PlayerSystemInit();			//ÌßÚ²Ô°
 	EnemySystemInit();			//“Gmob
 	ItemSystmeInit();			//±²ÃÑ
-
+	
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("item/‘€ìà–¾.png");
 
@@ -120,10 +111,6 @@ bool SystemInit(void)
 void InitScene(void)
 {
 	//-----ŠeµÌŞ¼Şª¸Äˆ—
-	PlayerGameInit();				//	ƒvƒŒƒCƒ„[
-	EnemyGameInit();				//	“G
-	ItemGameInit();					//	±²ÃÑ
-	StageGameInit();				//	½Ã°¼Ş
 	StageGameInit();				//½Ã°¼Ş
 	PlayerGameInit();				//ÌßÚ²Ô°
 	EnemyGameInit();				//“G
@@ -197,17 +184,14 @@ void GameScene(void)
 		//-----ŠeµÌŞ¼Şª¸Ä‘€ì
 		playerPos = PlayerControl();		//@ÌßÚ²Ô°
 		EnemyControl(playerPos);			//	“G
-		ItemControl();			//	±²ÃÑ
-		if (stageID == STAGE_ID_START)
+		ItemControl();						//	±²ÃÑ
+		//ˆê“Iˆ—
+		if (GetEvent(playerPos) == EVENT_ID_ZAKO)
 		{
-			if ((mapPos.x == 0 && mapPos.y == -116))
-			{
-				stageID = STAGE_ID_MOB;
-				SetMapData(STAGE_ID_MOB);
-				mapPos.x = 0;
-				mapPos.y = 0;
-
-			}
+			stageID = STAGE_ID_MOB;
+			SetMapData(STAGE_ID_MOB);
+			mapPos.x = 0;
+			mapPos.y = 0;
 		}
 		
 	}
@@ -226,11 +210,8 @@ void GameDraw(void)
 	StageGameDraw();			//½Ã°¼Ş
 	PlayerGameDraw();			//ÌßÚ²Ô°
 	EnemyGameDraw();			//“G
-	
 	ItemGameDraw();				//±²ÃÑ
-	StageGameDraw();			//½Ã°¼Ş
-	//-----²ÍŞİÄØŠÖ˜A
-=======
+	
 	//-----²İÍŞİÄØŠÖ˜A
 	if (iventFlag)
 	{

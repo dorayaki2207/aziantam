@@ -73,74 +73,61 @@ XY PlayerControl(void)
 			{
 			case DIR_UP:
 				playerPosCopy.y -= player.moveSpeed;
-				playerPosOffset.y = playerPosCopy.y;
+				playerPosOffset.y = playerPosCopy.y - player.offsetSize.y;
 				indexPos = Pos2Index(playerPosCopy);
 				//指定した場所を通過可能か
 				if (IsPass(playerPosOffset))
 				{
 					player.pos = playerPosCopy;
 					//ｽｸﾛｰﾙ制限
-					if (player.pos.y  < SCROLL_Y_MIN - mapPos.y)
+					if (player.pos.y + mapPos.y < SCROLL_Y_MIN)
 					{
-						if (mapPos.y < 0)
-						{
-
-							mapPos.y += player.moveSpeed;
-						}
+						mapPos.y += player.moveSpeed;
 					}
 				}
 				break;
 			case DIR_DOWN:
 				playerPosCopy.y += player.moveSpeed;
-				playerPosOffset.y = playerPosCopy.y;
+				playerPosOffset.y = playerPosCopy.y + player.offsetSize.y;				
 				indexPos = Pos2Index(playerPosCopy);
 				//指定した場所を通過可能か
 				if (IsPass(playerPosOffset))
 				{
 					player.pos = playerPosCopy;
 					//ｽｸﾛｰﾙ制限
-					if (player.pos.y > SCROLL_Y_MAX - mapPos.y)
+					if (player.pos.y + mapPos.y > SCROLL_Y_MAX)
 					{
-						if (mapPos.y > CHIP_SIZE_Y* -mapSize.y + SCREEN_SIZE_Y)
-						{
-							mapPos.y -= player.moveSpeed;
-						}
+						mapPos.y -= player.moveSpeed;
 					}
 				}
 				break;
 			case DIR_RIGHT:
 				playerPosCopy.x += player.moveSpeed;
-				playerPosOffset.x = playerPosCopy.x;
+				playerPosOffset.x = playerPosCopy.x + player.offsetSize.x;
 				indexPos = Pos2Index(playerPosCopy);
 				//指定した場所を通過可能か
 				if (IsPass(playerPosOffset))
 				{
 					player.pos = playerPosCopy;
 					//ｽｸﾛｰﾙ制限
-					if (player.pos.x > SCROLL_X_MAX - mapPos.x)
+					if (player.pos.x + mapPos.x > SCROLL_X_MAX)
 					{
-						if (mapPos.x > CHIP_SIZE_X* -mapSize.x + SCREEN_SIZE_X)
-						{
-							mapPos.x -= player.moveSpeed;
-						}
+						mapPos.x -= player.moveSpeed;
 					}
 				}
 				break;
 			case DIR_LEFT:
 				playerPosCopy.x -= player.moveSpeed;
-				playerPosOffset.x = playerPosCopy.x;
+				playerPosOffset.x = playerPosCopy.x - player.offsetSize.x;
 				indexPos = Pos2Index(playerPosCopy);
 				//指定した場所を通過可能か
 				if (IsPass(playerPosOffset))
 				{
 					player.pos = playerPosCopy;
 					//ｽｸﾛｰﾙ制限
-					if (player.pos.x < SCROLL_X_MIN - mapPos.x)
+					if (player.pos.x + mapPos.x < SCROLL_X_MIN)
 					{
-						if (mapPos.x < 0)
-						{
-							mapPos.x += player.moveSpeed;
-						}
+						mapPos.x += player.moveSpeed;
 					}
 				}
 				break;
@@ -151,41 +138,19 @@ XY PlayerControl(void)
 			returnValue = player.pos;
 
 		}
-		
+		//-----ﾏｯﾌﾟの制限　（移動処理内に入れるとﾏｯﾌﾟがずれてしまう
+		if (mapPos.x > 0) mapPos.x = 0;
+		if (mapPos.x < -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X;
+		if (mapPos.y > 0) mapPos.y = 0;
+		if (mapPos.y < -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y;
+
 	}
-<<<<<<< HEAD
-	if (mapPos.x < 0)
-	{
-		mapPos.x = 0;
-	}
-	if (mapPos.x > CHIP_SIZE_X * MAP_X - SCREEN_SIZE_X)
-	{
-		mapPos.x = CHIP_SIZE_X * MAP_X - SCREEN_SIZE_X;
-	}
-	if (mapPos.y < 0)
-	{
-		mapPos.y = 0;
-	}
-	if (mapPos.y > CHIP_SIZE_Y * MAP_Y - SCREEN_SIZE_Y)
-	{
-		mapPos.y = CHIP_SIZE_Y * MAP_Y - SCREEN_SIZE_Y;
-	}
-=======
 	return returnValue;
->>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
 }
 //プレイヤーの描画
 void PlayerGameDraw(void)
 {
 	player.animCnt++;
-<<<<<<< HEAD
-	DrawGraph(player.pos.x, player.pos.y, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
-	/*DrawGraph(player1.pos.x - player1.offsetSize.y - mapPos.x
-		, player1.pos.y - player1.offsetSize.y - mapPos.y
-		, playerImage[player1.moveDir][player1.animCnt / 10 % 4]
-		, true);*/
-}
-=======
 	DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
 		, player.pos.y - player.offsetSize.y + mapPos.y
 		, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
@@ -196,4 +161,3 @@ void PlayerGameDraw(void)
 	indexPos = Pos2Index(player.pos);
 
 }
->>>>>>> 9570c1765eccde647c8cebd2eb7ef975b03ac5ad
