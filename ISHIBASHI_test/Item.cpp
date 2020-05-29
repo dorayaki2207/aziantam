@@ -122,7 +122,7 @@ void ItemControl(CHARACTER boss)
 	if (lookCnt == 0)
 	{	
 		//‰Î‚ÌŒäŽD
-		if (keyDownTrigger[KEY_ID_FIRE])
+		if (keyNew[KEY_ID_FIRE])
 		{
 			//ŒäŽD‚ªˆê–‡ˆÈã‚ ‚éê‡Aˆ—‰Â”\
 			if (itemF[ITEM_TYPE_HI].point > 0)
@@ -134,7 +134,7 @@ void ItemControl(CHARACTER boss)
 			}
 		}
 		//…‚ÌŒäŽD
-		if (keyDownTrigger[KEY_ID_WATER])
+		if (keyNew[KEY_ID_WATER])
 		{
 			//ŒäŽD‚ªˆê–‡ˆÈã‚ ‚éê‡Aˆ—‰Â”\
 			if (itemF[ITEM_TYPE_MIZU].point > 0)
@@ -147,7 +147,7 @@ void ItemControl(CHARACTER boss)
 			}
 		}
 		//•—‚ÌŒäŽD
-		if (keyDownTrigger[KEY_ID_WIND])
+		if (keyNew[KEY_ID_WIND])
 		{
 			//ŒäŽD‚ªˆê–‡ã‚ ‚éê‡Aˆ—‰Â”\
 			if (itemF[ITEM_TYPE_KAZE].point > 0)
@@ -160,7 +160,7 @@ void ItemControl(CHARACTER boss)
 			}
 		}
 		//‰ñ•œ‚ÌŒäŽD
-		if (keyDownTrigger[KEY_ID_HEAL])
+		if (keyNew[KEY_ID_HEAL])
 		{
 			//ŒäŽD‚ªˆê–‡ˆÈã‚ ‚éê‡Aˆ—‰Â”\
 			if (itemF[ITEM_TYPE_KAIFUKU].point > 0)
@@ -187,6 +187,23 @@ void ItemControl(CHARACTER boss)
 	}
 
 }
+
+
+
+
+
+void ItemMOBControl(ITEM_TYPE_F type)
+{
+	//ŒäŽD‚ªˆê–‡ˆÈã‚ ‚éê‡Aˆ—‰Â”\
+	if (itemF[type].point > 0)
+	{
+		itemF[type].point--;
+		itemFBFlag[type] = true;
+	}
+}
+
+
+
 //-----ÄÞÛ¯Ìß—p
 void ItemGameDraw(void)
 {
@@ -306,22 +323,18 @@ bool ItemHitCheck(XY sPos, int sSize)
 				if (itemF[i].charType == ITEM_TYPE_HI)
 				{
 					itemF[ITEM_TYPE_HI].point++;
-					//hiCnt++;
 				}
 				if (itemF[i].charType == ITEM_TYPE_MIZU)
 				{
 					itemF[ITEM_TYPE_MIZU].point++;
-					//mizuCnt++;
 				}
 				if (itemF[i].charType == ITEM_TYPE_KAZE)
 				{
 					itemF[ITEM_TYPE_KAZE].point++;
-					//kazeCnt++;
 				}
 				if (itemF[i].charType == ITEM_TYPE_KAIFUKU)
 				{
 					itemF[ITEM_TYPE_KAIFUKU].point++;
-					//kaifukuCnt++;
 				}
 				return true;
 			}
