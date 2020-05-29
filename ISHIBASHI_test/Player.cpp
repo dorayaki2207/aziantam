@@ -3,6 +3,8 @@
 #include "KeyCheck.h"
 #include "Stage.h"
 #include "Player.h"
+#include "Item.h"
+#include "Shot.h"
 
 //-----外部変数宣言
 //ｷｬﾗｸﾀ関連
@@ -46,6 +48,25 @@ XY PlayerControl(void)
 	if (player.life > 0)
 	{
 
+		//-----ｼｮｯﾄ処理
+		if (keyNew[KEY_ID_FIRE])
+		{
+//			ItemMOBControl(ITEM_TYPE_HI);
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE/*, ITEM_TYPE_HI*/);
+			ShotAniCnt(SHOT_TYPE_FIRE);
+		}
+		if (keyNew[KEY_ID_WATER])
+		{
+//			ItemMOBControl(ITEM_TYPE_MIZU);
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WATER/*, ITEM_TYPE_MIZU*/);
+			ShotAniCnt(SHOT_TYPE_WATER);
+		}
+		if (keyNew[KEY_ID_WIND])
+		{
+//			ItemMOBControl(ITEM_TYPE_KAZE);
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WIND/*,ITEM_TYPE_KAZE*/);
+			ShotAniCnt(SHOT_TYPE_WIND);
+		}
 		//-----移動処理
 		if (keyNew[KEY_ID_RIGHT])
 		{
@@ -151,14 +172,13 @@ XY PlayerControl(void)
 			returnValue = player.pos;
 
 		}
-		
+
+
 		//-----ﾏｯﾌﾟの制限　（移動処理内に入れるとﾏｯﾌﾟがずれてしまう
 		if (mapPos.x > 0) mapPos.x = 0;
 		if (mapPos.x < -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X;
 		if (mapPos.y > 0) mapPos.y = 0;
 		if (mapPos.y < -CHIP_SIZE_Y * MAP_Y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * MAP_Y + SCREEN_SIZE_Y;
-
-
 
 		//　移動範囲処理
 		//ﾏｯﾌﾟﾁｯﾌﾟの当たり判定を実装していない為、一時的処置

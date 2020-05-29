@@ -217,11 +217,7 @@ void GameScene()
 	
 	//-----²ÍŞİÄØ‹@”\
 	//·°ˆ—
-	if (keyDownTrigger[KEY_ID_IVENT])
-	{
-		iventFlag = !iventFlag;
-
-	}
+	if (keyDownTrigger[KEY_ID_IVENT]) iventFlag = !iventFlag;
 	//Ì×¸Şˆ—
 	if (iventFlag)
 	{
@@ -247,13 +243,22 @@ void GameScene()
 
 		playerPos = PlayerControl();
 		ShotControl();
-
 		//ÌßÚ²Ô°‚Æ´ÈĞ°‚Æ‚Ì“–‚½‚è”»’è
 		if (ItemHitCheck(playerPos, playerSize.x))
 		{
 			testCnt++;
 		}
-		
+		//’e‚Æ´ÈĞ°‚Ì“–‚½‚è”»’è
+		for (int sh = 0; sh < SHOT_TYPE_MAX - 1; sh++)
+		{
+			if (shot[sh].life > 0)
+			{
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				{
+					DeleteShot(sh);
+				}
+			}
+		}
 	}
 
 
