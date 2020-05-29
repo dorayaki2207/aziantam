@@ -148,7 +148,7 @@ XY PlayerControl(void)
 				break;
 			}
 			//–ß‚è’l‚ğİ’è
-		//	returnValue = player.pos;
+			returnValue = player.pos;
 
 		}
 		

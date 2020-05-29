@@ -20,6 +20,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Battle.h"
+#include "Shot.h"
 
 //-----外部変数宣言
 int SceneCounter;			//	gameLoop動作確認用
@@ -118,12 +119,12 @@ bool SystemInit(void)
 	//-----入力情報初期化
 	KeyInit();
 	//-----各ｵﾌﾞｼﾞｪｸﾄの初期化
-	StageSystemInit();
-	PlayerSystemInit();
-	EnemySystemInit();
-	ItemSystemInit();
-	BattleSystemInit();
-
+	StageSystemInit();			//ｽﾃｰｼﾞ
+	PlayerSystemInit();			//ﾌﾟﾚｲﾔｰ
+	EnemySystemInit();			//ｴﾈﾐｰ
+	ItemSystemInit();			//ｱｲﾃﾑ
+	BattleSystemInit();			//ﾊﾞﾄﾙ
+	ShotSystemInit();			//ｼｮｯﾄ
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("aitem/図2.png");
 
@@ -154,11 +155,12 @@ bool SystemInit(void)
 void InitScene(void)
 {
 	//-----各ｵﾌﾞｼﾞｪｸﾄ処理
-	StageGameInit();
-	ItemGameInit();
-	PlayerGameInit();
-	EnemyGameInit();
-	BattleGameInit();
+	StageGameInit();		//ｽﾃｰｼﾞ
+	ItemGameInit();			//ｱｲﾃﾑ
+	PlayerGameInit();		//ﾌﾟﾚｲﾔｰ
+	EnemyGameInit();		//ｴﾈﾐｰ
+	BattleGameInit();		//ﾊﾞﾄﾙ
+	ShotGameInit();			//ｼｮｯﾄ
 	//御札枚数用
 	testCnt = 0;
 
@@ -168,7 +170,7 @@ void InitScene(void)
 	sceneID = SCENE_ID_TITLE;
 }
 
-
+//-----ﾀｲﾄﾙｼｰﾝ
 void TitleScene()
 {
 
@@ -180,7 +182,7 @@ void TitleScene()
 	DrawFormatString(0, 0, 0xFFFFFF, "Title:%d", SceneCounter);
 }
 
-
+//-----ｹﾞｰﾑｼｰﾝ
 void GameScene()
 {
 	XY playerPos;
@@ -244,7 +246,7 @@ void GameScene()
 		pCnt++;
 
 		playerPos = PlayerControl();
-		
+		ShotControl();
 
 		//ﾌﾟﾚｲﾔｰとｴﾈﾐｰとの当たり判定
 		if (ItemHitCheck(playerPos, playerSize.x))
@@ -254,19 +256,22 @@ void GameScene()
 		
 	}
 
+
+	//ｹﾞｰﾑｼｰﾝ描画
 	GameDraw();
 	
 
 }
 
-
+//-----ｹﾞｰﾑｼｰﾝ描画処理
 void GameDraw()
 {
 	//-----各ｵﾌﾞｼﾞｪｸﾄ描画処理
-	StageGameDraw();
-	ItemGameDraw();
-	PlayerGameDraw();
-	EnemyGameDraw();
+	StageGameDraw();			//ｽﾃｰｼﾞ
+	ItemGameDraw();				//ｱｲﾃﾑ
+	PlayerGameDraw();			//ﾌﾟﾚｲﾔｰ
+	EnemyGameDraw();			//ｴﾈﾐｰ
+	ShotGameDraw();				//ｼｮｯﾄ
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);
