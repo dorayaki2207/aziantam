@@ -66,7 +66,7 @@ void EnemyGameInit(void)
 	{
 		enemyMob[ene] = enemyMobMaster[GetRand(ENEMY_M_MAX - 1)];
 		enemyMob[ene].pos.x = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
-		enemyMob[ene].pos.y = GetRand(MAP_M_X * CHIP_SIZE_X - 1);
+		enemyMob[ene].pos.y = GetRand(MAP_M_Y * CHIP_SIZE_Y - 1);
 	}
 
 }
@@ -84,8 +84,8 @@ void EnemyGameDraw()
 		if (enemyMob[ene].life > 0)
 		{
 	
-			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
-				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
+			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x - mapPos.x
+				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y - mapPos.y
 				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
 				, true);
 
