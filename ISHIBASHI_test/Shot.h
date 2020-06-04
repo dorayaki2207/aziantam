@@ -2,7 +2,8 @@
 
 //-----’è”’è‹`
 #define SHOT_ANI		46				//@’e‚Ì±ÆÒ°¼®İ”
-#define SHOT_LIFE_MAX	46
+#define SHOT_LIFE_MAX	50
+#define SHOT_MAX		20
 
 
 //-----—ñ‹“Œ^
@@ -19,11 +20,10 @@ enum SHOT_TYPE
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
 void ShotSystemInit(void);				//@’eî•ñ‚Ì‰Šú‰»	
 void ShotGameInit(void);
-void ShotControl(void);					//	’e‚Ì‘€ì
+void ShotControl(XY pPos);					//	’e‚Ì‘€ì
 void ShotGameDraw(void);				//	’e‚Ì•`‰æˆ—
 void CreateShot(XY pPos, DIR pDir, SHOT_TYPE ptype/*, ITEM_TYPE_F itype*/);
 void DeleteShot(int index);
-void ShotAniCnt(SHOT_TYPE type);
 
 //-----¸ŞÛ°ÊŞÙ‰»
 extern CHARACTER shot[];

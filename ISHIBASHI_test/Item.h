@@ -35,6 +35,7 @@ void ItemI_Draw(void);				//	²ÝÍÞÝÄØ—p‚Ì±²ÃÑ‰æ‘œ•`‰æ
 void ItemB_Draw(void);				//	ÎÞ½ÊÞÄÙ—p‚Ì±²ÃÑ‰æ‘œ•`‰æ
 bool ItemHitCheck(XY sPos, int sSize);
 void DeleteItem(int index);
+void ItemLife(int index);
 
 //-----¸ÞÛ°ÊÞÙ‰»
-extern CHARACTER itemF[];
+extern CHARACTER itemF[ITEM_MAX];

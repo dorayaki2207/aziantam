@@ -51,6 +51,7 @@ void ItemSystemInit(void)
 		itemFmaster[i].point = 0;																	//	ŒäŽD‚Ì–‡”
 		itemFmaster[i].lifeMax = 20;																//	ŒäŽD‚Ì‘Ì—ÍÅ‘å’li•\Ž¦ŽžŠÔj
 		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	ŒäŽD‚Ì‘Ì—Í
+		itemFmaster[i].hitFlag = false;
 	}
 
 	//ŒäŽDiÎÞ½ÊÞÄÙ—p
@@ -97,8 +98,8 @@ void ItemGameInit(void)
 	{
 
 		itemF[i] = itemFmaster[GetRand(ITEM_TYPE_F_MAX - 1)];
-		itemF[i].pos.x = GetRand(MAP_X * CHIP_SIZE_X - 1);
-		itemF[i].pos.y = GetRand(MAP_Y * CHIP_SIZE_Y - 1);
+		itemF[i].pos = { 200,200 };
+		itemF[i].hitFlag = false;
 		//	itemF[i].point = 0;																//	ŒäŽD‚Ì–‡”
 		//	itemF[i].lifeMax = 20;															//	ŒäŽD‚Ì‘Ì—ÍÅ‘å’li•\Ž¦ŽžŠÔj
 		//	itemF[i].life = itemF[i].lifeMax;												//	ŒäŽD‚Ì‘Ì—Í
@@ -198,7 +199,6 @@ void ItemMOBControl(ITEM_TYPE_F type)
 	if (itemF[type].point > 0)
 	{
 		itemF[type].point--;
-		itemFBFlag[type] = true;
 	}
 }
 
@@ -216,17 +216,20 @@ void ItemGameDraw(void)
 			//¶‚«‚Ä‚éŒäŽD‚Ì‚Ý•\Ž¦
 			if (itemF[i].life > 0)
 			{
-				//-----‰æ‘œ•`‰æ
-				DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
-					, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
-					, itemFImage[itemF[i].charType]
-					, true);
+				if (itemF[i].hitFlag)
+				{
+					//-----‰æ‘œ•`‰æ
+					DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+						, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+						, itemFImage[itemF[i].charType]
+						, true);
 
-				DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
-					, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
-					, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
-					, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
-					, 0xFF00FF, false);
+					DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+						, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+						, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
+						, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
+						, 0xFF00FF, false);
+				}
 			}
 	//	}
 	}
@@ -350,3 +353,9 @@ void DeleteItem(int index)
 	itemF[index].life = 0;
 	
 };
+
+void ItemLife(int index)
+{
+
+	itemF[index].life--;
+}

@@ -11,20 +11,26 @@
 CHARACTER player;							//	ÌßÚ²Ô°•Ï”Ši”[—p
 int playerImage[DIR_MAX][PLAYER_MAX];		//	ÌßÚ²Ô°‰æ‘œF’ÊíŽž
 
+//int testImage[4];
+//int test2Image[4];
 
 void PlayerSystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
 	player.moveDir = DIR_DOWN;											//	·¬×¸À‚ÌŒü‚«
-	player.size = { 32,32 };											//	·¬×¸À‚Ì‰æ‘œ»²½Þ
+	player.size = { 32,40 };											//	·¬×¸À‚Ì‰æ‘œ»²½Þ
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
 	player.moveSpeed = 4;												//	·¬×¸À‚ÌˆÚ“®½Ëß°ÄÞ
 	player.hitFlag = false;
 
 	//-----¸Þ×Ì¨¯¸‚Ì“o˜^
 	//·¬×¸ÀŠÖ˜A
-	LoadDivGraph("aitem/—dŒÏtest.png", DIR_MAX*PLAYER_MAX
+	LoadDivGraph("aitem/bossDT.png", DIR_MAX*PLAYER_MAX
 		, DIR_MAX, PLAYER_MAX, player.size.x, player.size.y, playerImage[0], true);
+
+
+//	LoadDivGraph("aitem/hard.png", 4, 4, 1, 32, 40, testImage);
+//	LoadDivGraph("aitem/bb.png", 4, 4, 1, 32, 40, test2Image);
 }
 
 void PlayerGameInit(void)
@@ -48,25 +54,7 @@ XY PlayerControl(void)
 	if (player.life > 0)
 	{
 
-		//-----¼®¯Äˆ—
-		if (keyNew[KEY_ID_FIRE])
-		{
-//			ItemMOBControl(ITEM_TYPE_HI);
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE/*, ITEM_TYPE_HI*/);
-			ShotAniCnt(SHOT_TYPE_FIRE);
-		}
-		if (keyNew[KEY_ID_WATER])
-		{
-//			ItemMOBControl(ITEM_TYPE_MIZU);
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WATER/*, ITEM_TYPE_MIZU*/);
-			ShotAniCnt(SHOT_TYPE_WATER);
-		}
-		if (keyNew[KEY_ID_WIND])
-		{
-//			ItemMOBControl(ITEM_TYPE_KAZE);
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WIND/*,ITEM_TYPE_KAZE*/);
-			ShotAniCnt(SHOT_TYPE_WIND);
-		}
+		
 		//-----ˆÚ“®ˆ—
 		if (keyNew[KEY_ID_RIGHT])
 		{
@@ -174,6 +162,25 @@ XY PlayerControl(void)
 		}
 
 
+		//-----¼®¯Äˆ—
+		if (keyNew[KEY_ID_FIRE])
+		{
+	//		ItemMOBControl(ITEM_TYPE_HI);
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE/*, ITEM_TYPE_HI*/);
+		}
+		if (keyNew[KEY_ID_WATER])
+		{
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WATER);
+		}
+		if (keyNew[KEY_ID_WIND])
+		{
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WIND);
+		}
+		if (keyNew[KEY_ID_HEAL])
+		{
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_HEAL);
+		}
+
 		//-----Ï¯Ìß‚Ì§ŒÀ@iˆÚ“®ˆ—“à‚É“ü‚ê‚é‚ÆÏ¯Ìß‚ª‚¸‚ê‚Ä‚µ‚Ü‚¤
 		if (mapPos.x > 0) mapPos.x = 0;
 		if (mapPos.x < -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X;
@@ -192,6 +199,7 @@ XY PlayerControl(void)
 	return returnValue;
 }
 
+//-----ÌßÚ²Ô°‚Ì•`‰æˆ—
 void PlayerGameDraw(void)
 {
 	//-----‰æ‘œ•`‰æ
@@ -218,5 +226,8 @@ void PlayerGameDraw(void)
 		, (SCROLL_Y_MAX + 1)
 		, 0x55FF22, false);
 
+
+//	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
+//	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);
 }
 

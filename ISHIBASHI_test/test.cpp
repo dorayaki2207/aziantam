@@ -19,8 +19,9 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Item.h"
-#include "Battle.h"
 #include "Shot.h"
+#include "Battle.h"
+
 
 //-----ŠO•”•Ï”éŒ¾
 int SceneCounter;			//	gameLoop“®ìŠm”F—p
@@ -123,8 +124,9 @@ bool SystemInit(void)
 	PlayerSystemInit();			//ÌßÚ²Ô°
 	EnemySystemInit();			//´ÈĞ°
 	ItemSystemInit();			//±²ÃÑ
-	BattleSystemInit();			//ÊŞÄÙ
 	ShotSystemInit();			//¼®¯Ä
+	BattleSystemInit();			//ÊŞÄÙ
+
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("aitem/}2.png");
 
@@ -159,8 +161,9 @@ void InitScene(void)
 	ItemGameInit();			//±²ÃÑ
 	PlayerGameInit();		//ÌßÚ²Ô°
 	EnemyGameInit();		//´ÈĞ°
-	BattleGameInit();		//ÊŞÄÙ
 	ShotGameInit();			//¼®¯Ä
+	BattleGameInit();		//ÊŞÄÙ
+
 	//ŒäD–‡”—p
 	testCnt = 0;
 
@@ -242,20 +245,33 @@ void GameScene()
 		pCnt++;
 
 		playerPos = PlayerControl();
-		ShotControl();
+		EnemyControl(playerPos);
+		ShotControl(playerPos);
 		//ÌßÚ²Ô°‚Æ´ÈĞ°‚Æ‚Ì“–‚½‚è”»’è
 		if (ItemHitCheck(playerPos, playerSize.x))
 		{
 			testCnt++;
 		}
 		//’e‚Æ´ÈĞ°‚Ì“–‚½‚è”»’è
-		for (int sh = 0; sh < SHOT_TYPE_MAX - 1; sh++)
+		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
-			if (shot[sh].life > 0)
+			for (int i = 0; i < ITEM_MAX; i++)
 			{
-				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				if (shot[sh].life > 0)
 				{
-					DeleteShot(sh);
+					if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x,i))
+					{
+						DeleteShot(sh);
+					
+					}
+				}
+				if (itemF[i].life > 0)
+				{
+					if (ItemHitCheck(playerPos, playerSize.x))
+					{
+						//±²ÃÑ‚É“–‚½‚Á‚Ä‚¢‚é
+						DeleteItem(i);
+					}
 				}
 			}
 		}
@@ -275,8 +291,9 @@ void GameDraw()
 	StageGameDraw();			//½Ã°¼Ş
 	ItemGameDraw();				//±²ÃÑ
 	PlayerGameDraw();			//ÌßÚ²Ô°
-	EnemyGameDraw();			//´ÈĞ°
 	ShotGameDraw();				//¼®¯Ä
+	EnemyGameDraw();			//´ÈĞ°
+	
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);

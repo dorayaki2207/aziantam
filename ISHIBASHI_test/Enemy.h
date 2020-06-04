@@ -27,4 +27,9 @@ void EnemySystemInit(void);		//ｴﾈﾐｰ情報の初期化
 void EnemyGameInit(void);		//	
 void EnemyControl(XY pPos);		//ｴﾈﾐｰの操作
 void EnemyGameDraw(void);		//ｴﾈﾐｰの描画処理
-bool EnemyHitCheck(XY sPos, int sSize);
+int MoveEnemyX(CHARACTER* enemy, XY playerPos); //自機のX座標に調節するように動かす　戻り値：移動した量
+int MoveEnemyY(CHARACTER* enemy, XY playerPos); //自機のY座標に調節するように動かす　戻り値：移動した量
+int MoveEnemyXY(CHARACTER* enemy, XY playerPos); //自機のXとYの遠いほうから座標を調節するように動かす　戻り値：移動した量
+
+
+bool EnemyHitCheck(XY sPos, int sSize,int index);
