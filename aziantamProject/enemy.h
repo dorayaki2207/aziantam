@@ -24,7 +24,9 @@ enum ENEMY_BOSS
 };
 
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
-void EnemySystemInit(void);		//	´ÈĞ°î•ñ‚Ì‰Šú‰»
-void EnemyGameInit(void);		//	
-void EnemyControl(XY pPos);		//	´ÈĞ°‚Ì‘€ì
-void EnemyGameDraw(void);		//	´ÈĞ°‚Ì•`‰æˆ—
+void EnemySystemInit(void);					//´ÈĞ°î•ñ‚Ì‰Šú‰»
+void EnemyGameInit(void);					//	
+void EnemyControl(XY pPos);					//´ÈĞ°‚Ì‘€ì
+void EnemyGameDraw(void);					//´ÈĞ°‚Ì•`‰æˆ—
+
+bool EnemyHitCheck(XY sPos, int sSize);		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è

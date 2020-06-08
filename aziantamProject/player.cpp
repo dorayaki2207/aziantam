@@ -3,6 +3,7 @@
 #include "player.h"
 #include "keycheck.h"
 #include "stage.h"
+#include "shot.h"
 
 //•Ï”
 int playerImage[16];
@@ -44,6 +45,7 @@ XY PlayerControl(void)
 
 	if (player.life > 0)
 	{
+		//-----ˆÚ“®ˆ—
 		if (KeyNew[KEY_ID_UP])
 		{
 			moveFlag = true;
@@ -65,7 +67,7 @@ XY PlayerControl(void)
 			player.moveDir = DIR_LEFT;
 		}
 
-
+		//ÌßÚ²Ô°‚ÌŒü‚«
 		if (moveFlag)
 		{
 			player.animCnt += 5;
@@ -138,6 +140,26 @@ XY PlayerControl(void)
 			returnValue = player.pos;
 
 		}
+
+
+		//-----¼®¯Äˆ—
+		if (KeyNew[KEY_ID_FIRE])
+		{
+			CreateShot(player.pos,player.moveDir,MAGIC_TYPE_FIRE);
+		}
+		if (KeyNew[KEY_ID_WATER])
+		{
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_WATER);
+		}
+		if (KeyNew[KEY_ID_WIND])
+		{
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_WIND);
+		}
+		if (KeyNew[KEY_ID_HEAL])
+		{
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+		}
+
 		//-----Ï¯Ìß‚Ì§ŒÀ@iˆÚ“®ˆ—“à‚É“ü‚ê‚é‚ÆÏ¯Ìß‚ª‚¸‚ê‚Ä‚µ‚Ü‚¤
 		if (mapPos.x > 0) mapPos.x = 0;
 		if (mapPos.x < -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X;

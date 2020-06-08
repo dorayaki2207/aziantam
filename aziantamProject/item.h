@@ -8,14 +8,6 @@
 
 
 //-----列挙型
-enum ITEM_TYPE_F
-{
-	ITEM_TYPE_HI,				//	火の御札
-	ITEM_TYPE_MIZU,				//	水の御札
-	ITEM_TYPE_KAZE,				//	風の御札
-	ITEM_TYPE_KAIFUKU,			//	回復の御札
-	ITEM_TYPE_F_MAX
-};
 enum ITEM_TYPE_B
 {
 	ITEM_TYPE_KEN,				//	三種の神器・剣
@@ -36,6 +28,6 @@ void ItemI_Draw(void);			//	ｲﾝﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
 //void DeleteItem(int index);
 
 //-----ｸﾞﾛｰﾊﾞﾙ化
-extern CHARACTER itemF[];
+extern CHARACTER itemF[ITEM_MAX];
 
 

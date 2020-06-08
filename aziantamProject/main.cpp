@@ -90,6 +90,7 @@ bool SystemInit(void)
 	PlayerSystemInit();			//ÌßÚ²Ô°
 	EnemySystemInit();			//“Gmob
 	ItemSystmeInit();			//±²ÃÑ
+	ShotSystemInit();			//¼®¯Ä
 	
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("item/‘€ìà–¾.png");
@@ -115,7 +116,8 @@ void InitScene(void)
 	PlayerGameInit();				//ÌßÚ²Ô°
 	EnemyGameInit();				//“G
 	ItemGameInit();					//±²ÃÑ
-	
+	ShotGameInit();					//¼®¯Ä
+
 	//-----¼°İ‘JˆÚ
 	SceneID = SCENE_TITLE;
 }
@@ -182,9 +184,24 @@ void GameScene(void)
 	{
 		//Šeí‹@”\
 		//-----ŠeµÌŞ¼Şª¸Ä‘€ì
-		playerPos = PlayerControl();		//@ÌßÚ²Ô°
-		EnemyControl(playerPos);			//	“G
-		ItemControl();						//	±²ÃÑ
+		playerPos = PlayerControl();		//ÌßÚ²Ô°
+		EnemyControl(playerPos);			//´ÈĞ°
+		ItemControl();						//±²ÃÑ
+		ShotControl(playerPos);				//¼®¯Ä
+
+		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è
+		for (int sh = 0; sh < SHOT_MAX; sh++)
+		{
+			if (shot[sh].life > 0)
+			{
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				{
+					DeleteShot(sh);
+				}
+			}
+		}
+
+
 		//ˆê“Iˆ—
 		if (GetEvent(playerPos) == EVENT_ID_ZAKO)
 		{
@@ -211,7 +228,7 @@ void GameDraw(void)
 	PlayerGameDraw();			//ÌßÚ²Ô°
 	EnemyGameDraw();			//“G
 	ItemGameDraw();				//±²ÃÑ
-	
+	ShotGameDraw();				//¼®¯Ä
 	//-----²İÍŞİÄØŠÖ˜A
 	if (iventFlag)
 	{

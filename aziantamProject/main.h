@@ -26,7 +26,14 @@ enum DIR
 	DIR_MAX
 };
 
-
+enum MAGIC_TYPE
+{
+	MAGIC_TYPE_FIRE,		//属性：火
+	MAGIC_TYPE_WATER,		//属性：水
+	MAGIC_TYPE_WIND,		//属性：風
+	MAGIC_TYPE_HEAL,		//属性：回復
+	MAGIC_TYPE_MAX
+};
 
 
 
