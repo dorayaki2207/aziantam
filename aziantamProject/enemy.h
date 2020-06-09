@@ -3,6 +3,10 @@
 //-----定数定義
 #define ENEMY_MAX 20		//	敵の数
 
+#define DAMAGE_NORMAL	2		//同属性ﾀﾞﾒｰｼﾞ量
+#define DAMAGE_HIGH		3		//有利属性ﾀﾞﾒｰｼﾞ量
+#define DAMAGE_LOW		1		//不利属性ﾀﾞﾒｰｼﾞ量
+
 
 //-----列挙型
 //モブ
@@ -29,4 +33,4 @@ void EnemyGameInit(void);					//
 void EnemyControl(XY pPos);					//ｴﾈﾐｰの操作
 void EnemyGameDraw(void);					//ｴﾈﾐｰの描画処理
 
-bool EnemyHitCheck(XY sPos, int sSize);		//ｴﾈﾐｰと弾の当たり判定
+bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//ｴﾈﾐｰと弾の当たり判定

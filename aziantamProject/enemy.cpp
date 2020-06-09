@@ -93,12 +93,13 @@ void EnemyGameDraw()
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y + mapPos.y
 				, 0xFF00FF, false);
 		}
+		DrawFormatString(0, 200, 0xFFFFFF,"enemyHP:%d", enemyMob[ene].life, true);
 	}
 
 }
 
 //-----¥»–∞Ç∆íeÇÃìñÇΩÇËîªíËÅ@(true : Ç†ÇΩÇË, false : ÇÕÇ∏ÇÍ)
-bool EnemyHitCheck(XY sPos, int sSize)
+bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 {
 	//ëSÇƒÇÃìGÇ…ìñÇΩÇËîªíËÇé¿é{Ç∑ÇÈ
 	for (int en = 0; en < ENEMY_MAX; en++)
@@ -111,8 +112,29 @@ bool EnemyHitCheck(XY sPos, int sSize)
 				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
 			{
 				//ìñÇΩÇ¡ÇΩéûÅA¥»–∞ÇÃëÃóÕÇå∏ÇÁÇ∑
-				enemyMob[en].life--;
+				switch (enemyMob[en].charType)
+				{
+				case ENEMY_I_MOB:
+					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_NORMAL;
+					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_LOW;
+					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_HIGH;
+					break;
 
+				case ENEMY_A_MOB:
+					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_HIGH;
+					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_NORMAL;
+					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_LOW;
+					break;
+
+				case ENEMY_Y_MOB:
+					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_LOW;
+					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_HIGH;
+					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_NORMAL;
+					break;
+
+				default:
+					break;
+				}
 
 				return true;
 			}

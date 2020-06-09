@@ -28,7 +28,6 @@ void ShotSystemInit(void)
 		shotMaster[type].pos = { 0,0 };
 		shotMaster[type].lifeMax = SHOT_LIFE_MAX;
 		shotMaster[type].animCnt = 0;
-		shotMaster[type].point = DAMAGE_NORMAL;
 
 		//‘ã“ü
 		for (int sh = 0; sh < SHOT_MAX; sh++)

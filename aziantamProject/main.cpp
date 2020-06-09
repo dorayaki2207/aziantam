@@ -194,7 +194,7 @@ void GameScene(void)
 		{
 			if (shot[sh].life > 0)
 			{
-				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x, &shot[sh]))
 				{
 					DeleteShot(sh);
 				}
