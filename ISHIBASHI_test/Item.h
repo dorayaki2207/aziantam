@@ -2,7 +2,7 @@
 
 
 //-----定数定義
-#define ITEM_MAX    50
+#define ITEM_MAX    20
 #define ITEM_M_SIZE 20			//	ｲﾝﾍﾞﾝﾄﾘ用御札ｻｲｽﾞ
 #define ITEM_B_SIZE 150			//	ﾊﾞﾄﾙ用御札ｻｲｽﾞ
 
@@ -27,15 +27,15 @@ enum ITEM_TYPE_B
 
 //-----関数ﾌﾟﾛﾄﾀｲﾌﾟ宣言
 void ItemSystemInit(void);			//　ｱｲﾃﾑ情報の初期化	
-void ItemGameInit(void);			//						
-void ItemControl(CHARACTER boss);	//	ｱｲﾃﾑの操作
+void ItemGameInit(void);			//	
+void itemControl();
+void ItemBossControl(CHARACTER* boss);	//	ｱｲﾃﾑの操作
 void ItemMOBControl(ITEM_TYPE_F type);
 void ItemGameDraw(void);			//　ｱｲﾃﾑ描画処理
 void ItemI_Draw(void);				//	ｲﾝﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
 void ItemB_Draw(void);				//	ﾎﾞｽﾊﾞﾄﾙ用のｱｲﾃﾑ画像描画
 bool ItemHitCheck(XY sPos, int sSize);
 void DeleteItem(int index);
-void ItemLife(int index);
 
 //-----ｸﾞﾛｰﾊﾞﾙ化
 extern CHARACTER itemF[ITEM_MAX];

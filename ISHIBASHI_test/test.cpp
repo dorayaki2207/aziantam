@@ -41,7 +41,7 @@ int testCnt;
 const char *file;
 char words[200];
 
-//イベントリ
+
 
 
 //-----WinMain
@@ -167,9 +167,6 @@ void InitScene(void)
 	//御札枚数用
 	testCnt = 0;
 
-
-	
-
 	sceneID = SCENE_ID_TITLE;
 }
 
@@ -198,24 +195,11 @@ void GameScene()
 
 	
 	//-----FILE操作
-	FILE *fp;
-	
-	fopen_s(&fp, file, "r");
-//	fscanf_s(fp,"%s",words,256);
-//	fgets(words, 256, fp);
-//	printf("\n", words);	
-	fread(words, sizeof(words), size_t(2), fp);
-//	fprintf(fp, "HelloWorld!!!!むずかしいなぁ");
-
-	//for (int a = 0; a < words[a]; a++)
-	//{
-	//	if (CheckHitKey(KEY_INPUT_A))
-	//	{
-	//		printf("%s\n", words);
-	//	}
-	//}
-
-	fclose(fp);
+//	FILE *fp;
+//	
+//	fopen_s(&fp, file, "r");
+//	fread(words, sizeof(words), size_t(2), fp);
+//	fclose(fp);
 	
 	
 	//-----ｲﾍﾞﾝﾄﾘ機能
@@ -248,34 +232,42 @@ void GameScene()
 		EnemyControl(playerPos);
 		ShotControl(playerPos);
 		//ﾌﾟﾚｲﾔｰとｴﾈﾐｰとの当たり判定
-		if (ItemHitCheck(playerPos, playerSize.x))
-		{
-			testCnt++;
-		}
+//		if (ItemHitCheck(playerPos, playerSize.x))
+//		{
+//			testCnt++;
+//		}
 		//弾とｴﾈﾐｰの当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
-			for (int i = 0; i < ITEM_MAX; i++)
+			if (shot[sh].life > 0)
 			{
-				if (shot[sh].life > 0)
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
 				{
-					if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x,i))
-					{
-						DeleteShot(sh);
-					
-					}
-				}
-				if (itemF[i].life > 0)
-				{
-					if (ItemHitCheck(playerPos, playerSize.x))
-					{
-						//ｱｲﾃﾑに当たっている
-						DeleteItem(i);
-					}
+					DeleteShot(sh);
+
 				}
 			}
 		}
 	}
+	for (int i = 0; i < ITEM_MAX; i++)
+	{
+		if (EnemyLife(i))
+		{
+			itemControl();
+
+			if (itemF[i].life > 0)
+			{
+				if (ItemHitCheck(playerPos, playerSize.x))
+				{
+					//ｱｲﾃﾑに当たっている
+					DeleteItem(i);
+					
+				}
+			}
+		}
+	}
+
+	
 
 
 	//ｹﾞｰﾑｼｰﾝ描画

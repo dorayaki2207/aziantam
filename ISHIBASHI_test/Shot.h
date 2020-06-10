@@ -2,7 +2,7 @@
 
 //-----’è”’è‹`
 #define SHOT_ANI		46				//@’e‚Ì±ÆÒ°¼®İ”
-#define SHOT_LIFE_MAX	50
+#define SHOT_LIFE_MAX	46
 #define SHOT_MAX		20
 
 

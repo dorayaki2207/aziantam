@@ -16,20 +16,21 @@ int enemyImage[ENEMY_M_MAX][16];
 void EnemySystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
+
 	//ŒÏ
 	enemyMobMaster[ENEMY_I_MOB].charType = ENEMY_I_MOB;			//	´ÈĞ°‚Ìí—Ş	F	·ÂÈ
 	enemyMobMaster[ENEMY_I_MOB].moveSpeed = 2;					//	·ÂÈ‚ÌˆÚ“®—Ê
-	enemyMobMaster[ENEMY_I_MOB].lifeMax = 50;					//	·ÂÈ‚Ì‘Ì—ÍÅ‘å’l
+	enemyMobMaster[ENEMY_I_MOB].lifeMax = 3;					//	·ÂÈ‚Ì‘Ì—ÍÅ‘å’l
 	enemyMobMaster[ENEMY_I_MOB].point = 1;						//	·ÂÈ‚Ì“¾“_
 	//ˆê”½–Ø–È
 	enemyMobMaster[ENEMY_Y_MOB].charType = ENEMY_Y_MOB;			//	´ÈĞ°‚Ìí—Ş	F	ˆê”½–Ø–È
 	enemyMobMaster[ENEMY_Y_MOB].moveSpeed = 2;					//	ˆê”½–Ø–È‚ÌˆÚ“®—Ê
-	enemyMobMaster[ENEMY_Y_MOB].lifeMax = 50;					//	ˆê”½–Ø–È‚Ì‘Ì—ÍÅ‘å’l
+	enemyMobMaster[ENEMY_Y_MOB].lifeMax = 3;					//	ˆê”½–Ø–È‚Ì‘Ì—ÍÅ‘å’l
 	enemyMobMaster[ENEMY_Y_MOB].point = 1;						//	ˆê”½–Ø–È‚Ì“¾“_
 	//ŠC–Vå
 	enemyMobMaster[ENEMY_A_MOB].charType = ENEMY_A_MOB;			//	´ÈĞ°‚Ìí—Ş	F	ŠC–Vå						
 	enemyMobMaster[ENEMY_A_MOB].moveSpeed = 2;					//	ŠC–Vå‚ÌˆÚ“®—Ê
-	enemyMobMaster[ENEMY_A_MOB].lifeMax = 50;					//	ŠC–Vå‚Ì‘Ì—ÍÅ‘å’l
+	enemyMobMaster[ENEMY_A_MOB].lifeMax = 3;					//	ŠC–Vå‚Ì‘Ì—ÍÅ‘å’l
 	enemyMobMaster[ENEMY_A_MOB].point = 1;						//	ŠC–Vå‚Ì“¾“_
 	//ÓÌŞ‚Ü‚Æ‚ß‚Äˆ—
 	for (int type = 0; type < ENEMY_M_MAX; type++)
@@ -225,7 +226,7 @@ int MoveEnemyXY(CHARACTER* enemy, XY player1Pos)		// true : “®‚­A false : “®‚©‚
 
 
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
-bool EnemyHitCheck(XY sPos, int sSize, int index)
+bool EnemyHitCheck(XY sPos, int sSize)
 {
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int en = 0; en < ENEMY_MAX; en++)
@@ -239,11 +240,20 @@ bool EnemyHitCheck(XY sPos, int sSize, int index)
 			{
 				//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
 				enemyMob[en].life--;
-				itemF[index].hitFlag = true;
 				return true;
 			}
 		}
 	}
 	//’e‚ªŠO‚ê‚½
 	return false;
+}
+
+
+bool EnemyLife(int index)
+{
+	for (int en = 0; en < ENEMY_MAX; en++)
+	{
+		enemyMob[en].life == 0;	
+	}
+	return true;
 }

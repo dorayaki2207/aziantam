@@ -13,6 +13,7 @@
 #include "Stage.h"
 #include "Item.h"
 #include "Battle.h"
+#include "Enemy.h"
 
 //-----外部変数宣言
 //ｱｲﾃﾑ関連
@@ -43,15 +44,24 @@ void ItemSystemInit(void)
 	itemFmaster[ITEM_TYPE_KAZE].charType = ITEM_TYPE_KAZE;			//	御札の種類	：	風
 	itemFmaster[ITEM_TYPE_KAIFUKU].charType = ITEM_TYPE_KAIFUKU;	//	御札の種類	：	回復
 	//御札まとめて処理
-	for (int i = 0; i < ITEM_TYPE_F_MAX; i++)
+	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
 	{
-		itemFmaster[i].pos = { 250,250 };																//　御札の地図上の座標
-		itemFmaster[i].size = { 20,20 };															//	御札の画像ｻｲｽﾞ
-		itemFmaster[i].offsetSize = { itemFmaster[i].size.x / 2,itemFmaster[i].size.y / 2 };		//　御札のｵﾌｾｯﾄ
-		itemFmaster[i].point = 0;																	//	御札の枚数
-		itemFmaster[i].lifeMax = 20;																//	御札の体力最大値（表示時間）
-		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	御札の体力
-		itemFmaster[i].hitFlag = false;
+		itemFmaster[type].pos = { 0,0 };																//　御札の地図上の座標
+		itemFmaster[type].size = { 20,20 };																//	御札の画像ｻｲｽﾞ
+		itemFmaster[type].offsetSize = { itemFmaster[type].size.x / 2,itemFmaster[type].size.y / 2 };	//　御札のｵﾌｾｯﾄ
+		itemFmaster[type].point = 0;																	//	御札の枚数
+		itemFmaster[type].lifeMax = 50;																	//	御札の体力最大値（表示時間）
+		itemFmaster[type].life = itemFmaster[type].lifeMax;									//	御札の体力
+																	//	御札（ﾄﾞﾛｯﾌﾟ用
+		for (int i = 0; i < ITEM_MAX; i++)
+		{
+
+			itemF[i] = itemFmaster[type];
+			itemF[i].pos = { 200,200 };
+			//	itemF[i].point = 0;									//	御札の枚数
+			//itemF[i].lifeMax = 0;									//	御札の体力最大値（表示時間）
+			itemF[i].life = 0;						//	体力
+		}
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
@@ -93,18 +103,7 @@ void ItemSystemInit(void)
 
 void ItemGameInit(void)
 {
-	//御札（ﾄﾞﾛｯﾌﾟ用
-	for (int i = 0; i < ITEM_MAX; i++)
-	{
-
-		itemF[i] = itemFmaster[GetRand(ITEM_TYPE_F_MAX - 1)];
-		itemF[i].pos = { 200,200 };
-		itemF[i].hitFlag = false;
-		//	itemF[i].point = 0;																//	御札の枚数
-		//	itemF[i].lifeMax = 20;															//	御札の体力最大値（表示時間）
-		//	itemF[i].life = itemF[i].lifeMax;												//	御札の体力
-
-	}
+	
 	//三種の神器
 	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
 	{
@@ -117,7 +116,25 @@ void ItemGameInit(void)
 
 }
 
-void ItemControl(CHARACTER boss)
+
+
+void itemControl()
+{
+	for (int i = 0; i < ITEM_MAX; i++)
+	{
+		
+		//撃っている弾を探す
+		if (itemF[i].life > 0)
+		{
+
+			//寿命を減らす（射程距離）
+			itemF[i].life--;
+		
+		}
+	}
+}
+
+void ItemBossControl(CHARACTER* boss)
 {
 	//攻撃札が表示されていないときのみKey押せる
 	if (lookCnt == 0)
@@ -130,8 +147,8 @@ void ItemControl(CHARACTER boss)
 			{
 				itemF[ITEM_TYPE_HI].point--;
 				itemFBFlag[ITEM_TYPE_HI] = true;
-				boss.life--;
-				boss.hitFlag = true;
+				(*boss).life--;
+				(*boss).hitFlag = true;
 			}
 		}
 		//水の御札
@@ -142,8 +159,8 @@ void ItemControl(CHARACTER boss)
 			{
 				itemF[ITEM_TYPE_MIZU].point--;
 				itemFBFlag[ITEM_TYPE_MIZU] = true;
-				boss.life--;
-				boss.hitFlag = true;
+				(*boss).life--;
+				(*boss).hitFlag = true;
 
 			}
 		}
@@ -155,8 +172,8 @@ void ItemControl(CHARACTER boss)
 			{
 				itemF[ITEM_TYPE_KAZE].point--;
 				itemFBFlag[ITEM_TYPE_KAZE] = true;
-				boss.life--;
-				boss.hitFlag = true;
+				(*boss).life--;
+				(*boss).hitFlag = true;
 
 			}
 		}
@@ -182,7 +199,7 @@ void ItemControl(CHARACTER boss)
 			{
 				itemFBFlag[type] = false;
 				lookCnt = 0;
-				boss.hitFlag = false;
+				(*boss).hitFlag = false;
 			}
 		}
 	}
@@ -211,28 +228,24 @@ void ItemGameDraw(void)
 	//御札（ﾄﾞﾛｯﾌﾟ用
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
-	//	if (Pass(itemF[i].pos) == PASS_OK)
-	//	{
-			//生きてる御札のみ表示
-			if (itemF[i].life > 0)
-			{
-				if (itemF[i].hitFlag)
-				{
-					//-----画像描画
-					DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
-						, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
-						, itemFImage[itemF[i].charType]
-						, true);
+		//生きてる御札のみ表示
+		if (itemF[i].life > 0)
+		{
+			//-----画像描画
+			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+				, itemFImage[itemF[i].charType]
+				, true);
 
-					DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
-						, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
-						, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
-						, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
-						, 0xFF00FF, false);
-				}
-			}
-	//	}
+			DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+				, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
+				, 0xFF00FF, false);
+		}
+		DrawFormatString(0, 140, 0xFFFFFF, "itemLife : %d", itemF[i].life);
 	}
+
 	//三種の神器
 	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
 	{
@@ -319,9 +332,9 @@ bool ItemHitCheck(XY sPos, int sSize)
 				&& ((itemF[i].pos.y - itemF[i].size.y / 2) < (sPos.y + sSize / 2))
 				&& ((itemF[i].pos.y + itemF[i].size.y / 2) > (sPos.y - sSize / 2)))
 			{
-				//当たった時、ｴﾈﾐｰの体力を減らす
+				//当たった時、ｱｲﾃﾑを消す
 				itemF[i].life = 0;
-				//ｴﾈﾐｰを倒した時だけﾎﾟｲﾝﾄ加算
+				//ﾄﾞﾛｯﾌﾟｱｲﾃﾑを拾った時だけﾎﾟｲﾝﾄ加算
 				//御札に触れたら加算
 				if (itemF[i].charType == ITEM_TYPE_HI)
 				{
@@ -339,6 +352,7 @@ bool ItemHitCheck(XY sPos, int sSize)
 				{
 					itemF[ITEM_TYPE_KAIFUKU].point++;
 				}
+				
 				return true;
 			}
 		}
@@ -347,15 +361,13 @@ bool ItemHitCheck(XY sPos, int sSize)
 	return false;
 }
 
+
+
+
 //-----弾を消滅させる
 void DeleteItem(int index)
 {
 	itemF[index].life = 0;
-	
+
 };
 
-void ItemLife(int index)
-{
-
-	itemF[index].life--;
-}

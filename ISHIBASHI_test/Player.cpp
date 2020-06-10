@@ -18,14 +18,14 @@ void PlayerSystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
 	player.moveDir = DIR_DOWN;											//	·¬×¸À‚ÌŒü‚«
-	player.size = { 32,40 };											//	·¬×¸À‚Ì‰æ‘œ»²½Ş
+	player.size = { 40,50 };											//	·¬×¸À‚Ì‰æ‘œ»²½Ş
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
 	player.moveSpeed = 4;												//	·¬×¸À‚ÌˆÚ“®½Ëß°ÄŞ
 	player.hitFlag = false;
 
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
 	//·¬×¸ÀŠÖ˜A
-	LoadDivGraph("aitem/bossDT.png", DIR_MAX*PLAYER_MAX
+	LoadDivGraph("aitem/bossDT3.png", DIR_MAX*PLAYER_MAX
 		, DIR_MAX, PLAYER_MAX, player.size.x, player.size.y, playerImage[0], true);
 
 
@@ -166,7 +166,7 @@ XY PlayerControl(void)
 		if (keyNew[KEY_ID_FIRE])
 		{
 	//		ItemMOBControl(ITEM_TYPE_HI);
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE/*, ITEM_TYPE_HI*/);
+			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE);
 		}
 		if (keyNew[KEY_ID_WATER])
 		{

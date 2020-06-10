@@ -2,8 +2,13 @@
 #include "test.h"
 #include "Stage.h"
 
+
+int mapChipImage[STAGE_ID_MAX];
 int chipImage[81];
-int map[MAP_Y][MAP_X] =
+int OnichipImage[64];
+int map[MAP_Y][MAP_X];
+
+int MobStage[MAP_Y][MAP_X]=
 {
 {  6, 7, 7, 8,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58, 8, 8, 58,58,58,58,58 },
 { 15,16,16,17,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58,58,58, 58,58,58, 8, 8, 58,58,58,58,58 },
@@ -42,20 +47,64 @@ int map[MAP_Y][MAP_X] =
 { 24,25,25,25,25, 25,25,25,25,25, 25,25,25,25,25, 25,25,25,25,25, 25,25,25,25,26, 58,58,58,58,58 },
 };
 
-XY mapPos;	//ﾏｯﾌﾟのｵﾌｾｯﾄ
-XY mapSize;	//ﾏｯﾌﾟのｻｲｽﾞ
+int OniStage[MAP_ONI_Y][MAP_ONI_X] =
+{
+{ 4, 5, 1, 1, 2,  3,51, 6, 6, 6,  6, 6, 6, 6, 6,  6, 6, 6, 6, 6,  6, 6, 6, 6, 6 },
+{12,13, 8, 9,10, 11,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51, 6 },
+{ 6, 6, 6, 6, 6,  6, 6, 6, 6, 6,  6, 6, 6, 6, 6,  6, 6, 6, 6, 6,  6, 6, 6, 6, 6 },
+};
+
+XY mapPos;			//ﾏｯﾌﾟのｵﾌｾｯﾄ
+XY mapSize;			//ﾏｯﾌﾟのｻｲｽﾞ
+STAGE_ID stageID;	//ﾏｯﾌﾟの種類
 PASS_ID passID;
+
+int doaImage[4];
+int uzuImage[5];
+int aniCnt;
 
 //-----ｽﾃｰｼﾞ情報の初期化
 void StageSystemInit(void)
 {
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	LoadDivGraph("aitem/map.png", 81, 9, 9, CHIP_SIZE_X, CHIP_SIZE_Y, chipImage);
+	LoadDivGraph("aitem/map2.png", 64, 8, 8, CHIP_SIZE_X, CHIP_SIZE_Y, OnichipImage);
+
+
+	LoadDivGraph("aitem/tobiraA.png", 4, 1, 4, 64, 64, doaImage);
+	LoadDivGraph("aitem/uzu.png", 6, 6, 1, 126, 126, uzuImage);
 
 	//-----初期化
 	//座標
 //	mapPos = { 0,0 };
 	passID = PASS_NON;
+	
+	
+	aniCnt = 0;
+
+	//ﾏｯﾌﾟﾃﾞｰﾀ
+	stageID = STAGE_ID_MOB;
+	SetMapData(stageID);
 }
 
 void StageGameInit(void)
@@ -69,13 +118,75 @@ void StageGameInit(void)
 //-----ｽﾃｰｼﾞ描画処理
 void StageGameDraw(void)
 {
-	for (int y = 0; y < MAP_Y; y++)
+	
+	for (int y = 0; y < mapSize.y; y++)
 	{
-		for (int x = 0; x < MAP_X; x++)
+		for (int x = 0; x < mapSize.x; x++)
 		{
-			DrawGraph(x * CHIP_SIZE_X + mapPos.x
-				, y * CHIP_SIZE_Y + mapPos.y
-				, chipImage[map[y][x]], true);
+		//	mapChipImage[STAGE_ID_MOB] = chipImage[map[y][x]];
+		//	mapChipImage[STAGE_ID_ONI] = OnichipImage[map[y][x]];
+
+			if (stageID == STAGE_ID_MOB)
+			{
+				mapChipImage[STAGE_ID_MOB] = chipImage[map[y][x]];
+			}
+			else if (stageID == STAGE_ID_ONI)
+			{
+				mapChipImage[STAGE_ID_ONI] = OnichipImage[map[y][x]];
+			}
+
+			for (int chip = 0; chip < STAGE_ID_MAX; chip++)
+			{
+				DrawGraph(x * CHIP_SIZE_X + mapPos.x
+					, y * CHIP_SIZE_Y + mapPos.y
+					, mapChipImage[chip], true);
+			}
+		
+		}
+	}
+
+	aniCnt++;
+	DrawGraph(200 + mapPos.x, 200 + mapPos.y, doaImage[(aniCnt/40)%4], true);
+	DrawGraph(250 + mapPos.x, 200 + mapPos.y, uzuImage[(aniCnt / 20) % 5], true);
+}
+
+//ｽﾃｰｼﾞﾃﾞｰﾀをﾏｯﾌﾟ配列にｺﾋﾟｰ
+void SetMapData(STAGE_ID stage_ID)
+{
+	//ﾏｯﾌﾟ配列の初期化
+	for (int y = 0; y < mapSize.y; y++)
+	{
+		for (int x = 0; x < mapSize.x; x++)
+		{
+			map[y][x] = 0;
+		}
+	}
+
+
+	if (stage_ID == STAGE_ID_MOB)
+	{
+		mapSize = { MAP_X,MAP_Y };
+
+		//ｽﾃｰｼﾞﾃﾞｰﾀをﾏｯﾌﾟ配列にｺﾋﾟｰ
+		for (int y = 0; y < mapSize.y; y++)
+		{
+			for (int x = 0; x < mapSize.x; x++)
+			{
+				map[y][x] = MobStage[y][x];
+			}
+		}
+	}
+	else if (stage_ID == STAGE_ID_ONI)
+	{
+		mapSize = { MAP_ONI_X,MAP_ONI_Y };
+
+		//ｽﾃｰｼﾞﾃﾞｰﾀをﾏｯﾌﾟ配列にｺﾋﾟｰ
+		for (int y = 0; y < mapSize.y; y++)
+		{
+			for (int x = 0; x < mapSize.x; x++)
+			{
+				map[y][x] = OniStage[y][x];
+			}
 		}
 	}
 }
@@ -133,7 +244,7 @@ bool IsPass(XY pos)
 //	switch (map[indexPos.y][indexPos.x])
 //	{
 //		//草
-//	case 58:
+//	case 65:
 //		return false;
 //		break;
 //	default:
@@ -156,7 +267,7 @@ PASS_ID Pass(XY pos)
 
 	switch (map[indexPos.y][indexPos.x])
 	{
-	case 58:			
+	case 65:			
 		//出現可能
 		return PASS_OK;
 		break;

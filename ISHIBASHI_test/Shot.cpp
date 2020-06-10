@@ -36,9 +36,9 @@ void ShotSystemInit(void)
 		{
 			shot[sh] = shotMaster[type];
 			shot[sh].pos = {0,0};
-			shot[type].lifeMax = SHOT_LIFE_MAX;						//	’e‚Ì‘Ì—ÍÅ‘å’l
-			shot[type].life = 0;									//	’e‚Ì‘Ì—Í
-			shot[type].animCnt = 0;								//	’e‚Ì±ÆÒ°¼®İ
+			shot[sh].lifeMax = SHOT_LIFE_MAX;						//	’e‚Ì‘Ì—ÍÅ‘å’l
+			shot[sh].life = 0;									//	’e‚Ì‘Ì—Í
+			shot[sh].animCnt = 0;								//	’e‚Ì±ÆÒ°¼®İ
 
 		}
 	}
@@ -68,7 +68,12 @@ void ShotSystemInit(void)
 
 void ShotGameInit(void)
 {
-	
+	for (int sh = 0; sh < SHOT_MAX; sh++)
+	{
+		shot[sh].pos = { 0,0 };
+		shot[sh].life = 0;									//	’e‚Ì‘Ì—Í
+		
+	}
 }
 
 void ShotControl(XY pPos)
@@ -132,11 +137,13 @@ void ShotGameDraw(void)
 		//-----î•ñˆ—
 		DrawFormatString(0, 100, 0xFFFFFF, "shotPos : %d,%d", shot[sh].pos.x, shot[sh].pos.y);
 		DrawFormatString(0, 120, 0xFFFFFF, "shotAni : %d", shot[sh].animCnt);
+		DrawFormatString(0, 160, 0xFFFFFF, "shotLife : %d", shot[sh].life);
 
 	}
 
 
 }
+
 
 
 //-----’e‚ğ¶¬‚·‚é
@@ -153,20 +160,21 @@ void CreateShot(XY pPos, DIR pDir, SHOT_TYPE ptype/*, ITEM_TYPE_F itype*/)
 		//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ğ’T‚·
 		if (shot[sh].life <= 0)
 		{
-		
-				//ŒäD‚Ì”‚ª0–‡ˆÈã‚Ìê‡‚Ì‚İˆ—‚ğ‚·‚é
-			//	if (itemF[itype].point > 0)
-			//	{
-				//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ª‚ ‚Á‚½‚Ì‚Å”­Ë
+
+			//ŒäD‚Ì”‚ª0–‡ˆÈã‚Ìê‡‚Ì‚İˆ—‚ğ‚·‚é
+		//	if (itemF[itype].point > 0)
+		//	{
+			//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ª‚ ‚Á‚½‚Ì‚Å”­Ë
 			shot[sh].charType = ptype;
-				shot[sh].pos.x = pPos.x;				//	’e‚ÌêŠ
-				shot[sh].pos.y = pPos.y;
-				shot[sh].moveDir = pDir;				//	’e‚Ìi‚Ş‚×‚«•ûŒü
-				shot[sh].life = shot[sh].lifeMax;		//	’e‚ğŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
-				break;
-				//	}
-	//		}
+			shot[sh].pos.x = pPos.x;				//	’e‚ÌêŠ
+			shot[sh].pos.y = pPos.y;
+			shot[sh].moveDir = pDir;				//	’e‚Ìi‚Ş‚×‚«•ûŒü
+			shot[sh].life = shot[sh].lifeMax;		//	’e‚ğŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
+
+			//	}
+//		}
 		}
+		break;
 	}
 }
 

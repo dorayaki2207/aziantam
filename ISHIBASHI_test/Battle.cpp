@@ -15,7 +15,7 @@ int BossDImage[2];
 void BattleSystemInit(void)
 {
 	//-----‰Šú‰»
-	boss.size = { 400,500 };							//	·¬×¸À‚Ì‰æ‘œ»²½Ş
+	boss.size = { 400,500 };									//	·¬×¸À‚Ì‰æ‘œ»²½Ş
 	boss.offsetSize = { boss.size.x / 2,boss.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
 	boss.hitFlag = false;			//UŒ‚‚ğó‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	
@@ -48,7 +48,7 @@ void BattleScene(void)
 	{
 		sceneID = SCENE_ID_INIT;
 	}
-	ItemControl(boss);
+	ItemBossControl(&boss);
 	BattleControl();
 	//•`‰æˆ—
 	BattleGameDraw();
