@@ -1,4 +1,7 @@
-#include "DxLib.h"
+// タイトルシーン　セレクト途中:石橋
+
+
+#include <DxLib.h>
 #include "main.h"
 #include "keycheck.h"
 #include "effect.h"
@@ -21,6 +24,16 @@ bool iventFlag;
 //PAUSE関連
 bool paseFlag;
 int keyImage;
+
+//ﾀｲﾄﾙｼｰﾝ関連
+MSG_STATUS msgStatus[MSG_MAX];
+MSG_TYPE msgType;
+int rogoImage;
+int bgImage;
+int msgImage[MSG_MAX];
+bool msgCheck[MSG_MAX];
+bool msgFlag;
+int msgCnt = 0;
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -94,7 +107,9 @@ bool SystemInit(void)
 	
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("item/操作説明.png");
-
+	rogoImage = LoadGraph("item/rogo_.png");
+	bgImage = LoadGraph("item/bg.png");
+	LoadDivGraph(("item/msg.png"), 2, 1, 2, 400, 100, msgImage);
 	//-----変数の初期化
 	//ｼｰﾝ関連
 	SceneCounter = 0;
@@ -104,7 +119,14 @@ bool SystemInit(void)
 	pauseFlag = false;
 	//ｲﾝﾍﾞﾝﾄリ
 	iventFlag = false;
-	
+	//ﾀｲﾄﾙｼｰﾝ
+	for (int i = 0; i < MSG_MAX; i++)
+	{
+		msgStatus[i] = MSG_STATUS_NON;
+		msgCheck[i] = true;
+	}
+	msgType = MSG_START;
+	msgFlag = false;
 	
 	return true;
 }
@@ -131,15 +153,69 @@ void InitScene(void)
 void TitleScene(void)
 {
 	//-----ｼｰﾝ遷移
-	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAME;
+	//if (KeyDownTrigger[KEY_ID_UP])
+	//{
+	//	msgStatus[MSG_START] = MSG_STATUS_ALIVE;	
+	//	msgType = MSG_START;
+	//}
+	//if (KeyDownTrigger[KEY_ID_DOWN])
+	//{
+	//	msgStatus[MSG_LOAD] = MSG_STATUS_ALIVE;
+	//	msgType = MSG_LOAD;
+	//}
 
+	if (msgType == MSG_START)
+	{
+		if (KeyDownTrigger[KEY_ID_SPACE])
+		{
+			SceneID = SCENE_GAME;
+		}
+	}
+	//else if (msgType == MSG_LOAD)
+	//{
+	//	if (KeyDownTrigger[KEY_ID_SPACE])
+	//	{
+	//		msgFlag = true;	
+	//	}
+	//	if (msgCnt > 120)
+	//	{
+	//		msgCnt = 0;
+	//		msgFlag = false;
+	//	}
+	//}
+	
 	//-----描画
 	TitleDraw();
 }
+
 //ﾀｲﾄﾙの描画
 void TitleDraw(void)
 {
 	//-----描画処理
+	DrawGraph(0, 0, bgImage, true);
+	DrawGraph((SCREEN_SIZE_X - 400)/2, 50, rogoImage, true);
+	for (int i = 0; i < MSG_MAX; i++)
+	{
+		if (msgStatus[i] == MSG_STATUS_NON)
+		{
+
+		//	if (msgImage[i] == msgImage[MSG_LOAD])
+		//	{
+		//		SetDrawBright(50, 50, 50);
+		//	}
+		}
+		//	DrawGraph((SCREEN_SIZE_X - 400) / 2, 400 + 100 * i, msgImage[i], true);
+			DrawGraph((SCREEN_SIZE_X - 400) / 2, 400, msgImage[0], true);
+
+			SetDrawBright(255, 255, 255);
+		
+	}
+	if (msgFlag)
+	{
+		msgCnt++;
+		DrawBox(200, 200, 600, 450, 0xFFFFFF, true);
+		DrawString(320, 300, "  選択できません\n選び直してください", 0x000000);
+	}
 
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Title:%d", SceneCounter);
@@ -210,7 +286,13 @@ void GameScene(void)
 			mapPos.x = 0;
 			mapPos.y = 0;
 		}
-		
+		else if (GetEvent(playerPos) == EVENT_ID_KAPPA)
+		{
+			stageID = STAGE_ID_KAPPA;
+			SetMapData(STAGE_ID_KAPPA);
+			mapPos.x = 0;
+			mapPos.y = 0;
+		}
 	}
 
 	

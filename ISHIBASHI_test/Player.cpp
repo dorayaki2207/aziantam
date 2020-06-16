@@ -89,7 +89,7 @@ XY PlayerControl(void)
 				//右
 			case DIR_RIGHT:			
 				playerPosCopy.x += player.moveSpeed;
-				playerPosOffset.x = playerPosCopy.x + player.offsetSize.x;
+				playerPosOffset.x = playerPosCopy.x/* + player.offsetSize.x*/+7;
 				indexPos = PosToIndex(playerPosCopy);
 				//指定した場所を通過可能かどうか
 				if (IsPass(playerPosOffset))
@@ -106,7 +106,7 @@ XY PlayerControl(void)
 				//左
 			case DIR_LEFT:	
 				playerPosCopy.x -= player.moveSpeed;
-				playerPosOffset.x = playerPosCopy.x - player.offsetSize.x;
+				playerPosOffset.x = playerPosCopy.x /*- player.offsetSize.x*/-10;
 				indexPos = PosToIndex(playerPosCopy);
 				//指定した場所を通過可能かどうか
 				if (IsPass(playerPosOffset))
@@ -123,7 +123,7 @@ XY PlayerControl(void)
 				//上
 			case DIR_UP:	
 				playerPosCopy.y -= player.moveSpeed;
-				playerPosOffset.y = playerPosCopy.y - player.offsetSize.y;
+				playerPosOffset.y = playerPosCopy.y/* - player.offsetSize.y*/;
 				indexPos = PosToIndex(playerPosCopy);
 				//指定した場所を通過可能かどうか
 				if (IsPass(playerPosOffset))
@@ -181,18 +181,13 @@ XY PlayerControl(void)
 			CreateShot(player.pos, player.moveDir, SHOT_TYPE_HEAL);
 		}
 
-		//-----ﾏｯﾌﾟの制限　（移動処理内に入れるとﾏｯﾌﾟがずれてしまう
-		if (mapPos.x > 0) mapPos.x = 0;
-		if (mapPos.x < -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X;
-		if (mapPos.y > 0) mapPos.y = 0;
-		if (mapPos.y < -CHIP_SIZE_Y * MAP_Y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * MAP_Y + SCREEN_SIZE_Y;
-
+		MapRange();
 		//　移動範囲処理
 		//ﾏｯﾌﾟﾁｯﾌﾟの当たり判定を実装していない為、一時的処置
-//		if (player.pos.x > CHIP_SIZE_X * MAP_X - player.offsetSize.x) player.pos.x = CHIP_SIZE_X * MAP_X - player.offsetSize.x;     //右制御
-//		if (player.pos.x < player.offsetSize.x) player.pos.x = player.offsetSize.x;													//左制御
-//		if (player.pos.y > CHIP_SIZE_Y * MAP_Y - player.offsetSize.y) player.pos.y = CHIP_SIZE_Y * MAP_Y - player.offsetSize.y;		//下制御
-//		if (player.pos.y < player.offsetSize.y) player.pos.y = player.offsetSize.y;													//上制御
+	//	if (player.pos.x > CHIP_SIZE_X * mapSize.x - player.offsetSize.x) player.pos.x = CHIP_SIZE_X * mapSize.x - player.offsetSize.x;     //右制御
+	//	if (player.pos.x < player.offsetSize.x) player.pos.x = player.offsetSize.x;													//左制御
+	//	if (player.pos.y > CHIP_SIZE_Y * mapSize.y - player.offsetSize.y) player.pos.y = CHIP_SIZE_Y * mapSize.y - player.offsetSize.y;		//下制御
+	//	if (player.pos.y < player.offsetSize.y) player.pos.y = player.offsetSize.y;													//上制御
 
 
 	}
@@ -225,7 +220,7 @@ void PlayerGameDraw(void)
 		, (SCROLL_X_MAX + 1)
 		, (SCROLL_Y_MAX + 1)
 		, 0x55FF22, false);
-
+	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);

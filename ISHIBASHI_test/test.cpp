@@ -231,6 +231,7 @@ void GameScene()
 		playerPos = PlayerControl();
 		EnemyControl(playerPos);
 		ShotControl(playerPos);
+		
 		//ÌßÚ²Ô°‚Æ´ÈÐ°‚Æ‚Ì“–‚½‚è”»’è
 //		if (ItemHitCheck(playerPos, playerSize.x))
 //		{

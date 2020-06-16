@@ -35,6 +35,20 @@ enum MAGIC_TYPE
 	MAGIC_TYPE_MAX
 };
 
+enum MSG_TYPE
+{
+	MSG_START,		//‚Í‚¶‚ß‚©‚ç
+	MSG_LOAD,		//‚Â‚Ã‚«‚©‚ç
+	MSG_MAX
+};
+
+enum MSG_STATUS
+{
+	MSG_STATUS_NON,				//	–¢‘I‘ð
+	MSG_STATUS_ALIVE,			//	¶‚«‚Ä‚¢‚é
+	MSG_STATUS_DEATH,			//	Ž€‚ñ‚Å‚¢‚é
+	MSG_STATUS_MAX
+};
 
 
 
