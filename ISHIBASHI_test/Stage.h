@@ -28,7 +28,6 @@ enum STAGE_ID
 	STAGE_ID_MOB,				//MOB“G½Ã°¼Þ
 	STAGE_ID_ONI,				//‹S½Ã°¼Þ
 	STAGE_ID_TEST,
-	STAGE_ID_TEST2,
 	STAGE_ID_MAX
 };
 

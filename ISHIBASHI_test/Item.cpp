@@ -7,6 +7,8 @@
 /////　ボスからの攻撃等が入り次第変更する可能性有り
 ////	攻撃をくらったらKeyが押せるなど
 
+
+//  テスト用にｱｲﾃﾑをはじめから2枚ずつ所持するようにする
 #include "DxLib.h"
 #include "test.h"
 #include "KeyCheck.h"
@@ -49,7 +51,7 @@ void ItemSystemInit(void)
 		itemFmaster[type].pos = { 0,0 };																//　御札の地図上の座標
 		itemFmaster[type].size = { 20,20 };																//	御札の画像ｻｲｽﾞ
 		itemFmaster[type].offsetSize = { itemFmaster[type].size.x / 2,itemFmaster[type].size.y / 2 };	//　御札のｵﾌｾｯﾄ
-		itemFmaster[type].point = 0;																	//	御札の枚数
+		itemFmaster[type].point = 2;																	//	御札の枚数
 		itemFmaster[type].lifeMax = 50;																	//	御札の体力最大値（表示時間）
 		itemFmaster[type].life = itemFmaster[type].lifeMax;									//	御札の体力
 																	//	御札（ﾄﾞﾛｯﾌﾟ用
@@ -129,7 +131,6 @@ void itemControl()
 
 			//寿命を減らす（射程距離）
 			itemF[i].life--;
-		
 		}
 	}
 }

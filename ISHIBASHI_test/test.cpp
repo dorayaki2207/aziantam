@@ -167,7 +167,7 @@ void InitScene(void)
 	//▄Д▌D√┤░■≈p
 	testCnt = 0;
 
-	sceneID = SCENE_ID_TITLE;
+	sceneID = SCENE_ID_GAME;
 }
 
 //-----ю╡ды╪╟щ
@@ -252,6 +252,7 @@ void GameScene()
 	}
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
+
 		if (EnemyLife(i))
 		{
 			itemControl();

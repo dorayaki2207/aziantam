@@ -165,19 +165,23 @@ XY PlayerControl(void)
 		//-----ºÆØƒèàóù
 		if (keyNew[KEY_ID_FIRE])
 		{
-	//		ItemMOBControl(ITEM_TYPE_HI);
+		//	ItemMOBControl(ITEM_TYPE_HI);
 			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE);
 		}
 		if (keyNew[KEY_ID_WATER])
 		{
+		//	ItemMOBControl(ITEM_TYPE_MIZU);
 			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WATER);
 		}
 		if (keyNew[KEY_ID_WIND])
 		{
+		//	ItemMOBControl(ITEM_TYPE_KAZE);
 			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WIND);
 		}
 		if (keyNew[KEY_ID_HEAL])
 		{
+		//	ItemMOBControl(ITEM_TYPE_KAIFUKU);
+
 			CreateShot(player.pos, player.moveDir, SHOT_TYPE_HEAL);
 		}
 
