@@ -132,6 +132,8 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_NORMAL;
 					break;
 
+				case ENEMY_M_MAX:
+					break;
 				default:
 					break;
 				}

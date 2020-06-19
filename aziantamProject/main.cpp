@@ -4,6 +4,7 @@
 #include <DxLib.h>
 #include "main.h"
 #include "keycheck.h"
+#include "title.h"
 #include "effect.h"
 #include "stage.h"
 #include "player.h"
@@ -25,15 +26,6 @@ bool iventFlag;
 bool paseFlag;
 int keyImage;
 
-//À²ÄÙ¼°İŠÖ˜A
-MSG_STATUS msgStatus[MSG_MAX];
-MSG_TYPE msgType;
-int rogoImage;
-int bgImage;
-int msgImage[MSG_MAX];
-bool msgCheck[MSG_MAX];
-bool msgFlag;
-int msgCnt = 0;
 
 //WinŠÖ”
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -99,6 +91,7 @@ bool SystemInit(void)
 	KeyInit();
 
 	//-----ŠeÓ¼Ş­°Ù‚Ì‰Šú‰»
+	TitleSystemInit();			//À²ÄÙ
 	StageSystemInit();			//½Ã°¼Ş
 	PlayerSystemInit();			//ÌßÚ²Ô°
 	EnemySystemInit();			//“Gmob
@@ -107,9 +100,6 @@ bool SystemInit(void)
 	
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("item/‘€ìà–¾.png");
-	rogoImage = LoadGraph("item/rogo_.png");
-	bgImage = LoadGraph("item/bg.png");
-	LoadDivGraph(("item/msg.png"), 2, 1, 2, 400, 100, msgImage);
 	//-----•Ï”‚Ì‰Šú‰»
 	//¼°İŠÖ˜A
 	SceneCounter = 0;
@@ -119,14 +109,6 @@ bool SystemInit(void)
 	pauseFlag = false;
 	//²İÍŞİÄƒŠ
 	iventFlag = false;
-	//À²ÄÙ¼°İ
-	for (int i = 0; i < MSG_MAX; i++)
-	{
-		msgStatus[i] = MSG_STATUS_NON;
-		msgCheck[i] = true;
-	}
-	msgType = MSG_START;
-	msgFlag = false;
 	
 	return true;
 }
@@ -144,83 +126,6 @@ void InitScene(void)
 	SceneID = SCENE_TITLE;
 }
 
-
-
-
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-//À²ÄÙ¼°İ
-void TitleScene(void)
-{
-	//-----¼°İ‘JˆÚ
-	//if (KeyDownTrigger[KEY_ID_UP])
-	//{
-	//	msgStatus[MSG_START] = MSG_STATUS_ALIVE;	
-	//	msgType = MSG_START;
-	//}
-	//if (KeyDownTrigger[KEY_ID_DOWN])
-	//{
-	//	msgStatus[MSG_LOAD] = MSG_STATUS_ALIVE;
-	//	msgType = MSG_LOAD;
-	//}
-
-	if (msgType == MSG_START)
-	{
-		if (KeyDownTrigger[KEY_ID_SPACE])
-		{
-			SceneID = SCENE_GAME;
-		}
-	}
-	//else if (msgType == MSG_LOAD)
-	//{
-	//	if (KeyDownTrigger[KEY_ID_SPACE])
-	//	{
-	//		msgFlag = true;	
-	//	}
-	//	if (msgCnt > 120)
-	//	{
-	//		msgCnt = 0;
-	//		msgFlag = false;
-	//	}
-	//}
-	
-	//-----•`‰æ
-	TitleDraw();
-}
-
-//À²ÄÙ‚Ì•`‰æ
-void TitleDraw(void)
-{
-	//-----•`‰æˆ—
-	DrawGraph(0, 0, bgImage, true);
-	DrawGraph((SCREEN_SIZE_X - 400)/2, 50, rogoImage, true);
-	for (int i = 0; i < MSG_MAX; i++)
-	{
-		if (msgStatus[i] == MSG_STATUS_NON)
-		{
-
-		//	if (msgImage[i] == msgImage[MSG_LOAD])
-		//	{
-		//		SetDrawBright(50, 50, 50);
-		//	}
-		}
-		//	DrawGraph((SCREEN_SIZE_X - 400) / 2, 400 + 100 * i, msgImage[i], true);
-			DrawGraph((SCREEN_SIZE_X - 400) / 2, 400, msgImage[0], true);
-
-			SetDrawBright(255, 255, 255);
-		
-	}
-	if (msgFlag)
-	{
-		msgCnt++;
-		DrawBox(200, 200, 600, 450, 0xFFFFFF, true);
-		DrawString(320, 300, "  ‘I‘ğ‚Å‚«‚Ü‚¹‚ñ\n‘I‚Ñ’¼‚µ‚Ä‚­‚¾‚³‚¢", 0x000000);
-	}
-
-	//-----î•ñˆ—
-	DrawFormatString(0, 0, 0xFFFFFF, "Title:%d", SceneCounter);
-
-}
 
 
 

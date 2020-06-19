@@ -42,13 +42,6 @@ enum MSG_TYPE
 	MSG_MAX
 };
 
-enum MSG_STATUS
-{
-	MSG_STATUS_NON,				//	ñ¢ëIë
-	MSG_STATUS_ALIVE,			//	ê∂Ç´ÇƒÇ¢ÇÈ
-	MSG_STATUS_DEATH,			//	éÄÇÒÇ≈Ç¢ÇÈ
-	MSG_STATUS_MAX
-};
 
 
 
@@ -101,9 +94,14 @@ void InitScene(void);
 //¿≤ƒŸ
 void TitleScene(void);
 void TitleDraw(void);
+void TitleControl();
 //πﬁ∞—
 void GameScene(void);
 void GameDraw(void);
 //πﬁ∞—µ∞ ﬁ∞
 void GameOverScene(void);
 void GameOverDraw(void);
+
+
+//-----∏ﬁ€∞ ﬁŸâª
+extern SCENE SceneID;
