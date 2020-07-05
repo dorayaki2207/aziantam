@@ -6,15 +6,6 @@
 #define SHOT_MAX		20
 
 
-//-----—ñ‹“Œ^
-enum SHOT_TYPE
-{
-	SHOT_TYPE_FIRE,				//	‰Î‚ÌŒäŽD
-	SHOT_TYPE_WATER,			//	…‚ÌŒäŽD
-	SHOT_TYPE_WIND,				//	•—‚ÌŒäŽD
-	SHOT_TYPE_HEAL,				//	‰ñ•œ‚ÌŒäŽD
-	SHOT_TYPE_MAX
-};
 
 
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
@@ -22,7 +13,7 @@ void ShotSystemInit(void);				//@’eî•ñ‚Ì‰Šú‰»
 void ShotGameInit(void);
 void ShotControl(XY pPos);					//	’e‚Ì‘€ì
 void ShotGameDraw(void);				//	’e‚Ì•`‰æˆ—
-void CreateShot(XY pPos, DIR pDir, SHOT_TYPE ptype/*, ITEM_TYPE_F itype*/);
+void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype);
 void DeleteShot(int index);
 
 //-----¸ÞÛ°ÊÞÙ‰»

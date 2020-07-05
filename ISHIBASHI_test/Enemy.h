@@ -33,4 +33,3 @@ int MoveEnemyXY(CHARACTER* enemy, XY playerPos); //©‹@‚ÌX‚ÆY‚Ì‰“‚¢‚Ù‚¤‚©‚çÀ•W‚
 
 
 bool EnemyHitCheck(XY sPos, int sSize);
-bool EnemyLife(int index);

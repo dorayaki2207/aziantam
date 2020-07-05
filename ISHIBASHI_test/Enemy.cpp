@@ -240,6 +240,33 @@ bool EnemyHitCheck(XY sPos, int sSize)
 			{
 				//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
 				enemyMob[en].life--;
+
+				if (enemyMob[en].life <= 0)
+				{
+					switch (enemyMob[en].charType)
+					{
+					case ENEMY_I_MOB:
+						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						break;
+
+					case ENEMY_A_MOB:
+						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						break;
+
+					case ENEMY_Y_MOB:
+						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						break;
+
+					case ENEMY_M_MAX:
+						break;
+
+					default:
+						break;
+					}
+
+
+				}
+
 				return true;
 			}
 		}
@@ -248,12 +275,3 @@ bool EnemyHitCheck(XY sPos, int sSize)
 	return false;
 }
 
-
-bool EnemyLife(int index)
-{
-	for (int en = 0; en < ENEMY_MAX; en++)
-	{
-		enemyMob[en].life == 0;	
-	}
-	return true;
-}
