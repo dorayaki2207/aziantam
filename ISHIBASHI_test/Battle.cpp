@@ -48,8 +48,11 @@ void BattleScene(void)
 	{
 		sceneID = SCENE_ID_INIT;
 	}
+
 	ItemBossControl(&boss);
 	BattleControl();
+
+
 	//•`‰æˆ—
 	BattleGameDraw();
 }

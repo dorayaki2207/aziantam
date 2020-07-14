@@ -35,7 +35,10 @@ int keyImage;
 
 //当たり判定用
 XY playerSize;
-int testCnt;
+
+//ｿｰﾄ用
+int DropOrderCnt;
+DORP_ORDER DropOrderList[DORP_ORDER_MAX];
 
 //会話システム
 const char *file;
@@ -113,7 +116,10 @@ bool SystemInit(void)
 
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16);				//	65536色ﾓｰﾄﾞに設定
 	ChangeWindowMode(true);										//	true : window, false : ﾌﾙｽｸﾘｰﾝ
-	if (DxLib_Init() == -1) return -1;
+	if (DxLib_Init() == -1)
+	{
+		return false;
+	}
 	SetDrawScreen(DX_SCREEN_BACK);
 
 
@@ -164,9 +170,7 @@ void InitScene(void)
 	ShotGameInit();			//ｼｮｯﾄ
 	BattleGameInit();		//ﾊﾞﾄﾙ
 
-	//御札枚数用
-	testCnt = 0;
-
+	
 	sceneID = SCENE_ID_GAME;
 }
 
@@ -193,15 +197,15 @@ void GameScene()
 		sceneID = SCENE_ID_BATTLE;
 	}
 
-	
+
 	//-----FILE操作
 //	FILE *fp;
 //	
 //	fopen_s(&fp, file, "r");
 //	fread(words, sizeof(words), size_t(2), fp);
 //	fclose(fp);
-	
-	
+
+
 	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
 	if (keyDownTrigger[KEY_ID_IVENT]) iventFlag = !iventFlag;
@@ -211,7 +215,7 @@ void GameScene()
 		SetDrawBright(128, 128, 128);
 		pauseFlag = false;
 	}
-	
+
 	//-----POSE機能
 	if (keyDownTrigger[KEY_ID_PAUSE]) pauseFlag = !pauseFlag;
 	if (pauseFlag)
@@ -219,11 +223,17 @@ void GameScene()
 		SetDrawBright(128, 128, 128);
 		iventFlag = false;
 	}
-	
+
 
 	//通常時動作
 	if (!iventFlag && !pauseFlag)
 	{
+		//ｿｰﾄ初期化
+		for (int i = 0; i < DORP_ORDER_MAX; i++)
+		{
+			DropOrderCnt = 0;
+			DropOrderList[i];
+		}
 
 		//各種機能
 		pCnt++;
@@ -231,12 +241,8 @@ void GameScene()
 		playerPos = PlayerControl();
 		EnemyControl(playerPos);
 		ShotControl(playerPos);
-		
-		//ﾌﾟﾚｲﾔｰとｴﾈﾐｰとの当たり判定
-//		if (ItemHitCheck(playerPos, playerSize.x))
-//		{
-//			testCnt++;
-//		}
+		itemDropControl();
+
 		//弾とｴﾈﾐｰの当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
@@ -247,29 +253,19 @@ void GameScene()
 					DeleteShot(sh);
 
 				}
+
 			}
 		}
-	}
-	for (int i = 0; i < ITEM_MAX; i++)
-	{
-
-		if (EnemyLife(i))
-		{
-			itemControl();
-
-			if (itemF[i].life > 0)
+		
+			if (ItemHitCheck(playerPos, playerSize.x))
 			{
-				if (ItemHitCheck(playerPos, playerSize.x))
-				{
-					//ｱｲﾃﾑに当たっている
-					DeleteItem(i);
-					
-				}
+				//ｱｲﾃﾑに当たっている
+				DeleteItem();
 			}
-		}
-	}
 
-	
+		
+
+	}
 
 
 	//ｹﾞｰﾑｼｰﾝ描画
@@ -291,8 +287,7 @@ void GameDraw()
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);
-	DrawFormatString(0, 200, 0xFF22FF, "%d", testCnt);
-
+	
 	
 
 	DrawFormatString(0, 24, 0xFFFFFF, "pCnt : %d", pCnt);
@@ -333,10 +328,10 @@ void GameDraw()
 		//ｲﾍﾞﾝﾄﾘかﾎﾟｰｽﾞ機能が使用されているときは表示されない
 		DrawFormatString(0, 32, 0xFFFFFF, "%s\n", words);
 
-		DrawFormatString(0, 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_HI].point);
-		DrawFormatString(0, 165, 0xFF22FF, "%d", itemF[ITEM_TYPE_MIZU].point);
-		DrawFormatString(0, 177, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAZE].point);
-		DrawFormatString(0, 189, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
+		DrawFormatString(0, 215, 0xFF22FF, "%d", itemF[MAGIC_TYPE_FIRE].point);
+		DrawFormatString(0, 230, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WATER].point);
+		DrawFormatString(0, 245, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WIND].point);
+		DrawFormatString(0, 260, 0xFF22FF, "%d", itemF[MAGIC_TYPE_HEAL].point);
 
 
 	}
