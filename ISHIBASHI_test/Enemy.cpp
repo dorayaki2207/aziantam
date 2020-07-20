@@ -1,8 +1,14 @@
+//“–‚½‚è”»’è
+//´ÈĞ°‚Æ¼®¯Ä
+//´ÈĞ°‚ÆÌßÚ²Ô°
+
+
 #include "DxLib.h"
 #include "test.h"
 #include "Stage.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "Player.h"
 
 //-----ŠO•”•Ï”éŒ¾
 //ÓÌŞŠÖ˜A
@@ -16,6 +22,7 @@ int enemyImage[ENEMY_M_MAX][16];
 void EnemySystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
+	category[CHARA_ENEMY] = CHARA_ENEMY;
 
 	//ŒÏ
 	enemyMobMaster[ENEMY_I_MOB].charType = ENEMY_I_MOB;			//	´ÈĞ°‚Ìí—Ş	F	·ÂÈ
@@ -226,7 +233,7 @@ int MoveEnemyXY(CHARACTER* enemy, XY player1Pos)		// true : “®‚­A false : “®‚©‚
 
 
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
-bool EnemyHitCheck(XY sPos, int sSize)
+bool EnemyHitCheck(XY sPos, int sSize, CHARA_TYPE type)
 {
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int en = 0; en < ENEMY_MAX; en++)
@@ -238,35 +245,45 @@ bool EnemyHitCheck(XY sPos, int sSize)
 				&& ((enemyMob[en].pos.y - enemyMob[en].size.y / 2) < (sPos.y + sSize / 2))
 				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
 			{
-				//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
-				enemyMob[en].life--;
 
-				if (enemyMob[en].life <= 0)
+				for (int i = 0; i < CHARA_MAX; i++)
 				{
-					switch (enemyMob[en].charType)
+
+					if (category[i] == CHARA_ENEMY)
 					{
-					case ENEMY_I_MOB:
-						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
-						break;
+						//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
+						enemyMob[en].life--;
 
-					case ENEMY_A_MOB:
-						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
-						break;
+						if (enemyMob[en].life <= 0)
+						{
+							switch (enemyMob[en].charType)
+							{
+							case ENEMY_I_MOB:
+								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+								break;
 
-					case ENEMY_Y_MOB:
-						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
-						break;
+							case ENEMY_A_MOB:
+								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+								break;
 
-					case ENEMY_M_MAX:
-						break;
+							case ENEMY_Y_MOB:
+								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+								break;
 
-					default:
-						break;
+							case ENEMY_M_MAX:
+								break;
+
+							default:
+								break;
+							}
+						}
+
+						else if (category[i] == CHARA_PLAYER)
+						{
+							PlayerHp();
+						}
 					}
-
-
 				}
-
 				return true;
 			}
 		}
@@ -274,4 +291,3 @@ bool EnemyHitCheck(XY sPos, int sSize)
 	//’e‚ªŠO‚ê‚½
 	return false;
 }
-

@@ -17,6 +17,8 @@ int playerImage[DIR_MAX][PLAYER_MAX];		//	ﾌﾟﾚｲﾔｰ画像：通常時
 void PlayerSystemInit(void)
 {
 	//-----変数の初期化
+	category[CHARA_PLAYER] = CHARA_PLAYER;
+
 	player.moveDir = DIR_DOWN;											//	ｷｬﾗｸﾀの向き
 	player.size = { 40,50 };											//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//　ｷｬﾗｸﾀのｵﾌｾｯﾄ
@@ -35,10 +37,10 @@ void PlayerSystemInit(void)
 
 void PlayerGameInit(void)
 {
-	player.pos = { 150,150};				//　ｷｬﾗｸﾀの地図上の座標
+	player.pos = { 150,150};										//　ｷｬﾗｸﾀの地図上の座標
 	player.lifeMax = 150;												//	ｷｬﾗｸﾀの体力最大値
 	player.life = player.lifeMax;										//	ｷｬﾗｸﾀの体力
-	player.animCnt = 0;													//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
+	player.animCnt = 0;												//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 
 }
 
@@ -222,9 +224,21 @@ void PlayerGameDraw(void)
 		, (SCROLL_X_MAX + 1)
 		, (SCROLL_Y_MAX + 1)
 		, 0x55FF22, false);
+
+	//情報処理
 	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
+	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);
+}
+
+void PlayerHp(void)
+{
+	if (player.life > 0)
+	{
+		player.life--;
+	}
 }
 

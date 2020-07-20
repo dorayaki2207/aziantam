@@ -3,15 +3,15 @@
 
 //-----定数定義
 #define ITEM_MAX    20
-#define ITEM_M_SIZE 20			//	ｲﾝﾍﾞﾝﾄﾘ用御札ｻｲｽﾞ
-#define ITEM_B_SIZE 150			//	ﾊﾞﾄﾙ用御札ｻｲｽﾞ
+#define ITEM_M_SIZE 20					//	ｲﾝﾍﾞﾝﾄﾘ用御札ｻｲｽﾞ
+#define ITEM_B_SIZE 150				//	ﾊﾞﾄﾙ用御札ｻｲｽﾞ
 
 
 //-----列挙型
 enum ITEM_TYPE_B
 {
-	ITEM_TYPE_KEN,				//	三種の神器・剣
-	ITEM_TYPE_KAGAMI,			//	三種の神器・鏡
+	ITEM_TYPE_KEN,							//	三種の神器・剣
+	ITEM_TYPE_KAGAMI,					//	三種の神器・鏡
 	ITEM_TYPE_MAGATAMA,			//	三種の神器・勾玉
 	ITEM_TYPE_B_MAX
 };

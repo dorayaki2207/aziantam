@@ -1,7 +1,7 @@
 //#pragma once
 
 //-----’è”’è‹`
-#define MAP_X			45
+#define MAP_X		 	45
 #define MAP_Y			45
 #define MAP_MOB_X		30
 #define MAP_MOB_Y		30

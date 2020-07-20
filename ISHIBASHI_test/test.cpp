@@ -1,15 +1,6 @@
 
 
 
-//////////　エスケープシーケンス　\n
-//////////	fgetc 一文字ごと読み込む
-//////////	fgets 一行ごと読み込む
-//////////	drawtext
-//////////	%s 引数を文字列のポインタとして扱い、文字列から"\0"を検出
-//////////   するか、精度で指定した文字列に達するまで文字を出力
-//////////	%c一文字ずつ
-//////////	%if キーボード入力した文字列をへんかん？　double型に変換
-
 
 #include "DxLib.h"
 #include "stdio.h"
@@ -36,14 +27,12 @@ int keyImage;
 //当たり判定用
 XY playerSize;
 
-//ｿｰﾄ用
-int DropOrderCnt;
-DORP_ORDER DropOrderList[DORP_ORDER_MAX];
-
 //会話システム
 const char *file;
 char words[200];
 
+//
+int category[4];
 
 
 
@@ -228,12 +217,7 @@ void GameScene()
 	//通常時動作
 	if (!iventFlag && !pauseFlag)
 	{
-		//ｿｰﾄ初期化
-		for (int i = 0; i < DORP_ORDER_MAX; i++)
-		{
-			DropOrderCnt = 0;
-			DropOrderList[i];
-		}
+	
 
 		//各種機能
 		pCnt++;
@@ -248,22 +232,25 @@ void GameScene()
 		{
 			if (shot[sh].life > 0)
 			{
-				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x, CHARA_SHOT))
 				{
 					DeleteShot(sh);
-
 				}
 
 			}
 		}
-		
-			if (ItemHitCheck(playerPos, playerSize.x))
-			{
-				//ｱｲﾃﾑに当たっている
-				DeleteItem();
-			}
+		//アイテムとプレイヤーの当たり判定
+		if (ItemHitCheck(playerPos, playerSize.x))
+		{
+			//ｱｲﾃﾑに当たっている
+			DeleteItem();
+		}
 
-		
+		if (EnemyHitCheck(playerPos, playerSize.x, CHARA_PLAYER))
+		{
+		//	PlayerHp();
+			DrawString(playerPos.x, playerPos.y, "ひっと", 0xffffff);
+		}
 
 	}
 
