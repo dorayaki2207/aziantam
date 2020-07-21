@@ -22,8 +22,6 @@ int enemyImage[ENEMY_M_MAX][16];
 void EnemySystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
-	category[CHARA_ENEMY] = CHARA_ENEMY;
-
 	//ŒÏ
 	enemyMobMaster[ENEMY_I_MOB].charType = ENEMY_I_MOB;			//	´ÈĞ°‚Ìí—Ş	F	·ÂÈ
 	enemyMobMaster[ENEMY_I_MOB].moveSpeed = 2;					//	·ÂÈ‚ÌˆÚ“®—Ê
@@ -233,7 +231,7 @@ int MoveEnemyXY(CHARACTER* enemy, XY player1Pos)		// true : “®‚­A false : “®‚©‚
 
 
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
-bool EnemyHitCheck(XY sPos, int sSize, CHARA_TYPE type)
+bool EnemyHitCheck(XY sPos, int sSize)
 {
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int en = 0; en < ENEMY_MAX; en++)
@@ -246,44 +244,33 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARA_TYPE type)
 				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
 			{
 
-				for (int i = 0; i < CHARA_MAX; i++)
+				//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
+				enemyMob[en].life--;
+
+				if (enemyMob[en].life <= 0)
 				{
-
-					if (category[i] == CHARA_ENEMY)
+					switch (enemyMob[en].charType)
 					{
-						//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
-						enemyMob[en].life--;
+					case ENEMY_I_MOB:
+						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						break;
 
-						if (enemyMob[en].life <= 0)
-						{
-							switch (enemyMob[en].charType)
-							{
-							case ENEMY_I_MOB:
-								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
-								break;
+					case ENEMY_A_MOB:
+						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						break;
 
-							case ENEMY_A_MOB:
-								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
-								break;
+					case ENEMY_Y_MOB:
+						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						break;
 
-							case ENEMY_Y_MOB:
-								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
-								break;
+					case ENEMY_M_MAX:
+						break;
 
-							case ENEMY_M_MAX:
-								break;
-
-							default:
-								break;
-							}
-						}
-
-						else if (category[i] == CHARA_PLAYER)
-						{
-							PlayerHp();
-						}
+					default:
+						break;
 					}
 				}
+
 				return true;
 			}
 		}
@@ -291,3 +278,26 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARA_TYPE type)
 	//’e‚ªŠO‚ê‚½
 	return false;
 }
+//“–‚½‚è”»’è
+bool PlayerHitCheck(XY sPos, int sSize)
+{
+	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
+	for (int en = 0; en < ENEMY_MAX; en++)
+	{
+		if (enemyMob[en].life > 0)
+		{
+			if (((enemyMob[en].pos.x - enemyMob[en].size.x / 2) < (sPos.x + sSize / 2))
+				&& ((enemyMob[en].pos.x + enemyMob[en].size.x / 2) > (sPos.x - sSize / 2))
+				&& ((enemyMob[en].pos.y - enemyMob[en].size.y / 2) < (sPos.y + sSize / 2))
+				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
+			{
+
+				//“–‚½‚Á‚½
+				return true;
+			}
+		}
+	}
+	//ŠO‚ê‚½
+	return false;
+}
+

@@ -31,9 +31,6 @@ XY playerSize;
 const char *file;
 char words[200];
 
-//
-int category[4];
-
 
 
 //-----WinMain
@@ -232,7 +229,7 @@ void GameScene()
 		{
 			if (shot[sh].life > 0)
 			{
-				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x, CHARA_SHOT))
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
 				{
 					DeleteShot(sh);
 				}
@@ -244,12 +241,6 @@ void GameScene()
 		{
 			//±²ÃÑ‚É“–‚½‚Á‚Ä‚¢‚é
 			DeleteItem();
-		}
-
-		if (EnemyHitCheck(playerPos, playerSize.x, CHARA_PLAYER))
-		{
-		//	PlayerHp();
-			DrawString(playerPos.x, playerPos.y, "‚Ð‚Á‚Æ", 0xffffff);
 		}
 
 	}

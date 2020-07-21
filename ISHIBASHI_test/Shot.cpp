@@ -16,8 +16,6 @@ int shotImage[MAGIC_TYPE_MAX][SHOT_ANI];
 void ShotSystemInit(void)
 {
 	//-----ïœêîÇÃèâä˙âª
-	category[CHARA_SHOT] = CHARA_SHOT;
-
 	shotMaster[MAGIC_TYPE_FIRE].charType = MAGIC_TYPE_FIRE;
 	shotMaster[MAGIC_TYPE_WATER].charType = MAGIC_TYPE_WATER;
 	shotMaster[MAGIC_TYPE_WIND].charType = MAGIC_TYPE_WIND;

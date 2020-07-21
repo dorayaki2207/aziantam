@@ -32,4 +32,5 @@ int MoveEnemyY(CHARACTER* enemy, XY playerPos); //©‹@‚ÌYÀ•W‚É’²ß‚·‚é‚æ‚¤‚É“®‚
 int MoveEnemyXY(CHARACTER* enemy, XY playerPos); //©‹@‚ÌX‚ÆY‚Ì‰“‚¢‚Ù‚¤‚©‚çÀ•W‚ğ’²ß‚·‚é‚æ‚¤‚É“®‚©‚·@–ß‚è’lFˆÚ“®‚µ‚½—Ê
 
 
-bool EnemyHitCheck(XY sPos, int sSize, CHARA_TYPE type);
+bool EnemyHitCheck(XY sPos, int sSize);
+bool PlayerHitCheck(XY sPos, int sSize);

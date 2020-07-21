@@ -1,24 +1,24 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "test.h"
 #include "KeyCheck.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Item.h"
 #include "Shot.h"
+#include "Enemy.h"
 
 //-----外部変数宣言
 //ｷｬﾗｸﾀ関連
 CHARACTER player;							//	ﾌﾟﾚｲﾔｰ変数格納用
 int playerImage[DIR_MAX][PLAYER_MAX];		//	ﾌﾟﾚｲﾔｰ画像：通常時
 
+int lifeCheckCnt;
 //int testImage[4];
 //int test2Image[4];
 
 void PlayerSystemInit(void)
 {
 	//-----変数の初期化
-	category[CHARA_PLAYER] = CHARA_PLAYER;
-
 	player.moveDir = DIR_DOWN;											//	ｷｬﾗｸﾀの向き
 	player.size = { 40,50 };											//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//　ｷｬﾗｸﾀのｵﾌｾｯﾄ
@@ -41,7 +41,7 @@ void PlayerGameInit(void)
 	player.lifeMax = 150;												//	ｷｬﾗｸﾀの体力最大値
 	player.life = player.lifeMax;										//	ｷｬﾗｸﾀの体力
 	player.animCnt = 0;												//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
-
+	lifeCheckCnt = 0;
 }
 
 XY PlayerControl(void)
@@ -193,8 +193,29 @@ XY PlayerControl(void)
 	//	if (player.pos.y > CHIP_SIZE_Y * mapSize.y - player.offsetSize.y) player.pos.y = CHIP_SIZE_Y * mapSize.y - player.offsetSize.y;		//下制御
 	//	if (player.pos.y < player.offsetSize.y) player.pos.y = player.offsetSize.y;													//上制御
 
-
+		if (PlayerHitCheck(player.pos, player.size.x))
+		{
+			if (lifeCheckCnt == 0)
+			{
+				player.life--;
+				lifeCheckCnt = 100;
+				DrawString(player.pos.x, player.pos.y, "ひっと", 0xffffff);
+			}
+		
+		}
+		
+		if (lifeCheckCnt > 0)
+		{
+			lifeCheckCnt--;
+			if (lifeCheckCnt < 0)
+			{
+				lifeCheckCnt = 0;
+			}
+		}
 	}
+
+
+
 	return returnValue;
 }
 
@@ -228,17 +249,10 @@ void PlayerGameDraw(void)
 	//情報処理
 	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
 	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
-
+	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);
 }
 
-void PlayerHp(void)
-{
-	if (player.life > 0)
-	{
-		player.life--;
-	}
-}
 

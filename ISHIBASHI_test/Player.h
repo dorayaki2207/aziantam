@@ -11,4 +11,3 @@ void PlayerGameInit(void);			//
 XY PlayerControl(void);			//	ﾌﾟﾚｲﾔｰの操作(戻り値：ﾌﾟﾚｲﾔｰの座標)
 void PlayerGameDraw(void);			//　ﾌﾟﾚｲﾔｰ描画処理
 
-void PlayerHp(void);

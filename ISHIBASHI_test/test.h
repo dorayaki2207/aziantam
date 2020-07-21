@@ -83,4 +83,4 @@ void TitleScene(void);
 extern SCENE_ID sceneID;
 //ýėp
 extern int SceneCounter;
-extern int category[];
+
