@@ -199,7 +199,6 @@ XY PlayerControl(void)
 			{
 				player.life--;
 				lifeCheckCnt = 100;
-				DrawString(player.pos.x, player.pos.y, "‚Ð‚Á‚Æ", 0xffffff);
 			}
 		
 		}

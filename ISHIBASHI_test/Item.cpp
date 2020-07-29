@@ -331,6 +331,8 @@ void ItemB_Draw(void)
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
 bool ItemHitCheck(XY sPos, int sSize)
 {
+	int point = GetRand(3);
+
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
@@ -348,22 +350,22 @@ bool ItemHitCheck(XY sPos, int sSize)
 				//ŒäD‚ÉG‚ê‚½‚ç‰ÁZ
 				if (itemF[i].charType == MAGIC_TYPE_FIRE)
 				{
-					itemF[i].point += 2;
+					itemF[i].point += point;
 					itemF[i].hitFlag = true;
 				}
 				if (itemF[i].charType == MAGIC_TYPE_WATER)
 				{
-					itemF[MAGIC_TYPE_WATER].point += 2;
+					itemF[MAGIC_TYPE_WATER].point += point;
 					itemF[i].hitFlag = true;
 				}
 				if (itemF[i].charType == MAGIC_TYPE_WIND)
 				{
-					itemF[MAGIC_TYPE_WIND].point += 2;
+					itemF[MAGIC_TYPE_WIND].point += point;
 					itemF[i].hitFlag = true;
 				}
 				if (itemF[i].charType == MAGIC_TYPE_HEAL)
 				{
-					itemF[MAGIC_TYPE_HEAL].point++;
+					itemF[MAGIC_TYPE_HEAL].point += point;
 					itemF[i].hitFlag = true;
 				}
 				
