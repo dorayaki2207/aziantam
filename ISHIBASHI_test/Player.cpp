@@ -22,7 +22,7 @@ void PlayerSystemInit(void)
 	player.moveDir = DIR_DOWN;											//	·¬×¸À‚ÌŒü‚«
 	player.size = { 40,50 };											//	·¬×¸À‚Ì‰æ‘œ»²½Ş
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
-	player.moveSpeed = 4;												//	·¬×¸À‚ÌˆÚ“®½Ëß°ÄŞ
+	player.moveSpeed = PLAYER_SPEED_NOMAL;												//	·¬×¸À‚ÌˆÚ“®½Ëß°ÄŞ
 	player.hitFlag = false;
 
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
@@ -182,6 +182,31 @@ XY PlayerControl(void)
 		if (keyNew[KEY_ID_HEAL])
 		{
 			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+		}
+		
+		//-----²ÍŞİÄ”­¶
+		if (GetEvent(player.pos) == EVENT_ID_STOP)
+		{
+			player.moveSpeed = 0;
+		}
+
+		if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		{
+			//“®‚«‚ª’x‚­‚È‚é
+			player.moveSpeed = PLAYER_SPEED_LOW;
+		}
+		else if (GetEvent(player.pos) == EVENT_ID_DAMAGE)
+		{
+			if (lifeCheckCnt == 0)
+			{
+				player.life -= 5;
+				lifeCheckCnt = 100;
+			}
+		}
+		else
+		{
+			//’Êí
+			player.moveSpeed = PLAYER_SPEED_NOMAL;
 		}
 		
 

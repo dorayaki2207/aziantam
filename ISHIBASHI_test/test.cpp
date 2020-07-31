@@ -223,6 +223,12 @@ void GameScene()
 		EnemyControl(playerPos);
 		ShotControl(playerPos);
 		itemDropControl();
+		
+		if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
+		{
+			SetMapData(STAGE_ID_ONI2);
+		}
+
 
 		//’e‚Æ´ÈÐ°‚Ì“–‚½‚è”»’è
 		for (int sh = 0; sh < SHOT_MAX; sh++)

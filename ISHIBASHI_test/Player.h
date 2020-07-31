@@ -4,6 +4,14 @@
 //-----’è”’è‹`
 #define PLAYER_MAX	4
 
+//-----—ñ‹“Œ^
+enum PLAYER_SPEED
+{
+	PLAYER_SPEED_LOW = 2,		//	’x‚¢
+	PLAYER_SPEED_NOMAL = 4,		//	’Êí
+	PLATER_SPEED_HIGH = 6,		//	‘¬‚¢
+	PLATER_SPEED_MAX
+};
 
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
 void PlayerSystemInit(void);		//@ÌßÚ²Ô°î•ñ‚Ì‰Šú‰»	
