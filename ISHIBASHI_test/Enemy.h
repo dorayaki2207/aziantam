@@ -1,7 +1,7 @@
 
 
 //-----’è”’è‹`
-#define ENEMY_MAX 20		//	“G‚Ì”
+#define ENEMY_MAX 50		//	“G‚Ì”
 
 //-----—ñ‹“Œ^
 //ƒ‚ƒu

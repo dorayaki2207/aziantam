@@ -8,6 +8,8 @@
 
 
 //  テスト用にｱｲﾃﾑをはじめから2枚ずつ所持するようにする
+
+//GetRand 0~3
 #include "DxLib.h"
 #include "test.h"
 #include "KeyCheck.h"

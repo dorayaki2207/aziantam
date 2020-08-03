@@ -147,8 +147,11 @@ void EnemyGameDraw(void)
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y + mapPos.y
 				, 0xFF00FF, false);
 
+			
 		}
 	}
+
+
 }
 
 
@@ -233,6 +236,8 @@ int MoveEnemyXY(CHARACTER* enemy, XY player1Pos)		// true : “®‚­A false : “®‚©‚
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
 bool EnemyHitCheck(XY sPos, int sSize)
 {
+	auto randam = rand() % 100;
+
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int en = 0; en < ENEMY_MAX; en++)
 	{
@@ -252,15 +257,39 @@ bool EnemyHitCheck(XY sPos, int sSize)
 					switch (enemyMob[en].charType)
 					{
 					case ENEMY_I_MOB:
-						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+						DrawFormatString(0, 400, 0xffffff, "%d", randam);
 						break;
 
 					case ENEMY_A_MOB:
-						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+						DrawFormatString(0, 400, 0xffffff, "%d", randam);
 						break;
 
 					case ENEMY_Y_MOB:
-						ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+						DrawFormatString(0, 400, 0xffffff, "%d", randam);
 						break;
 
 					case ENEMY_M_MAX:
@@ -270,7 +299,7 @@ bool EnemyHitCheck(XY sPos, int sSize)
 						break;
 					}
 				}
-
+				
 				return true;
 			}
 		}
