@@ -333,7 +333,7 @@ void ItemB_Draw(void)
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
 bool ItemHitCheck(XY sPos, int sSize)
 {
-	int point = GetRand(3);
+	int point = GetRand(2)+1;
 
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int i = 0; i < ITEM_MAX; i++)

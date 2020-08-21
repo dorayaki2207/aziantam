@@ -130,6 +130,7 @@
     <ClCompile Include="item.cpp" />
     <ClCompile Include="keycheck.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Stage\OniStage.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="shot.cpp" />
     <ClCompile Include="stage.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="item.h" />
     <ClInclude Include="keycheck.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Stage\OniStage.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="shot.h" />
     <ClInclude Include="stage.h" />
