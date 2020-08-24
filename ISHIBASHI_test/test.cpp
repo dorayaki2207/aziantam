@@ -229,9 +229,7 @@ void GameScene()
 		if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
 		{
 			//鬼ステージ①の祭壇に移動させる
-			SetMapData(STAGE_ID_ONI);
-		//	GetPos(playerPos);
-		
+			SetMapData(STAGE_ID_ONI);			
 		}
 
 

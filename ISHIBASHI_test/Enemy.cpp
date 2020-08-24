@@ -257,11 +257,11 @@ bool EnemyHitCheck(XY sPos, int sSize)
 					switch (enemyMob[en].charType)
 					{
 					case ENEMY_I_MOB:
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
@@ -269,11 +269,11 @@ bool EnemyHitCheck(XY sPos, int sSize)
 						break;
 
 					case ENEMY_A_MOB:
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
@@ -281,11 +281,11 @@ bool EnemyHitCheck(XY sPos, int sSize)
 						break;
 
 					case ENEMY_Y_MOB:
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}

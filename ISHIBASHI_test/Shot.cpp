@@ -176,5 +176,4 @@ void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype/*, ITEM_TYPE_F itype*/)
 void DeleteShot(int index)
 {
 	shot[index].life = 0;
-//	shot[index].animCnt = 0;
 }

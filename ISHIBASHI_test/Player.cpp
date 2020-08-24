@@ -57,8 +57,6 @@ XY PlayerControl(void)
 	//ÌßÚ²Ô°‚ª¶‚«‚Ä‚¢‚é‚Æ‚«
 	if (player.life > 0)
 	{
-
-		
 		//-----ˆÚ“®ˆ—
 		if (keyNew[KEY_ID_RIGHT])
 		{
@@ -187,7 +185,6 @@ XY PlayerControl(void)
 		}
 		
 		//-----²ÍŞİÄ”­¶
-
 		//“®‚«‚ª~‚Ü‚é
 		if (GetEvent(player.pos) == EVENT_ID_STOP)
 		{
