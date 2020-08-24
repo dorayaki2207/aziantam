@@ -214,8 +214,6 @@ void GameScene()
 	//通常時動作
 	if (!iventFlag && !pauseFlag)
 	{
-	
-
 		//各種機能
 		pCnt++;
 
@@ -227,6 +225,13 @@ void GameScene()
 		if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
 		{
 			SetMapData(STAGE_ID_ONI2);
+		}
+		if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
+		{
+			//鬼ステージ①の祭壇に移動させる
+			SetMapData(STAGE_ID_ONI);
+		//	GetPos(playerPos);
+		
 		}
 
 

@@ -2,6 +2,8 @@
 #include "test.h"
 #include "Stage.h"
 
+//階段二つのイベントわける
+
 
 int mapChipImage[STAGE_ID_MAX];
 int chipImage[81];
@@ -113,7 +115,7 @@ int OniStageMini[MAP_ONI2_Y][MAP_ONI2_X] =
 { 2, 0, 0, 0, 0,  16,17,18,16,17,  20,21,11, 8,10,  16,20,20,21,19,  66,57,57,62, 2},
 { 2, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,19,16,18,   0, 0, 0, 0, 0,   0, 0, 0,58, 2},
 
-{ 2, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0,58, 2},
+{ 2, 0, 0, 0, 0,   0, 0,32, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0,58, 2},
 { 2, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0,58, 2},
 { 2, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0,58, 2},
 { 2, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0,64,56,60, 2},
@@ -136,8 +138,10 @@ XY mapPos;			//ﾏｯﾌﾟのｵﾌｾｯﾄ
 XY mapSize;			//ﾏｯﾌﾟのｻｲｽﾞ
 STAGE_ID stageID;	//ﾏｯﾌﾟの種類
 
-					//鬼マップ用　
+//鬼マップ用　
 int backImage;
+
+CHIP_POS chipPos;
 
 int aniCnt;
 //-----ｽﾃｰｼﾞ情報の初期化
@@ -154,8 +158,9 @@ void StageSystemInit(void)
 	//座標
 	mapPos = { 0,0 };
 	
-	
 	aniCnt = 0;
+
+	chipPos = CHIP_POS_NON;
 
 	//ﾏｯﾌﾟﾃﾞｰﾀ
 	stageID = STAGE_ID_ONI;
@@ -374,13 +379,17 @@ EVENT_ID GetEvent(XY pos)
 
 	switch (map[indexPos.y][indexPos.x])
 	{
-		//階段
+		//階段①
 	case 24:
-	case 32:
-	case 48:
 	case 49:
 		//ｲﾍﾞﾝﾄの発生場所
 		return EVENT_ID_KAIDAN;
+		break;
+		//階段②
+	case 32:
+	case 48:
+		//ｲﾍﾞﾝﾄの発生場所
+		return EVENT_ID_KAIDAN2;
 		break;
 		//洞窟
 	case 14:
@@ -436,6 +445,27 @@ EVENT_ID GetEvent(XY pos)
 }
 
 
+
+void GetPos(XY pos)
+{
+
+	for (int y = 0; y < MAP_ONI_Y; y++)
+	{
+		for (int x = 0; x < MAP_ONI_X; x++)
+		{
+			if (map[y][x] == 24)
+			{
+				pos.x = (int)map[x];
+				pos.y = (int)map[y];
+			}
+		}
+	}
+
+
+	
+
+	
+}
 
 //ｽｸﾛｰﾙ制限
 void MapRange()
