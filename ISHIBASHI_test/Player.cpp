@@ -13,6 +13,7 @@ CHARACTER player;							//	ﾌﾟﾚｲﾔｰ変数格納用
 int playerImage[DIR_MAX][PLAYER_MAX];		//	ﾌﾟﾚｲﾔｰ画像：通常時
 
 int lifeCheckCnt;
+int moveCheckCnt;
 //int testImage[4];
 //int test2Image[4];
 
@@ -42,6 +43,7 @@ void PlayerGameInit(void)
 	player.life = player.lifeMax;										//	ｷｬﾗｸﾀの体力
 	player.animCnt = 0;												//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	lifeCheckCnt = 0;
+	moveCheckCnt = 0;
 }
 
 XY PlayerControl(void)
@@ -185,16 +187,26 @@ XY PlayerControl(void)
 		}
 		
 		//-----ｲﾍﾞﾝﾄ発生
+
+		//動きが止まる
 		if (GetEvent(player.pos) == EVENT_ID_STOP)
 		{
-			player.moveSpeed = 0;
+			moveCheckCnt++;
+			if (moveCheckCnt < 100)
+			{
+				player.moveSpeed = PLAYER_SPEED_NON;
+			}
+			else if (moveCheckCnt >= 100)
+			{
+				player.moveSpeed = PLAYER_SPEED_NOMAL;
+			}
 		}
-
-		if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
-		{
-			//動きが遅くなる
+		//動きが遅くなる
+		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		{	
 			player.moveSpeed = PLAYER_SPEED_LOW;
 		}
+		//ﾀﾞﾒｰｼﾞを受ける
 		else if (GetEvent(player.pos) == EVENT_ID_DAMAGE)
 		{
 			if (lifeCheckCnt == 0)
@@ -203,13 +215,16 @@ XY PlayerControl(void)
 				lifeCheckCnt = 100;
 			}
 		}
+		//通常時の移動スピード
 		else
 		{
-			//通常時
 			player.moveSpeed = PLAYER_SPEED_NOMAL;
 		}
 		
-
+		if (GetEvent(player.pos) != EVENT_ID_STOP)
+		{
+			moveCheckCnt = 0;
+		}
 		MapRange();
 		//　移動範囲処理
 		//ﾏｯﾌﾟﾁｯﾌﾟの当たり判定を実装していない為、一時的処置
@@ -218,6 +233,8 @@ XY PlayerControl(void)
 	//	if (player.pos.y > CHIP_SIZE_Y * mapSize.y - player.offsetSize.y) player.pos.y = CHIP_SIZE_Y * mapSize.y - player.offsetSize.y;		//下制御
 	//	if (player.pos.y < player.offsetSize.y) player.pos.y = player.offsetSize.y;													//上制御
 
+
+		//-----ライフ操作
 		if (PlayerHitCheck(player.pos, player.size.x))
 		{
 			if (lifeCheckCnt == 0)
@@ -274,6 +291,8 @@ void PlayerGameDraw(void)
 	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
 	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
 	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", moveCheckCnt);
+
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);

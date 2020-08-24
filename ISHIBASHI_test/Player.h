@@ -10,6 +10,7 @@ enum PLAYER_SPEED
 	PLAYER_SPEED_LOW = 2,		//	íxÇ¢
 	PLAYER_SPEED_NOMAL = 4,		//	í èÌ
 	PLATER_SPEED_HIGH = 6,		//	ë¨Ç¢
+	PLAYER_SPEED_NON = 0,		//	é~Ç‹ÇÈ
 	PLATER_SPEED_MAX
 };
 

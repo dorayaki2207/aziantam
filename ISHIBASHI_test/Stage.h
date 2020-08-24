@@ -30,7 +30,6 @@ enum STAGE_ID
 	STAGE_ID_MOB,				//MOB敵ｽﾃｰｼﾞ
 	STAGE_ID_ONI,				//鬼ｽﾃｰｼﾞ
 	STAGE_ID_ONI2,
-	STAGE_ID_TEST,
 	STAGE_ID_MAX
 };
 //ｲﾍﾞﾝﾄ情報
@@ -44,12 +43,6 @@ enum EVENT_ID
 	EVENT_ID_SPEEDDOWN,		//動きが遅くなる
 	EVENT_ID_MAX
 };
-//出現可能かどうか
-enum PASS_ID
-{
-	PASS_OK,					//出現可能
-	PASS_NON
-};
 
 
 //-----関数ﾌﾟﾛﾄﾀｲﾌﾟ宣言
@@ -60,10 +53,7 @@ void SetMapData(STAGE_ID stage_ID);
 XY PosToIndex(XY pos);	        //ﾋﾟｸｾﾙ座標系からﾏｯﾌﾟ配列座標系に変換する
 bool IsPass(XY pos);			//指定した座標が通過可能かを返す true:通過できる
 EVENT_ID GetEvent(XY pos);	    // 指定した座標が特別にｲﾍﾞﾝﾄを起こすかを確認する　戻り値：ｲﾍﾞﾝﾄID
-//bool IsEnemyPass(XY pos);
-PASS_ID Pass(XY pos);
 void MapRange();
 //-----ｸﾞﾛｰﾊﾞﾙ化
 extern XY mapPos;
 extern XY mapSize;
-extern PASS_ID passID;
