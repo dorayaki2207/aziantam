@@ -1,7 +1,8 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
 #include "stage.h"
 #include "enemy.h"
+#include "item.h"
 
 //-----外部変数宣言
 //ﾓﾌﾞ関連
@@ -101,6 +102,7 @@ void EnemyGameDraw()
 //-----ｴﾈﾐｰと弾の当たり判定　(true : あたり, false : はずれ)
 bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 {
+	auto randam = rand() % 100;
 	//全ての敵に当たり判定を実施する
 	for (int en = 0; en < ENEMY_MAX; en++)
 	{
@@ -118,18 +120,54 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_NORMAL;
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_LOW;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_HIGH;
+					
+					if (enemyMob[en].life <= 0)
+					{
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+					}
 					break;
 
 				case ENEMY_A_MOB:
 					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_HIGH;
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_NORMAL;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_LOW;
+					
+					if (enemyMob[en].life <= 0)
+					{
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+					}
 					break;
 
 				case ENEMY_Y_MOB:
 					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_LOW;
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_HIGH;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_NORMAL;
+				
+					if (enemyMob[en].life <= 0)
+					{
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+					}
 					break;
 
 				case ENEMY_M_MAX:
@@ -145,3 +183,27 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 	//弾が外れた時
 	return false;
 }
+
+
+//当たり判定
+bool PlayerHitCheck(XY sPos, int sSize)
+{
+	//全ての敵に当たり判定を実施する
+	for (int en = 0; en < ENEMY_MAX; en++)
+	{
+		if (enemyMob[en].life > 0)
+		{
+			if (((enemyMob[en].pos.x - enemyMob[en].size.x / 2) < (sPos.x + sSize / 2))
+				&& ((enemyMob[en].pos.x + enemyMob[en].size.x / 2) > (sPos.x - sSize / 2))
+				&& ((enemyMob[en].pos.y - enemyMob[en].size.y / 2) < (sPos.y + sSize / 2))
+				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
+			{
+				//当たった
+				return true;
+			}
+		}
+	}
+	//外れた時
+	return false;
+}
+

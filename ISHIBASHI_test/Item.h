@@ -24,7 +24,6 @@ void itemDropControl();
 void ItemBossControl(CHARACTER* boss);		//	ﾎﾞｽ攻撃用ｱｲﾃﾑの操作
 bool ItemMOBControl(MAGIC_TYPE type);		//	MOB敵攻撃用ｱｲﾃﾑの操作
 void ItemGameDraw(void);					//　ｱｲﾃﾑ描画処理
-void ItemGameDraw(int index);
 void ItemI_Draw(void);						//	ｲﾝﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
 void ItemB_Draw(void);						//	ﾎﾞｽﾊﾞﾄﾙ用のｱｲﾃﾑ画像描画
 bool ItemHitCheck(XY sPos, int sSize);		//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑの当たり判定

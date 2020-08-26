@@ -56,9 +56,7 @@ XY PlayerControl(void)
 										
 	//ÌßÚ²Ô°‚ª¶‚«‚Ä‚¢‚é‚Æ‚«
 	if (player.life > 0)
-	{
-
-		
+	{	
 		//-----ˆÚ“®ˆ—
 		if (keyNew[KEY_ID_RIGHT])
 		{
@@ -184,6 +182,19 @@ XY PlayerControl(void)
 		if (keyNew[KEY_ID_HEAL])
 		{
 			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+
+			if (lifeCheckCnt == 0)
+			{
+				lifeCheckCnt = 100;
+				if (player.lifeMax > player.life)
+				{
+					player.life++;
+				}
+				if (player.life > player.lifeMax)
+				{
+					player.life = player.lifeMax;
+				}
+			}
 		}
 		
 		//-----²ÍŞİÄ”­¶
