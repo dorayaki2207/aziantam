@@ -157,7 +157,7 @@ void StageSystemInit(void)
 	//-----‰Šú‰»
 	//À•W
 	mapPos = { 0,0 };
-	
+	mapSize = { 0,0 };
 	aniCnt = 0;
 
 	chipPos = CHIP_POS_NON;

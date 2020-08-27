@@ -1,9 +1,10 @@
-<<<<<<< HEAD
-﻿  Enemy.cpp
+﻿  Battle.cpp
+  Enemy.cpp
   Item.cpp
+  KeyCheck.cpp
+  Player.cpp
+  Shot.cpp
+  Stage.cpp
+  test.cpp
   コードを生成中...
   ファイル.vcxproj -> D:\Users\1916004\Desktop\aziantam\ISHIBASHI_test\Debug\ファイル.exe
-=======
-﻿  Player.cpp
-  ファイル.vcxproj -> C:\Users\どら焼き\Desktop\アジアンタム\aziantam\ISHIBASHI_test\Debug\ファイル.exe
->>>>>>> a797111f3b7f313653a1c7343494bc2f2ad9a448
