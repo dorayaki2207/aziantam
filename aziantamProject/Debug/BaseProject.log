@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  effect.cpp
   enemy.cpp
 D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
@@ -16,3 +17,8 @@ D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: �
   title.cpp
   コードを生成中...
   BaseProject.vcxproj -> D:\Users\1916004\Desktop\aziantam\aziantamProject\Debug\BaseProject.exe
+=======
+﻿  enemy.cpp
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  BaseProject.vcxproj -> C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.exe
+>>>>>>> a797111f3b7f313653a1c7343494bc2f2ad9a448
