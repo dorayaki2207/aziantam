@@ -43,18 +43,18 @@ void ItemSystemInit(void)
 	//-----変数の初期化
 	//御札（ﾄﾞﾛｯﾌﾟ用
 	itemFmaster[MAGIC_TYPE_FIRE].charType = MAGIC_TYPE_FIRE;												//	御札の種類	：	火
-	itemFmaster[MAGIC_TYPE_WATER].charType = MAGIC_TYPE_WATER;									//	御札の種類	：	水
-	itemFmaster[MAGIC_TYPE_WIND].charType = MAGIC_TYPE_WIND;											//	御札の種類	：	風
-	itemFmaster[MAGIC_TYPE_HEAL].charType = MAGIC_TYPE_HEAL;											//	御札の種類	：	回復
+	itemFmaster[MAGIC_TYPE_WATER].charType = MAGIC_TYPE_WATER;												//	御札の種類	：	水
+	itemFmaster[MAGIC_TYPE_WIND].charType = MAGIC_TYPE_WIND;												//	御札の種類	：	風
+	itemFmaster[MAGIC_TYPE_HEAL].charType = MAGIC_TYPE_HEAL;												//	御札の種類	：	回復
 	//御札まとめて処理
 	for (int type = 0; type < MAGIC_TYPE_MAX; type++)
 	{
-		itemFmaster[type].pos = { 0,0 };																								// 御札の地図上の座標
-		itemFmaster[type].size = { 20,20 };																							//	御札の画像ｻｲｽﾞ
-		itemFmaster[type].offsetSize = { itemFmaster[type].size.x / 2,itemFmaster[type].size.y / 2 };	// 御札のｵﾌｾｯﾄ
-		itemFmaster[type].point = 12;																								//	御札の枚数
-		itemFmaster[type].lifeMax = 200;																							//	御札の体力最大値（表示時間）
-		itemFmaster[type].life = 0;																										//	御札の体力
+		itemFmaster[type].pos = { 0,0 };																	//	御札の地図上の座標
+		itemFmaster[type].size = { 20,20 };																//	御札の画像ｻｲｽﾞ
+		itemFmaster[type].offsetSize = { itemFmaster[type].size.x / 2,itemFmaster[type].size.y / 2 };	//	御札のｵﾌｾｯﾄ
+		itemFmaster[type].point = 12;																		//	御札の枚数
+		itemFmaster[type].lifeMax = 200;																	//	御札の体力最大値（表示時間）
+		itemFmaster[type].life = 0;																		//	御札の体力
 		itemFmaster[type].hitFlag = false;
 	
 	}
@@ -73,7 +73,7 @@ void ItemSystemInit(void)
 	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
 	{
 		itemB[i].size = { 20,20 };																	//	三種の神器の画像ｻｲｽﾞ
-		itemB[i].offsetSize = { itemB[i].size.x / 2,itemB[i].size.y / 2 };							//　三種の神器のｵﾌｾｯﾄ
+		itemB[i].offsetSize = { itemB[i].size.x / 2,itemB[i].size.y / 2 };						//　三種の神器のｵﾌｾｯﾄ
 		
 	}
 
@@ -105,8 +105,8 @@ void ItemGameInit(void)
 
 			itemF[i] = itemFmaster[type];
 			//	itemF[i].pos = { 0,0 };
-				//	itemF[i].point = 0;					//	御札の枚数
-				//itemF[i].lifeMax = 0;					//	御札の体力最大値（表示時間）
+			//	itemF[i].point = 0;					//	御札の枚数
+			//	itemF[i].lifeMax = 0;				//	御札の体力最大値（表示時間）
 			itemF[i].life = 0;						//	体力
 		}
 	}
@@ -330,10 +330,10 @@ void ItemB_Draw(void)
 	DrawFormatString(0, 100, 0xFFFFFF, "lookCnt:%d", lookCnt);
 }
 
-//-----弾と敵の当たり判定　(true : あたり, false : はずれ)
+//-----アイテムとプレイヤーの当たり判定　(true : あたり, false : はずれ)
 bool ItemHitCheck(XY sPos, int sSize)
 {
-	int point = GetRand(2)+1;
+	int point = GetRand(5)+1;
 
 	//全ての敵に当たり判定を実施する
 	for (int i = 0; i < ITEM_MAX; i++)
@@ -380,7 +380,7 @@ bool ItemHitCheck(XY sPos, int sSize)
 }
 
 
-//-----弾を生成する
+//-----ドロップアイテム
 void ItemDrop(XY ePos,MAGIC_TYPE type)
 {
 	//弾の数分撃っていない弾がないかをﾁｪｯｸし、
@@ -402,7 +402,7 @@ void ItemDrop(XY ePos,MAGIC_TYPE type)
 
 
 
-//-----弾を消滅させる
+//-----ドロップアイテムを消滅させる
 void DeleteItem()
 {
 	for (int item = 0; item< ITEM_MAX; item++)

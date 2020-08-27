@@ -56,8 +56,7 @@ XY PlayerControl(void)
 										
 	//ÌßÚ²Ô°‚ª¶‚«‚Ä‚¢‚é‚Æ‚«
 	if (player.life > 0)
-	{	
-		//-----ˆÚ“®ˆ—
+	{				//-----ˆÚ“®ˆ—
 		if (keyNew[KEY_ID_RIGHT])
 		{
 			movedFlag = true;
@@ -198,7 +197,6 @@ XY PlayerControl(void)
 		}
 		
 		//-----²ÍŞİÄ”­¶
-
 		//“®‚«‚ª~‚Ü‚é
 		if (GetEvent(player.pos) == EVENT_ID_STOP)
 		{
