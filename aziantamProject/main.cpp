@@ -26,6 +26,8 @@ bool iventFlag;
 bool paseFlag;
 int keyImage;
 
+//当たり判定用
+XY playerSize;
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -109,7 +111,9 @@ bool SystemInit(void)
 	pauseFlag = false;
 	//ｲﾝﾍﾞﾝﾄリ
 	iventFlag = false;
-	
+	//当たり判定用
+	playerSize = { 20,20 };
+
 	return true;
 }
 //初期化ｼｰﾝ
@@ -167,7 +171,7 @@ void GameScene(void)
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 		playerPos = PlayerControl();		//ﾌﾟﾚｲﾔｰ
 		EnemyControl(playerPos);			//ｴﾈﾐｰ
-		ItemControl();						//ｱｲﾃﾑ
+		ItemDropControl();						//ｱｲﾃﾑ
 		ShotControl(playerPos);				//ｼｮｯﾄ
 
 		//ｴﾈﾐｰと弾の当たり判定
@@ -181,7 +185,12 @@ void GameScene(void)
 				}
 			}
 		}
-
+		//アイテムとプレイヤーの当たり判定
+		if (ItemHitCheck(playerPos, playerSize.x))
+		{
+			//ｱｲﾃﾑに当たっている
+			DeleteItem();
+		}
 
 		//一時的処理
 		if (GetEvent(playerPos) == EVENT_ID_ZAKO)
