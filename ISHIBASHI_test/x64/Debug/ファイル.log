@@ -1,0 +1,1 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\Microsoft.Common.CurrentVersion.targets(29,3): error MSB4024: インポートされたプロジェクト ファイル "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Microsoft.Common.targets\ImportBefore\Microsoft.Net.CoreRuntime.ImportBefore.targets" を読み込めませんでした。ルート要素が見つかりません。

@@ -1,0 +1,18 @@
+﻿  effect.cpp
+D:\GitHub\aziantam\aziantamProject\effect.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  enemy.cpp
+D:\GitHub\aziantam\aziantamProject\enemy.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  item.cpp
+D:\GitHub\aziantam\aziantamProject\item.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  keycheck.cpp
+D:\GitHub\aziantam\aziantamProject\keycheck.cpp(5,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  main.cpp
+D:\GitHub\aziantam\aziantamProject\main.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  player.cpp
+D:\GitHub\aziantam\aziantamProject\player.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  shot.cpp
+D:\GitHub\aziantam\aziantamProject\shot.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  stage.cpp
+D:\GitHub\aziantam\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\GitHub\aziantam\aziantamProject\stage.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  コードを生成中...
