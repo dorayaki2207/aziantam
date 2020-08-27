@@ -1,0 +1,2 @@
+C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.exe
+C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.pdb
