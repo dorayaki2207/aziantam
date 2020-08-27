@@ -1,13 +1,18 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
 #include "player.h"
 #include "keycheck.h"
 #include "stage.h"
 #include "shot.h"
+#include "enemy.h"
 
 //変数
 int playerImage[16];
 CHARACTER player;
+
+int lifeCheckCnt;
+int healCheckCnt;
+
 
 //ﾌﾟﾚｲﾔｰ情報の初期化
 void PlayerSystemInit(void)
@@ -18,6 +23,7 @@ void PlayerSystemInit(void)
 	player.lifeMax = PLAYER_MAX_LIFE;						//ｷｬﾗｸﾀの体力最大値
 	player.moveSpeed = PLAYER_DEF_SPEED;					//ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
 	player.animCnt = 0;										//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
+	player.hitFlag = false;
 
 	LoadDivGraph("char/boy_player.png", 16, 4, 4
 		, player.size.x, player.size.y, playerImage);
@@ -29,6 +35,8 @@ void PlayerGameInit(void)
 	player.pos = { SCREEN_SIZE_X/2,SCREEN_SIZE_Y/2 };									//ｷｬﾗｸﾀの地図上の座標
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
+	lifeCheckCnt = 0;
+	healCheckCnt = 0;
 
 }
 
@@ -145,7 +153,7 @@ XY PlayerControl(void)
 		//-----ｼｮｯﾄ処理
 		if (KeyNew[KEY_ID_FIRE])
 		{
-			CreateShot(player.pos,player.moveDir,MAGIC_TYPE_FIRE);
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_FIRE);
 		}
 		if (KeyNew[KEY_ID_WATER])
 		{
@@ -157,16 +165,57 @@ XY PlayerControl(void)
 		}
 		if (KeyNew[KEY_ID_HEAL])
 		{
-			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+			
+			if (healCheckCnt == 0)
+			{
+				CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+
+				healCheckCnt = 100;
+				if (player.lifeMax > player.life)
+				{
+					player.life++;
+				}
+				if (player.life > player.lifeMax)
+				{
+					player.life = player.lifeMax;
+				}
+			}
 		}
 
-		//-----ﾏｯﾌﾟの制限　（移動処理内に入れるとﾏｯﾌﾟがずれてしまう
-		if (mapPos.x > 0) mapPos.x = 0;
-		if (mapPos.x < -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X;
-		if (mapPos.y > 0) mapPos.y = 0;
-		if (mapPos.y < -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y;
+		if (healCheckCnt > 0)
+		{
+			healCheckCnt--;
+			if (healCheckCnt < 0)
+			{
+				healCheckCnt = 0;
+			}
+		}
 
+		//スクロール制限
+		MapRange();
+
+		//-----ライフ操作
+		if (PlayerHitCheck(player.pos, player.size.x))
+		{
+			if (lifeCheckCnt == 0)
+			{
+				player.life--;
+				lifeCheckCnt = 100;
+			}
+
+		}
+
+
+		if (lifeCheckCnt > 0)
+		{
+			lifeCheckCnt--;
+			if (lifeCheckCnt < 0)
+			{
+				lifeCheckCnt = 0;
+			}
+		}
 	}
+
 	return returnValue;
 }
 //プレイヤーの描画
@@ -181,5 +230,11 @@ void PlayerGameDraw(void)
 	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);
+
+	//情報処理
+	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
+	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
 
 }

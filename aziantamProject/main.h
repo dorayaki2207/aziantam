@@ -13,6 +13,7 @@ enum SCENE
 	SCENE_TITLE,		//ю╡ды╪╟щ
 	SCENE_GAME,			//╧ч╟я╪╟щ
 	SCENE_GAMEOVER,		//╧ч╟я╣╟йч╟╪╟щ
+	SCENE_CLEAR,		//╧ч╟я╦ь╠
 	SCENE_MAX
 };
 
@@ -33,6 +34,13 @@ enum MAGIC_TYPE
 	MAGIC_TYPE_WIND,		//▒╝░╚│F∙≈
 	MAGIC_TYPE_HEAL,		//▒╝░╚│F┴Я∙°
 	MAGIC_TYPE_MAX
+};
+
+enum MSG_TYPE
+{
+	MSG_START,		//┌м┌╤┌ъ┌╘┌Г
+	MSG_LOAD,		//┌б┌ц┌╚┌╘┌Г
+	MSG_MAX
 };
 
 
@@ -67,6 +75,7 @@ struct CHARACTER
 	int life;		//╥╛в╦ю┌л▒л≈м
 	int animCnt;	//╥╛в╦ю┌л╠фр╟╪╝щ
 	int point;		//╥╛в╦ю┌л⌠╬⌠_
+	bool hitFlag;	//╥╛в╦ю┌л⌠√┌╫┌Х┼г≈²
 
 };
 
@@ -87,9 +96,16 @@ void InitScene(void);
 //ю╡ды
 void TitleScene(void);
 void TitleDraw(void);
+void TitleControl();
 //╧ч╟я
 void GameScene(void);
 void GameDraw(void);
 //╧ч╟я╣╟йч╟
 void GameOverScene(void);
 void GameOverDraw(void);
+//╧ч╟я╦ь╠
+void GameClearScene(void);
+void GameClearDraw(void);
+
+//-----╦чш╟йчы┴╩
+extern SCENE SceneID;

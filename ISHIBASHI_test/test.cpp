@@ -1,15 +1,6 @@
 
 
 
-//////////　エスケープシーケンス　\n
-//////////	fgetc 一文字ごと読み込む
-//////////	fgets 一行ごと読み込む
-//////////	drawtext
-//////////	%s 引数を文字列のポインタとして扱い、文字列から"\0"を検出
-//////////   するか、精度で指定した文字列に達するまで文字を出力
-//////////	%c一文字ずつ
-//////////	%if キーボード入力した文字列をへんかん？　double型に変換
-
 
 #include "DxLib.h"
 #include "stdio.h"
@@ -35,13 +26,11 @@ int keyImage;
 
 //当たり判定用
 XY playerSize;
-int testCnt;
 
 //会話システム
 const char *file;
 char words[200];
 
-//イベントリ
 
 
 //-----WinMain
@@ -113,7 +102,10 @@ bool SystemInit(void)
 
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16);				//	65536色ﾓｰﾄﾞに設定
 	ChangeWindowMode(true);										//	true : window, false : ﾌﾙｽｸﾘｰﾝ
-	if (DxLib_Init() == -1) return -1;
+	if (DxLib_Init() == -1)
+	{
+		return false;
+	}
 	SetDrawScreen(DX_SCREEN_BACK);
 
 
@@ -164,13 +156,8 @@ void InitScene(void)
 	ShotGameInit();			//ｼｮｯﾄ
 	BattleGameInit();		//ﾊﾞﾄﾙ
 
-	//御札枚数用
-	testCnt = 0;
-
-
 	
-
-	sceneID = SCENE_ID_TITLE;
+	sceneID = SCENE_ID_GAME;
 }
 
 //-----ﾀｲﾄﾙｼｰﾝ
@@ -196,28 +183,15 @@ void GameScene()
 		sceneID = SCENE_ID_BATTLE;
 	}
 
-	
+
 	//-----FILE操作
-	FILE *fp;
-	
-	fopen_s(&fp, file, "r");
-//	fscanf_s(fp,"%s",words,256);
-//	fgets(words, 256, fp);
-//	printf("\n", words);	
-	fread(words, sizeof(words), size_t(2), fp);
-//	fprintf(fp, "HelloWorld!!!!むずかしいなぁ");
+//	FILE *fp;
+//	
+//	fopen_s(&fp, file, "r");
+//	fread(words, sizeof(words), size_t(2), fp);
+//	fclose(fp);
 
-	//for (int a = 0; a < words[a]; a++)
-	//{
-	//	if (CheckHitKey(KEY_INPUT_A))
-	//	{
-	//		printf("%s\n", words);
-	//	}
-	//}
 
-	fclose(fp);
-	
-	
 	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
 	if (keyDownTrigger[KEY_ID_IVENT]) iventFlag = !iventFlag;
@@ -227,7 +201,7 @@ void GameScene()
 		SetDrawBright(128, 128, 128);
 		pauseFlag = false;
 	}
-	
+
 	//-----POSE機能
 	if (keyDownTrigger[KEY_ID_PAUSE]) pauseFlag = !pauseFlag;
 	if (pauseFlag)
@@ -235,46 +209,49 @@ void GameScene()
 		SetDrawBright(128, 128, 128);
 		iventFlag = false;
 	}
-	
+
 
 	//通常時動作
 	if (!iventFlag && !pauseFlag)
 	{
-
 		//各種機能
 		pCnt++;
 
 		playerPos = PlayerControl();
 		EnemyControl(playerPos);
 		ShotControl(playerPos);
-		//ﾌﾟﾚｲﾔｰとｴﾈﾐｰとの当たり判定
-		if (ItemHitCheck(playerPos, playerSize.x))
+		itemDropControl();
+		
+		if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
 		{
-			testCnt++;
+			SetMapData(STAGE_ID_ONI2);
 		}
+		if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
+		{
+			//鬼ステージ①の祭壇に移動させる
+			SetMapData(STAGE_ID_ONI);			
+		}
+
+
 		//弾とｴﾈﾐｰの当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
-			for (int i = 0; i < ITEM_MAX; i++)
+			if (shot[sh].life > 0)
 			{
-				if (shot[sh].life > 0)
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
 				{
-					if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x,i))
-					{
-						DeleteShot(sh);
-					
-					}
+					DeleteShot(sh);
 				}
-				if (itemF[i].life > 0)
-				{
-					if (ItemHitCheck(playerPos, playerSize.x))
-					{
-						//ｱｲﾃﾑに当たっている
-						DeleteItem(i);
-					}
-				}
+
 			}
 		}
+		//アイテムとプレイヤーの当たり判定
+		if (ItemHitCheck(playerPos, playerSize.x))
+		{
+			//ｱｲﾃﾑに当たっている
+			DeleteItem();
+		}
+
 	}
 
 
@@ -297,8 +274,7 @@ void GameDraw()
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);
-	DrawFormatString(0, 200, 0xFF22FF, "%d", testCnt);
-
+	
 	
 
 	DrawFormatString(0, 24, 0xFFFFFF, "pCnt : %d", pCnt);
@@ -339,10 +315,10 @@ void GameDraw()
 		//ｲﾍﾞﾝﾄﾘかﾎﾟｰｽﾞ機能が使用されているときは表示されない
 		DrawFormatString(0, 32, 0xFFFFFF, "%s\n", words);
 
-		DrawFormatString(0, 150, 0xFF22FF, "%d", itemF[ITEM_TYPE_HI].point);
-		DrawFormatString(0, 165, 0xFF22FF, "%d", itemF[ITEM_TYPE_MIZU].point);
-		DrawFormatString(0, 177, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAZE].point);
-		DrawFormatString(0, 189, 0xFF22FF, "%d", itemF[ITEM_TYPE_KAIFUKU].point);
+		DrawFormatString(0, 215, 0xFF22FF, "%d", itemF[MAGIC_TYPE_FIRE].point);
+		DrawFormatString(0, 230, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WATER].point);
+		DrawFormatString(0, 245, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WIND].point);
+		DrawFormatString(0, 260, 0xFF22FF, "%d", itemF[MAGIC_TYPE_HEAL].point);
 
 
 	}

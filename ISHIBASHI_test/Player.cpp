@@ -1,16 +1,19 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "test.h"
 #include "KeyCheck.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Item.h"
 #include "Shot.h"
+#include "Enemy.h"
 
 //-----外部変数宣言
 //ｷｬﾗｸﾀ関連
 CHARACTER player;							//	ﾌﾟﾚｲﾔｰ変数格納用
 int playerImage[DIR_MAX][PLAYER_MAX];		//	ﾌﾟﾚｲﾔｰ画像：通常時
 
+int lifeCheckCnt;
+int moveCheckCnt;
 //int testImage[4];
 //int test2Image[4];
 
@@ -18,14 +21,14 @@ void PlayerSystemInit(void)
 {
 	//-----変数の初期化
 	player.moveDir = DIR_DOWN;											//	ｷｬﾗｸﾀの向き
-	player.size = { 32,40 };											//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
+	player.size = { 40,50 };											//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
 	player.offsetSize = { player.size.x / 2,player.size.y / 2 };		//　ｷｬﾗｸﾀのｵﾌｾｯﾄ
-	player.moveSpeed = 4;												//	ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
+	player.moveSpeed = PLAYER_SPEED_NOMAL;												//	ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
 	player.hitFlag = false;
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//ｷｬﾗｸﾀ関連
-	LoadDivGraph("aitem/bossDT.png", DIR_MAX*PLAYER_MAX
+	LoadDivGraph("aitem/bossDT3.png", DIR_MAX*PLAYER_MAX
 		, DIR_MAX, PLAYER_MAX, player.size.x, player.size.y, playerImage[0], true);
 
 
@@ -35,11 +38,12 @@ void PlayerSystemInit(void)
 
 void PlayerGameInit(void)
 {
-	player.pos = { 150,150};				//　ｷｬﾗｸﾀの地図上の座標
+	player.pos = { 150,150};										//　ｷｬﾗｸﾀの地図上の座標
 	player.lifeMax = 150;												//	ｷｬﾗｸﾀの体力最大値
 	player.life = player.lifeMax;										//	ｷｬﾗｸﾀの体力
-	player.animCnt = 0;													//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
-
+	player.animCnt = 0;												//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
+	lifeCheckCnt = 0;
+	moveCheckCnt = 0;
 }
 
 XY PlayerControl(void)
@@ -52,10 +56,7 @@ XY PlayerControl(void)
 										
 	//ﾌﾟﾚｲﾔｰが生きているとき
 	if (player.life > 0)
-	{
-
-		
-		//-----移動処理
+	{				//-----移動処理
 		if (keyNew[KEY_ID_RIGHT])
 		{
 			movedFlag = true;
@@ -89,7 +90,7 @@ XY PlayerControl(void)
 				//右
 			case DIR_RIGHT:			
 				playerPosCopy.x += player.moveSpeed;
-				playerPosOffset.x = playerPosCopy.x + player.offsetSize.x;
+				playerPosOffset.x = playerPosCopy.x/* + player.offsetSize.x*/+7;
 				indexPos = PosToIndex(playerPosCopy);
 				//指定した場所を通過可能かどうか
 				if (IsPass(playerPosOffset))
@@ -106,7 +107,7 @@ XY PlayerControl(void)
 				//左
 			case DIR_LEFT:	
 				playerPosCopy.x -= player.moveSpeed;
-				playerPosOffset.x = playerPosCopy.x - player.offsetSize.x;
+				playerPosOffset.x = playerPosCopy.x /*- player.offsetSize.x*/-10;
 				indexPos = PosToIndex(playerPosCopy);
 				//指定した場所を通過可能かどうか
 				if (IsPass(playerPosOffset))
@@ -123,7 +124,7 @@ XY PlayerControl(void)
 				//上
 			case DIR_UP:	
 				playerPosCopy.y -= player.moveSpeed;
-				playerPosOffset.y = playerPosCopy.y - player.offsetSize.y;
+				playerPosOffset.y = playerPosCopy.y/* - player.offsetSize.y*/;
 				indexPos = PosToIndex(playerPosCopy);
 				//指定した場所を通過可能かどうか
 				if (IsPass(playerPosOffset))
@@ -153,6 +154,8 @@ XY PlayerControl(void)
 				}
 				break;
 
+			case DIR_MAX:
+				break;
 			default:
 				break;
 			}
@@ -165,37 +168,104 @@ XY PlayerControl(void)
 		//-----ｼｮｯﾄ処理
 		if (keyNew[KEY_ID_FIRE])
 		{
-	//		ItemMOBControl(ITEM_TYPE_HI);
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_FIRE/*, ITEM_TYPE_HI*/);
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_FIRE);
 		}
 		if (keyNew[KEY_ID_WATER])
 		{
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WATER);
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_WATER);
 		}
 		if (keyNew[KEY_ID_WIND])
 		{
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_WIND);
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_WIND);
 		}
 		if (keyNew[KEY_ID_HEAL])
 		{
-			CreateShot(player.pos, player.moveDir, SHOT_TYPE_HEAL);
+			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+
+			if (lifeCheckCnt == 0)
+			{
+				lifeCheckCnt = 100;
+				if (player.lifeMax > player.life)
+				{
+					player.life++;
+				}
+				if (player.life > player.lifeMax)
+				{
+					player.life = player.lifeMax;
+				}
+			}
 		}
-
-		//-----ﾏｯﾌﾟの制限　（移動処理内に入れるとﾏｯﾌﾟがずれてしまう
-		if (mapPos.x > 0) mapPos.x = 0;
-		if (mapPos.x < -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * MAP_X + SCREEN_SIZE_X;
-		if (mapPos.y > 0) mapPos.y = 0;
-		if (mapPos.y < -CHIP_SIZE_Y * MAP_Y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * MAP_Y + SCREEN_SIZE_Y;
-
+		
+		//-----ｲﾍﾞﾝﾄ発生
+		//動きが止まる
+		if (GetEvent(player.pos) == EVENT_ID_STOP)
+		{
+			moveCheckCnt++;
+			if (moveCheckCnt < 100)
+			{
+				player.moveSpeed = PLAYER_SPEED_NON;
+			}
+			else if (moveCheckCnt >= 100)
+			{
+				player.moveSpeed = PLAYER_SPEED_NOMAL;
+			}
+		}
+		//動きが遅くなる
+		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		{	
+			player.moveSpeed = PLAYER_SPEED_LOW;
+		}
+		//ﾀﾞﾒｰｼﾞを受ける
+		else if (GetEvent(player.pos) == EVENT_ID_DAMAGE)
+		{
+			if (lifeCheckCnt == 0)
+			{
+				player.life -= 5;
+				lifeCheckCnt = 100;
+			}
+		}
+		//通常時の移動スピード
+		else
+		{
+			player.moveSpeed = PLAYER_SPEED_NOMAL;
+		}
+		
+		if (GetEvent(player.pos) != EVENT_ID_STOP)
+		{
+			moveCheckCnt = 0;
+		}
+		MapRange();
 		//　移動範囲処理
 		//ﾏｯﾌﾟﾁｯﾌﾟの当たり判定を実装していない為、一時的処置
-//		if (player.pos.x > CHIP_SIZE_X * MAP_X - player.offsetSize.x) player.pos.x = CHIP_SIZE_X * MAP_X - player.offsetSize.x;     //右制御
-//		if (player.pos.x < player.offsetSize.x) player.pos.x = player.offsetSize.x;													//左制御
-//		if (player.pos.y > CHIP_SIZE_Y * MAP_Y - player.offsetSize.y) player.pos.y = CHIP_SIZE_Y * MAP_Y - player.offsetSize.y;		//下制御
-//		if (player.pos.y < player.offsetSize.y) player.pos.y = player.offsetSize.y;													//上制御
+	//	if (player.pos.x > CHIP_SIZE_X * mapSize.x - player.offsetSize.x) player.pos.x = CHIP_SIZE_X * mapSize.x - player.offsetSize.x;     //右制御
+	//	if (player.pos.x < player.offsetSize.x) player.pos.x = player.offsetSize.x;													//左制御
+	//	if (player.pos.y > CHIP_SIZE_Y * mapSize.y - player.offsetSize.y) player.pos.y = CHIP_SIZE_Y * mapSize.y - player.offsetSize.y;		//下制御
+	//	if (player.pos.y < player.offsetSize.y) player.pos.y = player.offsetSize.y;													//上制御
 
 
+		//-----ライフ操作
+		if (PlayerHitCheck(player.pos, player.size.x))
+		{
+			if (lifeCheckCnt == 0)
+			{
+				player.life--;
+				lifeCheckCnt = 100;
+			}
+		
+		}
+		
+		if (lifeCheckCnt > 0)
+		{
+			lifeCheckCnt--;
+			if (lifeCheckCnt < 0)
+			{
+				lifeCheckCnt = 0;
+			}
+		}
 	}
+
+
+
 	return returnValue;
 }
 
@@ -226,8 +296,15 @@ void PlayerGameDraw(void)
 		, (SCROLL_Y_MAX + 1)
 		, 0x55FF22, false);
 
+	//情報処理
+	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
+	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", moveCheckCnt);
+
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);
 }
+
 

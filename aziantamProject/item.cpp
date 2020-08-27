@@ -3,8 +3,9 @@
 ////	敵の当たり判定に　狐だと火の御札、一反木綿だと風の御札、海坊主だと水の御札
 ////	回復の御札は全部の敵MOBから確率で出現するようにする
 ////	敵が倒されたら　ｱｲﾃﾑHPを減らしていく
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
+#include "stage.h"
 #include "item.h"
 
 
@@ -39,9 +40,10 @@ void ItemSystmeInit(void)
 		itemFmaster[i].pos = { 0,0 };																//　御札の地図上の座標
 		itemFmaster[i].size = { 20,20 };															//	御札の画像ｻｲｽﾞ
 		itemFmaster[i].offsetSize = { itemFmaster[i].size.x / 2,itemFmaster[i].size.y / 2 };		//　御札のｵﾌｾｯﾄ
-		itemFmaster[i].point = 0;																	//	御札の枚数
-		itemFmaster[i].lifeMax = 20;																//	御札の体力最大値（表示時間）
+		itemFmaster[i].point = 12;																	//	御札の枚数
+		itemFmaster[i].lifeMax = 200;																//	御札の体力最大値（表示時間）
 		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	御札の体力
+		itemFmaster[i].hitFlag = false;
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
@@ -78,15 +80,14 @@ void ItemSystmeInit(void)
 void ItemGameInit(void)
 {
 	//御札（ﾄﾞﾛｯﾌﾟ用
-	for (int i = 0; i < ITEM_MAX; i++)
-	{
-		itemF[i] = itemFmaster[GetRand(MAGIC_TYPE_MAX - 1)];
-		//itemF[i].pos.x = GetRand(SCREEN_SIZE_X - 1);
-		//itemF[i].pos.y = GetRand(SCREEN_SIZE_Y - 1);
-		//	itemF[i].point = 0;																//	御札の枚数
-		//	itemF[i].lifeMax = 20;															//	御札の体力最大値（表示時間）
-		//	itemF[i].life = itemF[i].lifeMax;												//	御札の体力
+	for (int type = 0; type < MAGIC_TYPE_MAX;type++)
+	{ 
+		for (int i = 0; i < ITEM_MAX; i++)
+		{
 
+			itemF[i] = itemFmaster[type];
+			itemF[i].life = 0;
+		}
 	}
 	//三種の神器
 	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
@@ -100,9 +101,30 @@ void ItemGameInit(void)
 
 }
 
-void ItemControl(void)
+void ItemDropControl(void)
 {
+	for (int i = 0; i < ITEM_MAX; i++)
+	{
+		//撃ってる弾を探す
+		if (itemF[i].life > 0)
+		{
+			//寿命を減らす(射程距離)
+			itemF[i].life--;
+		}
+	}
 }
+
+bool ItemMobControl(MAGIC_TYPE type)
+{
+	//御札が一枚以上ある場合、処理可能
+	if (itemF[type].point > 0)
+	{
+		itemF[type].point--;
+		return true;
+	}
+	return false;
+}
+
 
 void ItemGameDraw(void)
 {
@@ -114,15 +136,15 @@ void ItemGameDraw(void)
 		if (itemF[i].life > 0)
 		{
 			//-----画像描画
-			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y
+			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
 				, itemFImage[itemF[i].charType]
 				, true);
 
-			DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y
-				, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y
+			DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+				, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
 				, 0xFF00FF, false);
 		}
 	}
@@ -199,55 +221,93 @@ void ItemI_Draw(void)
 //
 //
 
-//
-////-----弾と敵の当たり判定　(true : あたり, false : はずれ)
-//bool ItemHitCheck(XY sPos, int sSize)
-//{
-//	//全ての敵に当たり判定を実施する
-//	for (int i = 0; i < ITEM_MAX; i++)
-//	{
-//		if (itemF[i].life > 0)
-//		{
-//			if (((itemF[i].pos.x - itemF[i].size.x / 2) < (sPos.x + sSize / 2))
-//				&& ((itemF[i].pos.x + itemF[i].size.x / 2) > (sPos.x - sSize / 2))
-//				&& ((itemF[i].pos.y - itemF[i].size.y / 2) < (sPos.y + sSize / 2))
-//				&& ((itemF[i].pos.y + itemF[i].size.y / 2) > (sPos.y - sSize / 2)))
-//			{
-//				//当たった時、ｴﾈﾐｰの体力を減らす
-//				itemF[i].life = 0;
-//				//ｴﾈﾐｰを倒した時だけﾎﾟｲﾝﾄ加算
-//				//御札に触れたら加算
-//				if (itemF[i].charType == MAGIC_TYPE_FIRE)
-//				{
-//					itemF[MAGIC_TYPE_FIRE].point++;
-//					//hiCnt++;
-//				}
-//				if (itemF[i].charType == MAGIC_TYPE_WATER)
-//				{
-//					itemF[MAGIC_TYPE_WATER].point++;
-//					//mizuCnt++;
-//				}
-//				if (itemF[i].charType == MAGIC_TYPE_WIND)
-//				{
-//					itemF[MAGIC_TYPE_WIND].point++;
-//					//kazeCnt++;
-//				}
-//				if (itemF[i].charType == MAGIC_TYPE_HEAL)
-//				{
-//					itemF[MAGIC_TYPE_HEAL].point++;
-//					//kaifukuCnt++;
-//				}
-//				return true;
-//			}
-//		}
-//	}
-//	//弾が外れた時
-//	return false;
-//}
-//
-////-----弾を消滅させる
-//void DeleteItem(int index)
-//{
-//	itemF[index].life = 0;
-//
-//};
+
+//-----弾と敵の当たり判定　(true : あたり, false : はずれ)
+bool ItemHitCheck(XY sPos, int sSize)
+{
+	int point = GetRand(2) + 1;
+	//全ての敵に当たり判定を実施する
+	for (int i = 0; i < ITEM_MAX; i++)
+	{
+		if (itemF[i].life > 0)
+		{
+			if (((itemF[i].pos.x - itemF[i].size.x / 2) < (sPos.x + sSize / 2))
+				&& ((itemF[i].pos.x + itemF[i].size.x / 2) > (sPos.x - sSize / 2))
+				&& ((itemF[i].pos.y - itemF[i].size.y / 2) < (sPos.y + sSize / 2))
+				&& ((itemF[i].pos.y + itemF[i].size.y / 2) > (sPos.y - sSize / 2)))
+			{
+				//ｱｲﾃﾑを拾った時だけﾎﾟｲﾝﾄ加算
+				//御札に触れたら加算
+				if (itemF[i].charType == MAGIC_TYPE_FIRE)
+				{
+					itemF[i].point += point;
+					itemF[i].hitFlag = true;
+				}
+				if (itemF[i].charType == MAGIC_TYPE_WATER)
+				{
+					itemF[i].point += point;
+					itemF[i].hitFlag = true;
+				}
+				if (itemF[i].charType == MAGIC_TYPE_WIND)
+				{
+					itemF[i].point += point;
+					itemF[i].hitFlag = true;
+				}
+				if (itemF[i].charType == MAGIC_TYPE_HEAL)
+				{
+					itemF[i].point += point;
+					itemF[i].hitFlag = true;
+				}
+				return true;
+			}
+		}
+	}
+	//弾が外れた時
+	return false;
+}
+
+
+//-----ドロップアイテム生成
+void ItemDrop(XY ePos, MAGIC_TYPE type)
+{
+	//ドロップしていないものがないかチェック
+	//していないものがあれは生成する
+	for (int item = 0; item < ITEM_MAX; item++)
+	{
+		//ドロップしていないものを探す
+		if (itemF[item].life <= 0)
+		{
+			//アイテムを落とす
+			itemF[item].charType = type;
+			itemF[item].pos = { ePos.x,ePos.y };
+			itemF[item].life = itemF[item].lifeMax;
+			break;
+		}
+	}
+}
+
+
+//-----ドロップアイテム消滅
+void DeleteItem()
+{
+	for (int item = 0; item < ITEM_MAX; item++)
+	{
+		if (itemF[item].life > 0 && itemF[item].hitFlag)
+		{
+			itemF[item].life = 0;
+			itemF[item].hitFlag = false;
+			break;
+		}
+	}
+}
+bool GameOverSet()
+{
+	if ((itemF[MAGIC_TYPE_FIRE].point == 0) 
+		&& (itemF[MAGIC_TYPE_WATER].point == 0) 
+		&& (itemF[MAGIC_TYPE_WIND].point == 0))
+	{
+		return true;
+	}
+	return false;
+}
+;

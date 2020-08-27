@@ -2,27 +2,18 @@
 
 //-----’è”’è‹`
 #define SHOT_ANI		46				//@’e‚Ì±ÆÒ°¼®İ”
-#define SHOT_LIFE_MAX	50
+#define SHOT_LIFE_MAX	46
 #define SHOT_MAX		20
 
 
-//-----—ñ‹“Œ^
-enum SHOT_TYPE
-{
-	SHOT_TYPE_FIRE,				//	‰Î‚ÌŒäD
-	SHOT_TYPE_WATER,			//	…‚ÌŒäD
-	SHOT_TYPE_WIND,				//	•—‚ÌŒäD
-	SHOT_TYPE_HEAL,				//	‰ñ•œ‚ÌŒäD
-	SHOT_TYPE_MAX
-};
 
 
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
-void ShotSystemInit(void);				//@’eî•ñ‚Ì‰Šú‰»	
+void ShotSystemInit(void);					//@’eî•ñ‚Ì‰Šú‰»	
 void ShotGameInit(void);
 void ShotControl(XY pPos);					//	’e‚Ì‘€ì
 void ShotGameDraw(void);				//	’e‚Ì•`‰æˆ—
-void CreateShot(XY pPos, DIR pDir, SHOT_TYPE ptype/*, ITEM_TYPE_F itype*/);
+void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype);
 void DeleteShot(int index);
 
 //-----¸ŞÛ°ÊŞÙ‰»

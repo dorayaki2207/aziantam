@@ -6,17 +6,19 @@
 
 //定数
 //ﾏｯﾌﾟﾁｯﾌﾟ画像
-#define MAP_X 32
-#define MAP_Y 32
-#define MAP_M_X 30
+#define MAP_X 45		//デフォルト
+#define MAP_Y 45
+#define MAP_START_Y 32	//はじまりの村
+#define MAP_START_X 32
+#define MAP_M_X 30		//モブ
 #define MAP_M_Y 30
-#define MAPI_X 32
+#define MAPI_X 32		//石橋担当
 #define MAPI_Y 32
-#define MAPY_X 32
+#define MAPY_X 32		//山本担当
 #define MAPY_Y 32
-#define MAPA_X 32
+#define MAPA_X 32		//荒木担当
 #define MAPA_Y 32
-#define MAPB_X 32
+#define MAPB_X 32		//ボス
 #define MAPB_Y 32
 #define MAP_CHIP_X 9
 #define MAP_CHIP_Y 9
@@ -39,6 +41,7 @@ enum EVENT_ID {
 	EVENT_ID_HONO,
 	EVENT_ID_MIZU,
 	EVENT_ID_ZAKO,
+	EVENT_ID_KAPPA,
 	EVENT_ID_MAX
 };
 
@@ -59,4 +62,4 @@ bool IsPass(XY pos);						//指定した座標が通過可能かを返す true:�
 EVENT_ID GetEvent(XY pos);					//指定した座標が特別にｲﾍﾞﾝﾄを起こすかを確認する 戻り値:ｲﾍﾞﾝﾄID
 
 void SetMapData(STAGE_ID stageID);			//ｽﾃｰｼﾞﾃﾞｰﾀをﾏｯﾌﾟ配列ﾆｺﾋﾟｰする
-
+void MapRange();

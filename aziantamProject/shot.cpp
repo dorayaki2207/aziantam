@@ -1,6 +1,7 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
 #include "stage.h"
+#include "item.h"
 #include "shot.h"
 
 
@@ -28,7 +29,6 @@ void ShotSystemInit(void)
 		shotMaster[type].pos = { 0,0 };
 		shotMaster[type].lifeMax = SHOT_LIFE_MAX;
 		shotMaster[type].animCnt = 0;
-		shotMaster[type].point = DAMAGE_NORMAL;
 
 		//‘ã“ü
 		for (int sh = 0; sh < SHOT_MAX; sh++)
@@ -57,7 +57,7 @@ void ShotSystemInit(void)
 		, shot[MAGIC_TYPE_WIND].size.y
 		, shotImage[MAGIC_TYPE_WIND]);
 	//‰ñ•œ
-	LoadDivGraph("aitem/life.png", SHOT_ANI, 8, 8
+	LoadDivGraph("item/life.png", SHOT_ANI, 8, 8
 		, shot[MAGIC_TYPE_HEAL].size.x
 		, shot[MAGIC_TYPE_HEAL].size.y
 		, shotImage[MAGIC_TYPE_HEAL]);
@@ -142,13 +142,15 @@ void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype)
 		//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ð’T‚·
 		if (shot[sh].life <= 0)
 		{
-			//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ð”­ŽË
-			shot[sh].charType = ptype;
-			shot[sh].pos = { pPos.x, pPos.y };		//’e‚ÌêŠ
-			shot[sh].moveDir = pDir;				//’e‚Ìi‚Þ‚×‚«êŠ
-			shot[sh].life = shot[sh].lifeMax;		//’e‚ðŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
+			if (ItemMobControl(ptype))
+			{
+				//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ð”­ŽË
+				shot[sh].charType = ptype;
+				shot[sh].pos = { pPos.x, pPos.y };		//’e‚ÌêŠ
+				shot[sh].moveDir = pDir;				//’e‚Ìi‚Þ‚×‚«êŠ
+				shot[sh].life = shot[sh].lifeMax;		//’e‚ðŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
+			}
 		}
-
 		break;
 	}
 }

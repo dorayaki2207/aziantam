@@ -10,7 +10,7 @@
 //ｼｰﾝ
 enum SCENE_ID
 {
-	SCENE_ID_INIT,					//	ｼｰﾝ初期化
+	SCENE_ID_INIT,						//	ｼｰﾝ初期化
 	SCENE_ID_TITLE,					//	ﾀｲﾄﾙ
 	SCENE_ID_GAME,					//	ｹﾞｰﾑ
 	SCENE_ID_BATTLE,				//	ﾎﾞｽ戦ｼｰﾝ
@@ -19,12 +19,30 @@ enum SCENE_ID
 //向き
 enum DIR
 {
-	DIR_UP,							//	↑
+	DIR_UP,								//	↑
 	DIR_RIGHT,						//	→
 	DIR_DOWN,						//	↓
-	DIR_LEFT,						// ←
+	DIR_LEFT,							// ←
 	DIR_MAX
 };
+//属性
+enum MAGIC_TYPE
+{
+	MAGIC_TYPE_FIRE,			//属性：火
+	MAGIC_TYPE_WATER,			//属性：水
+	MAGIC_TYPE_WIND,			//属性：風
+	MAGIC_TYPE_HEAL,			//属性：回復
+	MAGIC_TYPE_MAX
+};
+//タイプ
+enum CHARA_TYPE
+{
+	CHARA_PLAYER,
+	CHARA_ENEMY,
+	CHARA_SHOT,
+	CHARA_MAX
+};
+
 
 //-----構造体
 //座標
@@ -38,12 +56,12 @@ struct CHARACTER
 {
 	int charType;					//	ｷｬﾗｸﾀの種類
 	DIR moveDir;					//	ｷｬﾗｸﾀの向き
-	XY pos;							//　ｷｬﾗｸﾀの地図上の座標
-	XY size;						//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
-	XY offsetSize;					//　ｷｬﾗｸﾀのｵﾌｾｯﾄ
-	int moveSpeed;					//	ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
+	XY pos;							// ｷｬﾗｸﾀの地図上の座標
+	XY size;							//	ｷｬﾗｸﾀの画像ｻｲｽﾞ
+	XY offsetSize;				// ｷｬﾗｸﾀのｵﾌｾｯﾄ
+	int moveSpeed;				//	ｷｬﾗｸﾀの移動ｽﾋﾟｰﾄﾞ
 	int lifeMax;					//	ｷｬﾗｸﾀの体力最大値
-	int life;						//	ｷｬﾗｸﾀの体力
+	int life;							//	ｷｬﾗｸﾀの体力
 	int animCnt;					//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	int point;						//	ｷｬﾗｸﾀのｽｺｱ
 	bool hitFlag;					//	ｷｬﾗｸﾀが攻撃を受けたかどうか
@@ -65,3 +83,4 @@ void TitleScene(void);
 extern SCENE_ID sceneID;
 //ﾃｽﾄ用
 extern int SceneCounter;
+

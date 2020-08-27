@@ -10,8 +10,8 @@ enum KEY_ID
 {
 	KEY_ID_SPACE,	//スペースキー
 	KEY_ID_PAUSE,	//Pキーでpause
-	KEY_ID_IVENT,	//Iキーでｲﾍﾞﾝﾄﾘ
-	KEY_ID_SHOT,	//左ｺﾝﾄﾛｰﾙｷｰで弾発射
+	KEY_ID_IVENT,	//Iキーでｲﾝﾍﾞﾝﾄﾘ
+	KEY_ID_ENTER,	//clause
 	KEY_ID_SAVE,	//Sｷｰで保存
 	KEY_ID_LOAD,	//Lｷｰで読み込み
 	KEY_ID_UP,		//上キー

@@ -7,19 +7,20 @@
 #include "Stage.h"
 
 //------ŠO•”•Ï”’è‹`
-CHARACTER shotMaster[SHOT_TYPE_MAX];
+CHARACTER shotMaster[MAGIC_TYPE_MAX];
 CHARACTER shot[SHOT_MAX];
-int shotImage[SHOT_TYPE_MAX][SHOT_ANI];
+int shotImage[MAGIC_TYPE_MAX][SHOT_ANI];
+
 
 
 void ShotSystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
-	shotMaster[SHOT_TYPE_FIRE].charType = SHOT_TYPE_FIRE;
-	shotMaster[SHOT_TYPE_WATER].charType = SHOT_TYPE_WATER;
-	shotMaster[SHOT_TYPE_WIND].charType = SHOT_TYPE_WIND;
-	shotMaster[SHOT_TYPE_HEAL].charType = SHOT_TYPE_HEAL;
-	for (int type = 0; type < SHOT_TYPE_MAX; type++)
+	shotMaster[MAGIC_TYPE_FIRE].charType = MAGIC_TYPE_FIRE;
+	shotMaster[MAGIC_TYPE_WATER].charType = MAGIC_TYPE_WATER;
+	shotMaster[MAGIC_TYPE_WIND].charType = MAGIC_TYPE_WIND;
+	shotMaster[MAGIC_TYPE_HEAL].charType = MAGIC_TYPE_HEAL;
+	for (int type = 0; type < MAGIC_TYPE_MAX; type++)
 	{
 		shotMaster[type].moveDir = DIR_DOWN;						//	’e‚ÌŒü‚«
 		shotMaster[type].size = { 40,40 };							//	’e‚Ì‰æ‘œ»²½Ş
@@ -36,39 +37,44 @@ void ShotSystemInit(void)
 		{
 			shot[sh] = shotMaster[type];
 			shot[sh].pos = {0,0};
-			shot[type].lifeMax = SHOT_LIFE_MAX;						//	’e‚Ì‘Ì—ÍÅ‘å’l
-			shot[type].life = 0;									//	’e‚Ì‘Ì—Í
-			shot[type].animCnt = 0;								//	’e‚Ì±ÆÒ°¼®İ
+			shot[sh].lifeMax = SHOT_LIFE_MAX;						//	’e‚Ì‘Ì—ÍÅ‘å’l
+			shot[sh].life = 0;									//	’e‚Ì‘Ì—Í
+			shot[sh].animCnt = 0;								//	’e‚Ì±ÆÒ°¼®İ
 
 		}
 	}
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
 	//‰Î
 	LoadDivGraph("aitem/fire_soft.png", SHOT_ANI, 8, 8
-		, shot[SHOT_TYPE_FIRE].size.x
-		, shot[SHOT_TYPE_FIRE].size.y
-		, shotImage[SHOT_TYPE_FIRE]);
+		, shot[MAGIC_TYPE_FIRE].size.x
+		, shot[MAGIC_TYPE_FIRE].size.y
+		, shotImage[MAGIC_TYPE_FIRE]);
 	//…
 	LoadDivGraph("aitem/water_soft.png", SHOT_ANI, 8, 8
-		, shot[SHOT_TYPE_WATER].size.x
-		, shot[SHOT_TYPE_WATER].size.y
-		, shotImage[SHOT_TYPE_WATER]);
+		, shot[MAGIC_TYPE_WATER].size.x
+		, shot[MAGIC_TYPE_WATER].size.y
+		, shotImage[MAGIC_TYPE_WATER]);
 	//•—
 	LoadDivGraph("aitem/wind_soft.png", SHOT_ANI, 8, 8
-		, shot[SHOT_TYPE_WIND].size.x
-		, shot[SHOT_TYPE_WIND].size.y
-		, shotImage[SHOT_TYPE_WIND]);
+		, shot[MAGIC_TYPE_WIND].size.x
+		, shot[MAGIC_TYPE_WIND].size.y
+		, shotImage[MAGIC_TYPE_WIND]);
 	//‰ñ•œ
 	LoadDivGraph("aitem/life.png", SHOT_ANI, 8, 8
-		, shot[SHOT_TYPE_HEAL].size.x
-		, shot[SHOT_TYPE_HEAL].size.y
-		, shotImage[SHOT_TYPE_HEAL]);
+		, shot[MAGIC_TYPE_HEAL].size.x
+		, shot[MAGIC_TYPE_HEAL].size.y
+		, shotImage[MAGIC_TYPE_HEAL]);
 
 }
 
 void ShotGameInit(void)
 {
-	
+	for (int sh = 0; sh < SHOT_MAX; sh++)
+	{
+		shot[sh].pos = { 0,0 };
+		shot[sh].life = 0;									//	’e‚Ì‘Ì—Í
+		
+	}
 }
 
 void ShotControl(XY pPos)
@@ -86,7 +92,7 @@ void ShotControl(XY pPos)
 			if (shot[sh].moveDir == DIR_DOWN) shot[sh].pos.y += shot[sh].moveSpeed;
 			if (shot[sh].moveDir == DIR_UP) shot[sh].pos.y -= shot[sh].moveSpeed;
 			
-			if (shot[sh].charType == SHOT_TYPE_HEAL)
+			if (shot[sh].charType == MAGIC_TYPE_HEAL)
 			{
 				if (shot[sh].moveDir == DIR_RIGHT) shot[sh].pos.x = pPos.x;
 				if (shot[sh].moveDir == DIR_LEFT) shot[sh].pos.x = pPos.x;
@@ -132,6 +138,7 @@ void ShotGameDraw(void)
 		//-----î•ñˆ—
 		DrawFormatString(0, 100, 0xFFFFFF, "shotPos : %d,%d", shot[sh].pos.x, shot[sh].pos.y);
 		DrawFormatString(0, 120, 0xFFFFFF, "shotAni : %d", shot[sh].animCnt);
+		DrawFormatString(0, 160, 0xFFFFFF, "shotLife : %d", shot[sh].life);
 
 	}
 
@@ -139,34 +146,29 @@ void ShotGameDraw(void)
 }
 
 
+
 //-----’e‚ğ¶¬‚·‚é
-void CreateShot(XY pPos, DIR pDir, SHOT_TYPE ptype/*, ITEM_TYPE_F itype*/)
+void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype/*, ITEM_TYPE_F itype*/)
 {
 
 	//’e‚Ì”•ªŒ‚‚Á‚Ä‚¢‚È‚¢’e‚ª‚È‚¢‚©‚ğÁª¯¸‚µA
 	//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ª‚ ‚ê‚Îˆê”­’e‚ğì‚Á‚Ä”­Ë‚·‚éB
 	for (int sh = 0; sh < SHOT_MAX; sh++)
 	{
-	//	if (shot[sh].charType == shot[ptype].charType)
-	//	{
-
 		//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ğ’T‚·
 		if (shot[sh].life <= 0)
 		{
-		
-				//ŒäD‚Ì”‚ª0–‡ˆÈã‚Ìê‡‚Ì‚İˆ—‚ğ‚·‚é
-			//	if (itemF[itype].point > 0)
-			//	{
+			//ŒäD‚Ì”‚ª0–‡ˆÈã‚Ìê‡‚Ì‚İˆ—‚ğ‚·‚é
+			if (ItemMOBControl(ptype))
+			{
 				//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ª‚ ‚Á‚½‚Ì‚Å”­Ë
-			shot[sh].charType = ptype;
-				shot[sh].pos.x = pPos.x;				//	’e‚ÌêŠ
-				shot[sh].pos.y = pPos.y;
+				shot[sh].charType = ptype;
+				shot[sh].pos = { pPos.x,pPos.y };		//	’e‚ÌêŠ
 				shot[sh].moveDir = pDir;				//	’e‚Ìi‚Ş‚×‚«•ûŒü
 				shot[sh].life = shot[sh].lifeMax;		//	’e‚ğŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
-				break;
-				//	}
-	//		}
+			}
 		}
+		break;
 	}
 }
 
@@ -174,5 +176,4 @@ void CreateShot(XY pPos, DIR pDir, SHOT_TYPE ptype/*, ITEM_TYPE_F itype*/)
 void DeleteShot(int index)
 {
 	shot[index].life = 0;
-//	shot[index].animCnt = 0;
 }

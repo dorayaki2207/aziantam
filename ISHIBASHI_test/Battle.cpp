@@ -15,7 +15,7 @@ int BossDImage[2];
 void BattleSystemInit(void)
 {
 	//-----‰Šú‰»
-	boss.size = { 400,500 };							//	·¬×¸À‚Ì‰æ‘œ»²½Ş
+	boss.size = { 400,500 };									//	·¬×¸À‚Ì‰æ‘œ»²½Ş
 	boss.offsetSize = { boss.size.x / 2,boss.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
 	boss.hitFlag = false;			//UŒ‚‚ğó‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	
@@ -48,8 +48,11 @@ void BattleScene(void)
 	{
 		sceneID = SCENE_ID_INIT;
 	}
-	ItemControl(boss);
+
+	ItemBossControl(&boss);
 	BattleControl();
+
+
 	//•`‰æˆ—
 	BattleGameDraw();
 }
@@ -57,15 +60,6 @@ void BattleScene(void)
 
 void BattleControl(void)
 {
-
-//	for (int type = 0; type < ITEM_TYPE_F_MAX; type++)
-//	{
-//		if (itemF[type].point--)
-//		{
-//			boss.hitFlag = true;
-//		}
-//	}
-
 
 
 }
@@ -91,7 +85,7 @@ void BattleGameDraw(void)
 		}
 	
 		//	DrawGraph((SCREEN_SIZE_X - 400) / 2, 0, BossImage, true);
-		DrawBox(100, 20, boss.lifeMax*7, 50, 0x55FFFF, true);
+		DrawBox(100, 20, boss.lifeMax * 7, 50, 0x55FFFF, true);
 		DrawBox(100, 20, boss.life * 7, 50, 0xFF55FF, true);
 
 	//	DrawBox(50, 50, 70, boss.lifeMax * 13

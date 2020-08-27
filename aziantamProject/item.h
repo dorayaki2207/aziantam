@@ -18,15 +18,16 @@ enum ITEM_TYPE_B
 
 
 //-----関数ﾌﾟﾛﾄﾀｲﾌﾟ宣言
-void ItemSystmeInit(void);		//　ｱｲﾃﾑ情報の初期化	
-void ItemGameInit(void);		//						
-void ItemControl(void);			//	ｱｲﾃﾑの操作
-void ItemGameDraw(void);		//　ｱｲﾃﾑ描画処理
-void ItemI_Draw(void);			//	ｲﾝﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
-//void ItemB_Draw(void);		//	ﾎﾞｽﾊﾞﾄﾙ用のｱｲﾃﾑ画像描画
-//bool ItemHitCheck(XY sPos, int sSize);
-//void DeleteItem(int index);
-
+void ItemSystmeInit(void);				//　ｱｲﾃﾑ情報の初期化	
+void ItemGameInit(void);				//						
+void ItemDropControl(void);				//	ｱｲﾃﾑの操作
+void ItemGameDraw(void);				//　ｱｲﾃﾑ描画処理
+void ItemI_Draw(void);					//	ｲﾝﾍﾞﾝﾄﾘ用のｱｲﾃﾑ画像描画
+bool ItemMobControl(MAGIC_TYPE type);	//	MOB敵交戦時処理
+bool ItemHitCheck(XY sPos, int sSize);	//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑの当たり判定
+void ItemDrop(XY ePos, MAGIC_TYPE type);//	ﾄﾞﾛｯﾌﾟ処理
+void DeleteItem();						//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑの削除
+bool GameOverSet();						//	ｹﾞｰﾑｵｰﾊﾞｰ条件
 //-----ｸﾞﾛｰﾊﾞﾙ化
 extern CHARACTER itemF[ITEM_MAX];
 

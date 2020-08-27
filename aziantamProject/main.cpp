@@ -1,6 +1,10 @@
-#include "DxLib.h"
+// タイトルシーン　セレクト途中:石橋
+//攻撃お札が全て0枚になったら終了。
+
+#include <DxLib.h>
 #include "main.h"
 #include "keycheck.h"
+#include "title.h"
 #include "effect.h"
 #include "stage.h"
 #include "player.h"
@@ -14,13 +18,16 @@
 SCENE SceneID;
 SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
-
+int GameOverCnt;
 //ｲﾝﾍﾞﾝﾄﾘ関連
 bool iventFlag;
 
 //PAUSE関連
 bool paseFlag;
 int keyImage;
+
+//当たり判定用
+XY playerSize;
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -59,6 +66,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		case SCENE_GAMEOVER:
 			GameOverScene();
 			break;
+		//ｹﾞｰﾑｸﾘｱｼｰﾝ
+		case SCENE_CLEAR:
+			GameClearScene();
+			break;
+
+		case SCENE_MAX:
+			break;
+
 		default:
 			return -1;
 			break;
@@ -86,6 +101,7 @@ bool SystemInit(void)
 	KeyInit();
 
 	//-----各ﾓｼﾞｭｰﾙの初期化
+	TitleSystemInit();			//ﾀｲﾄﾙ
 	StageSystemInit();			//ｽﾃｰｼﾞ
 	PlayerSystemInit();			//ﾌﾟﾚｲﾔｰ
 	EnemySystemInit();			//敵mob
@@ -94,18 +110,19 @@ bool SystemInit(void)
 	
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("item/操作説明.png");
-
 	//-----変数の初期化
 	//ｼｰﾝ関連
 	SceneCounter = 0;
+	GameOverCnt = 0;
 	SceneID = SCENE_INIT;
 	ScenePreID = SCENE_MAX;
 	//PAUSE
 	pauseFlag = false;
 	//ｲﾝﾍﾞﾝﾄリ
 	iventFlag = false;
-	
-	
+	//当たり判定用
+	playerSize = { 20,20 };
+
 	return true;
 }
 //初期化ｼｰﾝ
@@ -125,29 +142,6 @@ void InitScene(void)
 
 
 
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-//ﾀｲﾄﾙｼｰﾝ
-void TitleScene(void)
-{
-	//-----ｼｰﾝ遷移
-	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAME;
-
-	//-----描画
-	TitleDraw();
-}
-//ﾀｲﾄﾙの描画
-void TitleDraw(void)
-{
-	//-----描画処理
-
-	//-----情報処理
-	DrawFormatString(0, 0, 0xFFFFFF, "Title:%d", SceneCounter);
-
-}
-
-
-
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 //ｹﾞｰﾑｼｰﾝ
@@ -157,9 +151,16 @@ void GameScene(void)
 
 
 	//ｼｰﾝ遷移
-	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAMEOVER;
-
-
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
+	if (GameOverSet())
+	{
+		GameOverCnt++;
+		if (GameOverCnt > 100)
+		{
+			SceneID = SCENE_GAMEOVER;
+			GameOverCnt = 0;
+		}
+	}
 
 	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
@@ -186,7 +187,7 @@ void GameScene(void)
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 		playerPos = PlayerControl();		//ﾌﾟﾚｲﾔｰ
 		EnemyControl(playerPos);			//ｴﾈﾐｰ
-		ItemControl();						//ｱｲﾃﾑ
+		ItemDropControl();					//ｱｲﾃﾑ
 		ShotControl(playerPos);				//ｼｮｯﾄ
 
 		//ｴﾈﾐｰと弾の当たり判定
@@ -194,13 +195,18 @@ void GameScene(void)
 		{
 			if (shot[sh].life > 0)
 			{
-				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x, &shot[sh]))
 				{
 					DeleteShot(sh);
 				}
 			}
 		}
-
+		//アイテムとプレイヤーの当たり判定
+		if (ItemHitCheck(playerPos, playerSize.x))
+		{
+			//ｱｲﾃﾑに当たっている
+			DeleteItem();
+		}
 
 		//一時的処理
 		if (GetEvent(playerPos) == EVENT_ID_ZAKO)
@@ -210,10 +216,18 @@ void GameScene(void)
 			mapPos.x = 0;
 			mapPos.y = 0;
 		}
-		
+		else if (GetEvent(playerPos) == EVENT_ID_KAPPA)
+		{
+			stageID = STAGE_ID_KAPPA;
+			SetMapData(STAGE_ID_KAPPA);
+			mapPos.x = 0;
+			mapPos.y = 0;
+		}
 	}
 
 	
+	
+
 	//-----描画
 	GameDraw(); 
 }
@@ -259,6 +273,7 @@ void GameDraw(void)
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
 	DrawFormatString(0, 120, 0xFFFFFF, "map:%d,%d", mapPos.x,mapPos.y);
+	DrawFormatString(0, 140, 0xFFFFFF, "GameOver:%d", GameOverCnt);
 
 }
 
@@ -285,6 +300,31 @@ void GameOverDraw(void)
 
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameOver:%d", SceneCounter);
+
+
+}
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//ｹﾞｰﾑｸﾘｱｼｰﾝ
+void GameClearScene(void)
+{
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_INIT;
+
+	GameClearDraw();
+}
+
+//ｹﾞｰﾑｸﾘｱの描画
+void GameClearDraw(void)
+{
+	//-----描画処理
+
+	//-----情報処理
+	DrawFormatString(0, 0, 0xFFFFFF, "GameClear:%d", SceneCounter);
 
 
 }

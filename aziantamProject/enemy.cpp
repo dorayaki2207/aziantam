@@ -1,7 +1,8 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
 #include "stage.h"
 #include "enemy.h"
+#include "item.h"
 
 //-----äOïîïœêîêÈåæ
 //”Ãﬁä÷òA
@@ -61,7 +62,7 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
-
+	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		enemyMob[ene] = enemyMobMaster[GetRand(ENEMY_M_MAX - 1)];
@@ -93,13 +94,15 @@ void EnemyGameDraw()
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y + mapPos.y
 				, 0xFF00FF, false);
 		}
+		DrawFormatString(0, 200, 0xFFFFFF,"enemyHP:%d", enemyMob[ene].life, true);
 	}
 
 }
 
 //-----¥»–∞Ç∆íeÇÃìñÇΩÇËîªíËÅ@(true : Ç†ÇΩÇË, false : ÇÕÇ∏ÇÍ)
-bool EnemyHitCheck(XY sPos, int sSize)
+bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 {
+	auto randam = rand() % 100;
 	//ëSÇƒÇÃìGÇ…ìñÇΩÇËîªíËÇé¿é{Ç∑ÇÈ
 	for (int en = 0; en < ENEMY_MAX; en++)
 	{
@@ -111,8 +114,67 @@ bool EnemyHitCheck(XY sPos, int sSize)
 				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
 			{
 				//ìñÇΩÇ¡ÇΩéûÅA¥»–∞ÇÃëÃóÕÇå∏ÇÁÇ∑
-				enemyMob[en].life--;
+				switch (enemyMob[en].charType)
+				{
+				case ENEMY_I_MOB:
+					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_NORMAL;
+					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_LOW;
+					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_HIGH;
+					
+					if (enemyMob[en].life <= 0)
+					{
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+					}
+					break;
 
+				case ENEMY_A_MOB:
+					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_HIGH;
+					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_NORMAL;
+					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_LOW;
+					
+					if (enemyMob[en].life <= 0)
+					{
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+					}
+					break;
+
+				case ENEMY_Y_MOB:
+					if ((*shot).charType == MAGIC_TYPE_FIRE) enemyMob[en].life -= DAMAGE_LOW;
+					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_HIGH;
+					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_NORMAL;
+				
+					if (enemyMob[en].life <= 0)
+					{
+						if (randam > 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						}
+						else if (randam <= 20)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+					}
+					break;
+
+				case ENEMY_M_MAX:
+					break;
+				default:
+					break;
+				}
 
 				return true;
 			}
@@ -121,3 +183,27 @@ bool EnemyHitCheck(XY sPos, int sSize)
 	//íeÇ™äOÇÍÇΩéû
 	return false;
 }
+
+
+//ìñÇΩÇËîªíË
+bool PlayerHitCheck(XY sPos, int sSize)
+{
+	//ëSÇƒÇÃìGÇ…ìñÇΩÇËîªíËÇé¿é{Ç∑ÇÈ
+	for (int en = 0; en < ENEMY_MAX; en++)
+	{
+		if (enemyMob[en].life > 0)
+		{
+			if (((enemyMob[en].pos.x - enemyMob[en].size.x / 2) < (sPos.x + sSize / 2))
+				&& ((enemyMob[en].pos.x + enemyMob[en].size.x / 2) > (sPos.x - sSize / 2))
+				&& ((enemyMob[en].pos.y - enemyMob[en].size.y / 2) < (sPos.y + sSize / 2))
+				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
+			{
+				//ìñÇΩÇ¡ÇΩ
+				return true;
+			}
+		}
+	}
+	//äOÇÍÇΩéû
+	return false;
+}
+

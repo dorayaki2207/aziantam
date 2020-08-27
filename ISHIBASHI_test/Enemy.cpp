@@ -1,8 +1,14 @@
+//“–‚½‚è”»’è
+//´ÈĞ°‚Æ¼®¯Ä
+//´ÈĞ°‚ÆÌßÚ²Ô°
+
+
 #include "DxLib.h"
 #include "test.h"
 #include "Stage.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "Player.h"
 
 //-----ŠO•”•Ï”éŒ¾
 //ÓÌŞŠÖ˜A
@@ -19,17 +25,17 @@ void EnemySystemInit(void)
 	//ŒÏ
 	enemyMobMaster[ENEMY_I_MOB].charType = ENEMY_I_MOB;			//	´ÈĞ°‚Ìí—Ş	F	·ÂÈ
 	enemyMobMaster[ENEMY_I_MOB].moveSpeed = 2;					//	·ÂÈ‚ÌˆÚ“®—Ê
-	enemyMobMaster[ENEMY_I_MOB].lifeMax = 50;					//	·ÂÈ‚Ì‘Ì—ÍÅ‘å’l
+	enemyMobMaster[ENEMY_I_MOB].lifeMax = 3;					//	·ÂÈ‚Ì‘Ì—ÍÅ‘å’l
 	enemyMobMaster[ENEMY_I_MOB].point = 1;						//	·ÂÈ‚Ì“¾“_
 	//ˆê”½–Ø–È
 	enemyMobMaster[ENEMY_Y_MOB].charType = ENEMY_Y_MOB;			//	´ÈĞ°‚Ìí—Ş	F	ˆê”½–Ø–È
 	enemyMobMaster[ENEMY_Y_MOB].moveSpeed = 2;					//	ˆê”½–Ø–È‚ÌˆÚ“®—Ê
-	enemyMobMaster[ENEMY_Y_MOB].lifeMax = 50;					//	ˆê”½–Ø–È‚Ì‘Ì—ÍÅ‘å’l
+	enemyMobMaster[ENEMY_Y_MOB].lifeMax = 3;					//	ˆê”½–Ø–È‚Ì‘Ì—ÍÅ‘å’l
 	enemyMobMaster[ENEMY_Y_MOB].point = 1;						//	ˆê”½–Ø–È‚Ì“¾“_
 	//ŠC–Vå
 	enemyMobMaster[ENEMY_A_MOB].charType = ENEMY_A_MOB;			//	´ÈĞ°‚Ìí—Ş	F	ŠC–Vå						
 	enemyMobMaster[ENEMY_A_MOB].moveSpeed = 2;					//	ŠC–Vå‚ÌˆÚ“®—Ê
-	enemyMobMaster[ENEMY_A_MOB].lifeMax = 50;					//	ŠC–Vå‚Ì‘Ì—ÍÅ‘å’l
+	enemyMobMaster[ENEMY_A_MOB].lifeMax = 3;					//	ŠC–Vå‚Ì‘Ì—ÍÅ‘å’l
 	enemyMobMaster[ENEMY_A_MOB].point = 1;						//	ŠC–Vå‚Ì“¾“_
 	//ÓÌŞ‚Ü‚Æ‚ß‚Äˆ—
 	for (int type = 0; type < ENEMY_M_MAX; type++)
@@ -141,8 +147,11 @@ void EnemyGameDraw(void)
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y + mapPos.y
 				, 0xFF00FF, false);
 
+			
 		}
 	}
+
+
 }
 
 
@@ -225,7 +234,81 @@ int MoveEnemyXY(CHARACTER* enemy, XY player1Pos)		// true : “®‚­A false : “®‚©‚
 
 
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
-bool EnemyHitCheck(XY sPos, int sSize, int index)
+bool EnemyHitCheck(XY sPos, int sSize)
+{
+	auto randam = rand() % 100;
+
+	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
+	for (int en = 0; en < ENEMY_MAX; en++)
+	{
+		if (enemyMob[en].life > 0)
+		{
+			if (((enemyMob[en].pos.x - enemyMob[en].size.x / 2) < (sPos.x + sSize / 2))
+				&& ((enemyMob[en].pos.x + enemyMob[en].size.x / 2) > (sPos.x - sSize / 2))
+				&& ((enemyMob[en].pos.y - enemyMob[en].size.y / 2) < (sPos.y + sSize / 2))
+				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
+			{
+
+				//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
+				enemyMob[en].life--;
+
+				if (enemyMob[en].life <= 0)
+				{
+					switch (enemyMob[en].charType)
+					{
+					case ENEMY_I_MOB:
+						if (randam > 5)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+						}
+						else if (randam <= 5)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+						DrawFormatString(0, 400, 0xffffff, "%d", randam);
+						break;
+
+					case ENEMY_A_MOB:
+						if (randam > 5)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+						}
+						else if (randam <= 5)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+						DrawFormatString(0, 400, 0xffffff, "%d", randam);
+						break;
+
+					case ENEMY_Y_MOB:
+						if (randam > 5)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+						}
+						else if (randam <= 5)
+						{
+							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+						}
+						DrawFormatString(0, 400, 0xffffff, "%d", randam);
+						break;
+
+					case ENEMY_M_MAX:
+						break;
+
+					default:
+						break;
+					}
+				}
+				
+				return true;
+			}
+		}
+	}
+	//’e‚ªŠO‚ê‚½
+	return false;
+}
+//“–‚½‚è”»’è
+bool PlayerHitCheck(XY sPos, int sSize)
 {
 	//‘S‚Ä‚Ì“G‚É“–‚½‚è”»’è‚ğÀ{‚·‚é
 	for (int en = 0; en < ENEMY_MAX; en++)
@@ -237,13 +320,13 @@ bool EnemyHitCheck(XY sPos, int sSize, int index)
 				&& ((enemyMob[en].pos.y - enemyMob[en].size.y / 2) < (sPos.y + sSize / 2))
 				&& ((enemyMob[en].pos.y + enemyMob[en].size.y / 2) > (sPos.y - sSize / 2)))
 			{
-				//“–‚½‚Á‚½A´ÈĞ°‚Ì‘Ì—Í‚ğŒ¸‚ç‚·
-				enemyMob[en].life--;
-				itemF[index].hitFlag = true;
+
+				//“–‚½‚Á‚½
 				return true;
 			}
 		}
 	}
-	//’e‚ªŠO‚ê‚½
+	//ŠO‚ê‚½
 	return false;
 }
+
