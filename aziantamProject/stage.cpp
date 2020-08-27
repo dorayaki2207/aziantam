@@ -3,7 +3,7 @@
 //2020.05.20
 
 ////////////////////////////////ｽﾃｰｼﾞずれてる
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
 #include "stage.h"
 
@@ -17,7 +17,7 @@ int map[MAP_Y][MAP_X];
 
 //ﾀﾞﾝｼﾞｮﾝ
 //村のﾏｯﾌﾟ
-int stage[MAP_Y][MAP_X] = {
+int stage[MAP_START_Y][MAP_START_X] = {
 {6,66,66,66,66,66,66,66, 66,66,66,66,66,66,66,66, 66,66,66,66,66,66,66,66, 8,58,58,58,58,58,58,58},
 {6,58,58,58,58,58,58,58, 58,58,58,58,58,58,58,58, 58,58,58,58,58,58,58,58, 8,58,58,58,58,58,58,58},
 {6,58,58,58,58,58,58,58, 58,58,58,58,58,58,58,58, 58,58,58,58,58,58,58,58, 8,58,58,58,58,58,58,58},
@@ -227,7 +227,7 @@ void StageGameInit(void)
 
 	//ﾏｯﾌﾟ作成ﾃﾞｰﾀ
 	stageID = STAGE_ID_START;
-	//SetMapData(STAGE_ID_START);
+	SetMapData(STAGE_ID_START);
 }
 
 //ﾋﾟｸｾﾙ座標系ｶﾗﾏｯﾌﾟ配列座標系ﾆ変換する
@@ -355,8 +355,8 @@ void SetMapData(STAGE_ID stage_ID)
 
 	if (stage_ID == STAGE_ID_START)
 	{
-		mapSize.x = MAP_X;
-		mapSize.y = MAP_Y;
+		mapSize.x = MAP_START_X;
+		mapSize.y = MAP_START_Y;
 
 		for (int y = 0; y < mapSize.y; y++)
 		{
@@ -438,3 +438,13 @@ void StageGameDraw(void)
 }
 
 
+//ｽｸﾛｰﾙ制限
+void MapRange()
+{
+	//-----ﾏｯﾌﾟの制限	
+	if (mapPos.x > 0) mapPos.x = 0;
+	if (mapPos.x < -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X;
+	if (mapPos.y > 0) mapPos.y = 0;
+	if (mapPos.y < -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y;
+
+}

@@ -299,4 +299,15 @@ void DeleteItem()
 			break;
 		}
 	}
-};
+}
+bool GameOverSet()
+{
+	if ((itemF[MAGIC_TYPE_FIRE].point == 0) 
+		&& (itemF[MAGIC_TYPE_WATER].point == 0) 
+		&& (itemF[MAGIC_TYPE_WIND].point == 0))
+	{
+		return true;
+	}
+	return false;
+}
+;

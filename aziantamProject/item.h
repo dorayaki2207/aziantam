@@ -20,14 +20,14 @@ enum ITEM_TYPE_B
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
 void ItemSystmeInit(void);				//@±²ÃÑî•ñ‚Ì‰Šú‰»	
 void ItemGameInit(void);				//						
-void ItemDropControl(void);					//	±²ÃÑ‚Ì‘€ì
+void ItemDropControl(void);				//	±²ÃÑ‚Ì‘€ì
 void ItemGameDraw(void);				//@±²ÃÑ•`‰æˆ—
 void ItemI_Draw(void);					//	²İÍŞİÄØ—p‚Ì±²ÃÑ‰æ‘œ•`‰æ
 bool ItemMobControl(MAGIC_TYPE type);	//	MOB“GŒğíˆ—
 bool ItemHitCheck(XY sPos, int sSize);	//	ÄŞÛ¯Ìß±²ÃÑ‚Ì“–‚½‚è”»’è
 void ItemDrop(XY ePos, MAGIC_TYPE type);//	ÄŞÛ¯Ìßˆ—
 void DeleteItem();						//	ÄŞÛ¯Ìß±²ÃÑ‚Ìíœ
-
+bool GameOverSet();						//	¹Ş°Ñµ°ÊŞ°ğŒ
 //-----¸ŞÛ°ÊŞÙ‰»
 extern CHARACTER itemF[ITEM_MAX];
 
