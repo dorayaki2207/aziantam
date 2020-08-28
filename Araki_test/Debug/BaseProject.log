@@ -1,3 +1,19 @@
-﻿  enemy.cpp
-C:\Users\Owner\Desktop\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  BaseProject.vcxproj -> C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.exe
+﻿  effect.cpp
+  enemy.cpp
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  item.cpp
+  keycheck.cpp
+  main.cpp
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916004\Desktop\aziantam\Araki_test\main.cpp(211,5): warning C4804: '%': 演算中の 'bool' 型の使用方法が安全ではありません
+D:\Users\1916004\Desktop\aziantam\Araki_test\main.cpp(211,5): warning C4804: '>': 演算中の 'bool' 型の使用方法が安全ではありません
+  player.cpp
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  shot.cpp
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  stage.cpp
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916004\Desktop\aziantam\Araki_test\stage.cpp(301,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
+  BaseProject.vcxproj -> D:\Users\1916004\Desktop\aziantam\Araki_test\Debug\BaseProject.exe

@@ -29,6 +29,10 @@ int keyImage;
 //“–‚½‚è”»’è—p
 XY playerSize;
 
+//´İÃŞ¨İ¸ŞŠÖ˜A
+int clearImage;
+int overImage;
+
 //WinŠÖ”
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -110,6 +114,8 @@ bool SystemInit(void)
 	
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("item/‘€ìà–¾.png");
+	clearImage = LoadGraph("item/clear.png");
+	overImage = LoadGraph("item/over.png");
 	//-----•Ï”‚Ì‰Šú‰»
 	//¼°İŠÖ˜A
 	SceneCounter = 0;
@@ -297,6 +303,7 @@ void GameOverScene(void)
 void GameOverDraw(void)
 {
 	//-----•`‰æˆ—
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 2, overImage, true);
 
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "GameOver:%d", SceneCounter);
@@ -322,6 +329,9 @@ void GameClearScene(void)
 void GameClearDraw(void)
 {
 	//-----•`‰æˆ—
+	//-----•`‰æˆ—
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 2, clearImage, true);
+
 
 	//-----î•ñˆ—
 	DrawFormatString(0, 0, 0xFFFFFF, "GameClear:%d", SceneCounter);
