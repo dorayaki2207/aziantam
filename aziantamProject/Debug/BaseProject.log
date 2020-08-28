@@ -1,49 +1,17 @@
-<<<<<<< HEAD
-﻿  effect.cpp
-  enemy.cpp
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  item.cpp
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  keycheck.cpp
-  main.cpp
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  OniStage.cpp
-  player.cpp
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  shot.cpp
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-=======
-<<<<<<< HEAD
-﻿  effect.cpp
-D:\GitHub\aziantam\aziantamProject\effect.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  enemy.cpp
-D:\GitHub\aziantam\aziantamProject\enemy.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  item.cpp
-D:\GitHub\aziantam\aziantamProject\item.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  keycheck.cpp
-D:\GitHub\aziantam\aziantamProject\keycheck.cpp(5,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  main.cpp
-D:\GitHub\aziantam\aziantamProject\main.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  player.cpp
-D:\GitHub\aziantam\aziantamProject\player.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  shot.cpp
-D:\GitHub\aziantam\aziantamProject\shot.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  stage.cpp
-D:\GitHub\aziantam\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-D:\GitHub\aziantam\aziantamProject\stage.cpp(6,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
-  コードを生成中...
-=======
-﻿  main.cpp
+﻿  enemy.cpp
 D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
->>>>>>> 6cc762783eeab0e091c5d469455f44179c1d46bb
+  item.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  main.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  player.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  shot.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   stage.cpp
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.cpp(306,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   title.cpp
   コードを生成中...
-<<<<<<< HEAD
-  BaseProject.vcxproj -> C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.exe
-=======
   BaseProject.vcxproj -> D:\Users\1916004\Desktop\aziantam\aziantamProject\Debug\BaseProject.exe
->>>>>>> 55758ebf6f38888f8489a61048900bbda138ad7b
->>>>>>> 6cc762783eeab0e091c5d469455f44179c1d46bb

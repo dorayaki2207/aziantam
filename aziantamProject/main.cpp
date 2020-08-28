@@ -214,21 +214,6 @@ void GameScene(void)
 			DeleteItem();
 		}
 
-		//àÍéûìIèàóù
-		if (GetEvent(playerPos) == EVENT_ID_ZAKO)
-		{
-			stageID = STAGE_ID_MOB;
-			SetMapData(STAGE_ID_MOB);
-			mapPos.x = 0;
-			mapPos.y = 0;
-		}
-		else if (GetEvent(playerPos) == EVENT_ID_KAPPA)
-		{
-			stageID = STAGE_ID_KAPPA;
-			SetMapData(STAGE_ID_KAPPA);
-			mapPos.x = 0;
-			mapPos.y = 0;
-		}
 	}
 
 	

@@ -8,8 +8,8 @@
 //ﾏｯﾌﾟﾁｯﾌﾟ画像
 #define MAP_X 45		//デフォルト
 #define MAP_Y 45
-#define MAP_START_Y 32	//はじまりの村
-#define MAP_START_X 32
+#define MAP_START_Y 40	//はじまりの村
+#define MAP_START_X 40
 #define MAP_M_X 30		//モブ
 #define MAP_M_Y 30
 #define MAPI_X 32		//石橋担当
@@ -42,6 +42,7 @@ enum EVENT_ID {
 	EVENT_ID_MIZU,
 	EVENT_ID_ZAKO,
 	EVENT_ID_KAPPA,
+	EVENT_ID_KAIDAN,
 	EVENT_ID_MAX
 };
 
