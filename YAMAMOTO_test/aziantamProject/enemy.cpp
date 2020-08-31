@@ -81,9 +81,9 @@ void EnemyGameInit(void)
 		enemyMob[ene].pos.x = x * CHIP_SIZE_X - 1;
 		enemyMob[ene].pos.y = y * CHIP_SIZE_Y - 1;
 		//上のままだと壁にめり込んだり画面外にはみ出したりするので、
-		//enemyのposに20足して位置をずらす。
-		enemyMob[ene].pos.x += 20;
-		enemyMob[ene].pos.y += 20;
+		//enemyのposに18足して位置をずらす。
+		enemyMob[ene].pos.x += 18;
+		enemyMob[ene].pos.y += 18;
 	}
 
 
@@ -114,8 +114,8 @@ void EnemyControl(XY pPos)
 			enemyMob[e].pos.y = y * CHIP_SIZE_Y - 1;
 			//上のままだと壁にめり込んだり画面外にはみ出したりするので、
 			//enemyのposに20足して位置をずらす。
-			enemyMob[e].pos.x += 20;
-			enemyMob[e].pos.y += 20;
+			enemyMob[e].pos.x += 10;
+			enemyMob[e].pos.y += 10;
 		}
 	}
 }
