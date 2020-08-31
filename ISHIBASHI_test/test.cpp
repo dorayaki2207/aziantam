@@ -12,7 +12,7 @@
 #include "Item.h"
 #include "Shot.h"
 #include "Battle.h"
-
+#include "effect.h"
 
 //-----外部変数宣言
 int SceneCounter;			//	gameLoop動作確認用
@@ -118,7 +118,7 @@ bool SystemInit(void)
 	ItemSystemInit();			//ｱｲﾃﾑ
 	ShotSystemInit();			//ｼｮｯﾄ
 	BattleSystemInit();			//ﾊﾞﾄﾙ
-
+	EffectSystemInit();			//ｴﾌｪｸﾄ
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("aitem/図2.png");
 
@@ -155,7 +155,7 @@ void InitScene(void)
 	EnemyGameInit();		//ｴﾈﾐｰ
 	ShotGameInit();			//ｼｮｯﾄ
 	BattleGameInit();		//ﾊﾞﾄﾙ
-
+	EffectInit();			//ｴﾌｪｸﾄ
 	
 	sceneID = SCENE_ID_GAME;
 }
@@ -221,7 +221,8 @@ void GameScene()
 		EnemyControl(playerPos);
 		ShotControl(playerPos);
 		itemDropControl();
-		
+		EffectControl();
+
 		if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
 		{
 			SetMapData(STAGE_ID_ONI2);
@@ -270,7 +271,7 @@ void GameDraw()
 	PlayerGameDraw();			//ﾌﾟﾚｲﾔｰ
 	ShotGameDraw();				//ｼｮｯﾄ
 	EnemyGameDraw();			//ｴﾈﾐｰ
-	
+	EffectGameDraw();			//ｴﾌｪｸﾄ
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameMain : %d", SceneCounter);
 //	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0x55FF55, true);
