@@ -66,18 +66,24 @@ void EnemyGameInit(void)
 	{
 		int type = rand() % ENEMY_M_MAX;
 		enemyMob[ene] = enemyMobMaster[type];
-		int x = rand()& MAP_M_X;
-		int y = rand()& MAP_M_Y;
-		//58番以外のmap配列になったらGetRandをやりなおす。
+		
+		int x = rand()% MAP_M_X;
+		int y = rand()% MAP_M_Y;
+
+		//58番以外のmap配列になったらrandをやりなおす。
 		while (map[y][x] != 58)
 		{
-			x = rand() & MAP_M_X;
-			y = rand() & MAP_M_Y;
+			x = rand() % MAP_M_X;
+			y = rand() % MAP_M_Y;
 
 		}
+		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
 		enemyMob[ene].pos.x = x * CHIP_SIZE_X - 1;
 		enemyMob[ene].pos.y = y * CHIP_SIZE_Y - 1;
-	
+		//上のままだと壁にめり込んだり画面外にはみ出したりするので、
+		//enemyのposに20足して位置をずらす。
+		enemyMob[ene].pos.x += 20;
+		enemyMob[ene].pos.y += 20;
 	}
 
 
@@ -93,16 +99,23 @@ void EnemyControl(XY pPos)
 		{
 			int type = rand() % ENEMY_M_MAX;
 			enemyMob[e] = enemyMobMaster[type];
+
 			int x = rand() % MAP_M_X;
 			int y = rand() % MAP_M_Y;
+			//58番以外のmap配列になったらrandをやりなおす。
 			while (map[y][x] != 58)
 			{
 				 x = rand() % MAP_M_X;
 				 y = rand() % MAP_M_Y;
 
 			}
+			//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
 			enemyMob[e].pos.x = x * CHIP_SIZE_X - 1;
 			enemyMob[e].pos.y = y * CHIP_SIZE_Y - 1;
+			//上のままだと壁にめり込んだり画面外にはみ出したりするので、
+			//enemyのposに20足して位置をずらす。
+			enemyMob[e].pos.x += 20;
+			enemyMob[e].pos.y += 20;
 		}
 	}
 }
