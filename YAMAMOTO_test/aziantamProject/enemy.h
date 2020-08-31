@@ -33,6 +33,8 @@ void EnemyGameInit(void);					//
 void EnemyControl(XY pPos);					//´ÈĞ°‚Ì‘€ì
 void EnemyGameDraw(void);					//´ÈĞ°‚Ì•`‰æˆ—
 
+bool SetEnemyMoment(XY pPos);
+
 bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è
 bool PlayerHitCheck(XY sPos, int sSize);
 

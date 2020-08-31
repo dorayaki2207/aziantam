@@ -40,7 +40,7 @@ void ItemSystmeInit(void)
 		itemFmaster[i].pos = { 0,0 };																//@ŒäD‚Ì’n}ã‚ÌÀ•W
 		itemFmaster[i].size = { 20,20 };															//	ŒäD‚Ì‰æ‘œ»²½Ş
 		itemFmaster[i].offsetSize = { itemFmaster[i].size.x / 2,itemFmaster[i].size.y / 2 };		//@ŒäD‚ÌµÌ¾¯Ä
-		itemFmaster[i].point = 12;																	//	ŒäD‚Ì–‡”
+		itemFmaster[i].point = 2;																	//	ŒäD‚Ì–‡”
 		itemFmaster[i].lifeMax = 200;																//	ŒäD‚Ì‘Ì—ÍÅ‘å’li•\¦ŠÔj
 		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	ŒäD‚Ì‘Ì—Í
 		itemFmaster[i].hitFlag = false;
@@ -299,4 +299,15 @@ void DeleteItem()
 			break;
 		}
 	}
-};
+}
+bool GameOverSet()
+{
+	if ((itemF[MAGIC_TYPE_FIRE].point == 0) 
+		&& (itemF[MAGIC_TYPE_WATER].point == 0) 
+		&& (itemF[MAGIC_TYPE_WIND].point == 0))
+	{
+		return true;
+	}
+	return false;
+}
+;

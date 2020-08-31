@@ -11,7 +11,7 @@ int playerImage[16];
 CHARACTER player;
 
 int lifeCheckCnt;
-int moveCheckCnt;
+int healCheckCnt;
 
 
 //ﾌﾟﾚｲﾔｰ情報の初期化
@@ -36,7 +36,7 @@ void PlayerGameInit(void)
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
 	lifeCheckCnt = 0;
-	moveCheckCnt = 0;
+	healCheckCnt = 0;
 
 }
 
@@ -165,11 +165,12 @@ XY PlayerControl(void)
 		}
 		if (KeyNew[KEY_ID_HEAL])
 		{
-			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
 			
-			if (lifeCheckCnt == 0)
+			if (healCheckCnt == 0)
 			{
-				lifeCheckCnt = 100;
+				CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+
+				healCheckCnt = 100;
 				if (player.lifeMax > player.life)
 				{
 					player.life++;
@@ -181,11 +182,17 @@ XY PlayerControl(void)
 			}
 		}
 
-		//-----ﾏｯﾌﾟの制限　（移動処理内に入れるとﾏｯﾌﾟがずれてしまう
-	//	if (mapPos.x > 0) mapPos.x = 0;
-	//	if (mapPos.x < -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X;
-	//	if (mapPos.y > 0) mapPos.y = 0;
-	//	if (mapPos.y < -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y;
+		if (healCheckCnt > 0)
+		{
+			healCheckCnt--;
+			if (healCheckCnt < 0)
+			{
+				healCheckCnt = 0;
+			}
+		}
+
+		//スクロール制限
+		MapRange();
 
 		//-----ライフ操作
 		if (PlayerHitCheck(player.pos, player.size.x))
@@ -197,6 +204,7 @@ XY PlayerControl(void)
 			}
 
 		}
+
 
 		if (lifeCheckCnt > 0)
 		{
@@ -227,6 +235,6 @@ void PlayerGameDraw(void)
 	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
 	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
 	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
-	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", moveCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
 
 }

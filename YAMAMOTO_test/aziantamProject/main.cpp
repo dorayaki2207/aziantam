@@ -1,5 +1,5 @@
 // タイトルシーン　セレクト途中:石橋
-
+//攻撃お札が全て0枚になったら終了。
 
 #include <DxLib.h>
 #include "main.h"
@@ -18,7 +18,7 @@
 SCENE SceneID;
 SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
-
+int GameOverCnt;
 //ｲﾝﾍﾞﾝﾄﾘ関連
 bool iventFlag;
 
@@ -28,6 +28,13 @@ int keyImage;
 
 //当たり判定用
 XY playerSize;
+
+//ｴﾝﾃﾞｨﾝｸﾞ関連
+int clearImage;
+int overImage;
+int clear_bgImage;
+int over_bgImage;
+
 
 //Win関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -66,6 +73,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		case SCENE_GAMEOVER:
 			GameOverScene();
 			break;
+		//ｹﾞｰﾑｸﾘｱｼｰﾝ
+		case SCENE_CLEAR:
+			GameClearScene();
+			break;
+
+		case SCENE_MAX:
+			break;
+
 		default:
 			return -1;
 			break;
@@ -102,9 +117,14 @@ bool SystemInit(void)
 	
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("item/操作説明.png");
+	clearImage = LoadGraph("item/clear.png");
+	overImage = LoadGraph("item/over.png");
+	clear_bgImage = LoadGraph("item/bg_clear.png");
+	over_bgImage = LoadGraph("item/bg_over.png");
 	//-----変数の初期化
 	//ｼｰﾝ関連
 	SceneCounter = 0;
+	GameOverCnt = 0;
 	SceneID = SCENE_INIT;
 	ScenePreID = SCENE_MAX;
 	//PAUSE
@@ -142,9 +162,16 @@ void GameScene(void)
 
 
 	//ｼｰﾝ遷移
-	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAMEOVER;
-
-
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
+	if (GameOverSet())
+	{
+		GameOverCnt++;
+		if (GameOverCnt > 100)
+		{
+			SceneID = SCENE_GAMEOVER;
+			GameOverCnt = 0;
+		}
+	}
 
 	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
@@ -171,7 +198,7 @@ void GameScene(void)
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 		playerPos = PlayerControl();		//ﾌﾟﾚｲﾔｰ
 		EnemyControl(playerPos);			//ｴﾈﾐｰ
-		ItemDropControl();						//ｱｲﾃﾑ
+		ItemDropControl();					//ｱｲﾃﾑ
 		ShotControl(playerPos);				//ｼｮｯﾄ
 
 		//ｴﾈﾐｰと弾の当たり判定
@@ -191,28 +218,17 @@ void GameScene(void)
 			//ｱｲﾃﾑに当たっている
 			DeleteItem();
 		}
+		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
+		if (SetEnemyMoment(playerPos))
+		{
+			SceneID = SCENE_CLEAR;
+		}
 
-		//一時的処理
-			//ステージが切り替わるたびにEnemyGameInit()を呼び出す
-		if (GetEvent(playerPos) == EVENT_ID_ZAKO)
-		{
-			stageID = STAGE_ID_MOB;
-			SetMapData(STAGE_ID_MOB);
-			mapPos.x = 0;
-			mapPos.y = 0;
-			EnemyGameInit();
-		}
-		else if (GetEvent(playerPos) == EVENT_ID_KAPPA)
-		{
-			stageID = STAGE_ID_KAPPA;
-			SetMapData(STAGE_ID_KAPPA);
-			mapPos.x = 0;
-			mapPos.y = 0;
-			EnemyGameInit();
-		}
 	}
 
 	
+	
+
 	//-----描画
 	GameDraw(); 
 }
@@ -258,6 +274,7 @@ void GameDraw(void)
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
 	DrawFormatString(0, 120, 0xFFFFFF, "map:%d,%d", mapPos.x,mapPos.y);
+	DrawFormatString(0, 140, 0xFFFFFF, "GameOver:%d", GameOverCnt);
 
 }
 
@@ -281,9 +298,39 @@ void GameOverScene(void)
 void GameOverDraw(void)
 {
 	//-----描画処理
+	DrawGraph(0, 0, over_bgImage, true);
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 3, overImage, true);
 
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameOver:%d", SceneCounter);
+
+
+}
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//ｹﾞｰﾑｸﾘｱｼｰﾝ
+void GameClearScene(void)
+{
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_INIT;
+
+	GameClearDraw();
+}
+
+//ｹﾞｰﾑｸﾘｱの描画
+void GameClearDraw(void)
+{
+	//-----描画処理
+	DrawGraph(0, 0, clear_bgImage, true);
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 3, clearImage, true);
+
+
+	//-----情報処理
+	DrawFormatString(0, 0, 0xFFFFFF, "GameClear:%d", SceneCounter);
 
 
 }
