@@ -1,3 +1,8 @@
 ﻿  enemy.cpp
+<<<<<<< HEAD
 D:\Users\1916045\Desktop\AGS\2020.08.31\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
   BaseProject.vcxproj -> D:\Users\1916045\Desktop\AGS\2020.08.31\aziantamProject\Debug\BaseProject.exe
+=======
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  BaseProject.vcxproj -> D:\Users\1916004\Desktop\aziantam\aziantamProject\Debug\BaseProject.exe
+>>>>>>> 0335dcaf8ebe73b5a32432697101a0dd2289b394
