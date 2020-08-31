@@ -3,7 +3,7 @@
 // 2019.09.26
 // R–{”ü—R‹I
 //-------------------------
-#include "DxLib.h"
+#include <DxLib.h>
 #include "effect.h"
 
 //•Ï”

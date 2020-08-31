@@ -13,6 +13,7 @@ enum SCENE
 	SCENE_TITLE,		//À²ÄÙ¼°Ý
 	SCENE_GAME,			//¹Þ°Ñ¼°Ý
 	SCENE_GAMEOVER,		//¹Þ°Ñµ°ÊÞ°¼°Ý
+	SCENE_CLEAR,		//¹Þ°Ñ¸Ø±
 	SCENE_MAX
 };
 
@@ -102,7 +103,9 @@ void GameDraw(void);
 //¹Þ°Ñµ°ÊÞ°
 void GameOverScene(void);
 void GameOverDraw(void);
-
+//¹Þ°Ñ¸Ø±
+void GameClearScene(void);
+void GameClearDraw(void);
 
 //-----¸ÞÛ°ÊÞÙ‰»
 extern SCENE SceneID;

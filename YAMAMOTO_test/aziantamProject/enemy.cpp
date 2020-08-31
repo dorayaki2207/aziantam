@@ -62,54 +62,53 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
+	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		int type = rand() % ENEMY_M_MAX;
 		enemyMob[ene] = enemyMobMaster[type];
-		
-		int x = rand()% MAP_M_X;
-		int y = rand()% MAP_M_Y;
 
-		//58番以外のmap配列になったらrandをやりなおす。
-		while (map[y][x] != 58)
+		int x = rand() % MAP_M_X;
+		int y = rand() % MAP_M_Y;
+
+		//75番以外のmap配列になったらrandをやりなおす。
+		while (map[y][x] != 75)
 		{
 			x = rand() % MAP_M_X;
 			y = rand() % MAP_M_Y;
-
 		}
+	
 		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
 		enemyMob[ene].pos.x = x * CHIP_SIZE_X - 1;
 		enemyMob[ene].pos.y = y * CHIP_SIZE_Y - 1;
+
 		//上のままだと壁にめり込んだり画面外にはみ出したりするので、
 		//enemyのposに18足して位置をずらす。
 		enemyMob[ene].pos.x += 18;
 		enemyMob[ene].pos.y += 18;
 	}
 
-
 }
 
 void EnemyControl(XY pPos)
 {
-
-	for (int e = 0; e < ENEMY_MAX; e++)
-	{	
-		//ライフが0以下になった場合、敵を出現させる
+	
+}
+//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
+bool SetEnemyMoment(XY pPos)
+{
+	for (int e = 0; e < ENEMY_M_MAX; e++)
+	{
+		//enemyのライフが0以下になって
 		if (enemyMob[e].life <= 0)
 		{
-			int type = rand() % ENEMY_M_MAX;
-			enemyMob[e] = enemyMobMaster[type];
-
-			int x = rand() % MAP_M_X;
-			int y = rand() % MAP_M_Y;
-			//58番以外のmap配列になったらrandをやりなおす。
-			while (map[y][x] != 58)
+			//playerが特定のマップチップ（30、31、41）を踏んだら
+			if (GetEvent(pPos) == EVENT_ID_MIZU)
 			{
-				 x = rand() % MAP_M_X;
-				 y = rand() % MAP_M_Y;
-
+				//trueを返す
+				return true;
 			}
-			//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
+//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
 			enemyMob[e].pos.x = x * CHIP_SIZE_X - 1;
 			enemyMob[e].pos.y = y * CHIP_SIZE_Y - 1;
 			//上のままだと壁にめり込んだり画面外にはみ出したりするので、
@@ -118,8 +117,8 @@ void EnemyControl(XY pPos)
 			enemyMob[e].pos.y += 10;
 		}
 	}
+	return false;
 }
-
 void EnemyGameDraw()
 {
 	//-----描画処理
