@@ -62,6 +62,7 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
+	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		int type = rand() % ENEMY_M_MAX;
@@ -70,16 +71,16 @@ void EnemyGameInit(void)
 		int x = rand() % MAP_M_X;
 		int y = rand() % MAP_M_Y;
 
-		//58番以外のmap配列になったらrandをやりなおす。
-		while (map[y][x] != 58)
+		//75番以外のmap配列になったらrandをやりなおす。
+		while (map[y][x] != 75)
 		{
 			x = rand() % MAP_M_X;
 			y = rand() % MAP_M_Y;
 		}
-
+	
 		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
-		enemyMob[ene].pos.x = x * MAP_CHIP_X;
-		enemyMob[ene].pos.y = y * MAP_CHIP_Y;
+		enemyMob[ene].pos.x = x * CHIP_SIZE_X - 1;
+		enemyMob[ene].pos.y = y * CHIP_SIZE_Y - 1;
 
 		//上のままだと壁にめり込んだり画面外にはみ出したりするので、
 		//enemyのposに18足して位置をずらす。
