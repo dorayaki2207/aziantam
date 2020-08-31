@@ -72,10 +72,13 @@ void EnemyGameInit(void)
 		int y = rand() % MAP_M_Y;
 
 		//75番以外のmap配列になったらrandをやりなおす。
-		while (map[y][x] != 75)
+		if (stageID == STAGE_ID_START)
 		{
-			x = rand() % MAP_M_X;
-			y = rand() % MAP_M_Y;
+			while (map[y][x] != 75)
+			{
+				x = rand() % MAP_M_X;
+				y = rand() % MAP_M_Y;
+			}
 		}
 	
 		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。

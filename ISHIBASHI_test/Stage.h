@@ -10,6 +10,10 @@
 #define MAP_ONI2_X		25
 #define MAP_ONI2_Y		25
 
+#define MAP_START_Y 40	//ÇÕÇ∂Ç‹ÇËÇÃë∫
+#define MAP_START_X 40
+
+
 #define CHIP_SIZE_X		32
 #define CHIP_SIZE_Y		32
 
@@ -23,6 +27,7 @@
 //Ω√∞ºﬁèÓïÒ
 enum STAGE_ID
 {
+	STAGE_ID_START,
 	STAGE_ID_MOB,				//MOBìGΩ√∞ºﬁ
 	STAGE_ID_ONI,				//ãSΩ√∞ºﬁ
 	STAGE_ID_ONI2,				//ãSì¥åA
