@@ -19,8 +19,7 @@ bool FadeOutScreen(int fadeStep);		//Ìª°ÄŞ±³Ä‚Ìˆ—
 //ÀŞÒ°¼Ş´Ìª¸Ä
 void EffectControl(void);
 void EffectGameDraw(void);
-//void CreateEffect(XY pPpos, DIR pDir, MAGIC_TYPE ptype);
-void DeleteEffect(int index);
+void DamageEffect(XY pos, MAGIC_TYPE type);
 
 
 //externéŒ¾

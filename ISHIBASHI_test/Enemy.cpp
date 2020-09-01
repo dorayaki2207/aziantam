@@ -9,6 +9,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Player.h"
+#include "effect.h"
 
 //-----ŠO•”•Ï”éŒ¾
 //ÓÌÞŠÖ˜A
@@ -257,6 +258,7 @@ bool EnemyHitCheck(XY sPos, int sSize)
 					switch (enemyMob[en].charType)
 					{
 					case ENEMY_I_MOB:
+						DamageEffect(enemyMob[en].pos, MAGIC_TYPE_FIRE);
 						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
@@ -269,6 +271,7 @@ bool EnemyHitCheck(XY sPos, int sSize)
 						break;
 
 					case ENEMY_A_MOB:
+						DamageEffect(enemyMob[en].pos, MAGIC_TYPE_WATER);
 						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
@@ -281,6 +284,7 @@ bool EnemyHitCheck(XY sPos, int sSize)
 						break;
 
 					case ENEMY_Y_MOB:
+						DamageEffect(enemyMob[en].pos, MAGIC_TYPE_WIND);
 						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);

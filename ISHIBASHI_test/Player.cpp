@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Shot.h"
 #include "Enemy.h"
+#include "effect.h"
 
 //-----ŠO•”•Ï”éŒ¾
 //·¬×¸ÀŠÖ˜A
@@ -248,6 +249,7 @@ XY PlayerControl(void)
 		{
 			if (lifeCheckCnt == 0)
 			{
+				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
 				player.life--;
 				lifeCheckCnt = 100;
 			}

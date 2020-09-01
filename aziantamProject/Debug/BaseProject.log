@@ -1,5 +1,12 @@
-﻿  stage.cpp
-D:\Users\1916002\Desktop\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-D:\Users\1916002\Desktop\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-D:\Users\1916002\Desktop\aziantamProject\stage.cpp(631,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  BaseProject.vcxproj -> D:\Users\1916002\Desktop\aziantamProject\Debug\BaseProject.exe
+﻿  effect.cpp
+  enemy.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  item.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  main.cpp
+D:\Users\1916004\Desktop\aziantam\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  title.cpp
+  コードを生成中...
+  LINK : 前回のインクリメンタル リンクで D:\Users\1916004\Desktop\aziantam\aziantamProject\Debug\BaseProject.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
+keycheck.obj : warning LNK4204: 'D:\Users\1916004\Desktop\aziantam\aziantamProject\Debug\vc142.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
+  BaseProject.vcxproj -> D:\Users\1916004\Desktop\aziantam\aziantamProject\Debug\BaseProject.exe

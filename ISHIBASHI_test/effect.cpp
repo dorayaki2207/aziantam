@@ -4,8 +4,8 @@
 // 山本美由紀
 //-------------------------
 #include <DxLib.h>
-#include "effect.h"
 #include "test.h"
+#include "effect.h"
 #include "Stage.h"
 
 //変数
@@ -16,9 +16,11 @@ bool fadeIn;
 bool fadeOut;
 
 //ダメージエフェクト
-CHARACTER effectMaster[MAGIC_TYPE_MAX - 1];
+CHARACTER effectMaster[MAGIC_TYPE_MAX];
 CHARACTER effect[EFFECT_MAX];
-int DeffectImage[MAGIC_TYPE_MAX - 1][9];
+int DeffectImage[MAGIC_TYPE_MAX ][EFFECT_ANI];
+int DeffectAni;
+
 
 void EffectSystemInit(void)
 {
@@ -26,6 +28,7 @@ void EffectSystemInit(void)
 	effectMaster[MAGIC_TYPE_FIRE].charType = MAGIC_TYPE_FIRE;
 	effectMaster[MAGIC_TYPE_WIND].charType = MAGIC_TYPE_WIND;
 	effectMaster[MAGIC_TYPE_WATER].charType = MAGIC_TYPE_WATER;
+	effectMaster[MAGIC_TYPE_HEAL].charType = MAGIC_TYPE_HEAL;
 
 	for (int type = 0; type < MAGIC_TYPE_MAX; type++)
 	{
@@ -36,7 +39,7 @@ void EffectSystemInit(void)
 			,effectMaster[type].size.y / 2 };
 		effectMaster[type].moveSpeed = 4;
 		effectMaster[type].lifeMax = EFFECT_LIFE_MAX;
-		effectMaster[type].life = effectMaster[type].lifeMax;
+		effectMaster[type].life = 0;
 		effectMaster[type].animCnt = 0;
 
 		for (int ef = 0; ef < EFFECT_MAX; ef++)
@@ -63,21 +66,29 @@ void EffectSystemInit(void)
 		, effectMaster[MAGIC_TYPE_WATER].size.x
 		, effectMaster[MAGIC_TYPE_WATER].size.y
 		, DeffectImage[MAGIC_TYPE_WATER]);
+	LoadDivGraph("aitem/e_player.png", EFFECT_ANI, 9, 1
+		, effectMaster[MAGIC_TYPE_HEAL].size.x
+		, effectMaster[MAGIC_TYPE_HEAL].size.y
+		, DeffectImage[MAGIC_TYPE_HEAL]);
+
 
 }
 
-//エフェクトの初期化1111
+//エフェクトの初期化
 void EffectInit(void)
 {
 	for (int ef = 0; ef < EFFECT_MAX; ef++)
 	{
-		effect[ef].pos = { 50,50 };
+		effect[ef].pos = { 0,0 };
 		effect[ef].life = 0;
 	}
+	DeffectAni = 0;
 
 	fadeIn = false;
 	fadeOut = false;
 	fadeCnt = 0;
+
+
 }
 //フェードイン処理
 bool FadeInScreen(int fadeStep)
@@ -118,12 +129,10 @@ void EffectControl(void)
 {
 	for (int ef = 0; ef < EFFECT_MAX; ef++)
 	{
-		if (CheckHitKey(KEY_INPUT_Q))
+		if (effect[ef].animCnt >= EFFECT_ANI)
 		{
-			if (effect[ef].charType == MAGIC_TYPE_FIRE)
-			{
-				effect[ef].pos.x += effect[ef].moveSpeed;
-			}
+			effect[ef].life = 0;
+			effect[ef].animCnt = 0;
 		}
 	}
 }
@@ -137,9 +146,9 @@ void EffectGameDraw(void)
 		{
 			effect[ef].animCnt++;
 
-			DrawGraph(effect[MAGIC_TYPE_FIRE].pos.x - effect[MAGIC_TYPE_FIRE].offsetSize.x + mapPos.x
-				, effect[MAGIC_TYPE_FIRE].pos.y - effect[MAGIC_TYPE_FIRE].offsetSize.y + mapPos.y
-				, DeffectImage[effect[MAGIC_TYPE_FIRE].charType][(effect[ef].animCnt / 30) % 9]
+			DrawGraph(effect[ef].pos.x - effect[ef].offsetSize.x + mapPos.x
+				, effect[ef].pos.y - effect[ef].offsetSize.y + mapPos.y
+				, DeffectImage[effect[ef].charType][effect[ef].animCnt]
 				,true);
 
 			DrawBox(effect[ef].pos.x - effect[ef].offsetSize.x + mapPos.x
@@ -152,11 +161,21 @@ void EffectGameDraw(void)
 
 }
 
-//void CreateEffect(XY pPpos, DIR pDir, MAGIC_TYPE ptype)
-//{
-//}
-
-void DeleteEffect(int index)
+void DamageEffect(XY pos, MAGIC_TYPE type)
 {
-	effect[index].life = 0;
+	for (int ef = 0; ef < EFFECT_MAX; ef++)
+	{
+		if (effect[ef].life <= 0)
+		{
+			
+			effect[ef].charType = type;
+
+			effect[ef].pos.x = pos.x;
+			effect[ef].pos.y = pos.y;
+
+			effect[ef].life = effect[ef].lifeMax;
+		}
+		break;
+	}
 }
+

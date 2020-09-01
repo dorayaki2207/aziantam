@@ -5,6 +5,7 @@
 #include "stage.h"
 #include "shot.h"
 #include "enemy.h"
+#include "effect.h"
 
 //ïœêî
 int playerImage[16];
@@ -199,6 +200,7 @@ XY PlayerControl(void)
 		{
 			if (lifeCheckCnt == 0)
 			{
+				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
 				player.life--;
 				lifeCheckCnt = 100;
 			}

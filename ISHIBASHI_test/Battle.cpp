@@ -17,7 +17,7 @@ void BattleSystemInit(void)
 	//-----‰Šú‰»
 	boss.size = { 400,500 };									//	·¬×¸À‚Ì‰æ‘œ»²½Ş
 	boss.offsetSize = { boss.size.x / 2,boss.size.y / 2 };		//@·¬×¸À‚ÌµÌ¾¯Ä
-	boss.hitFlag = false;			//UŒ‚‚ğó‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	boss.hitFlag = false;										//	UŒ‚‚ğó‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	
 	//-----¸Ş×Ì¨¯¸‚Ì“o˜^
 	testbkImage = LoadGraph("aitem/bg.jpg");

@@ -3,6 +3,7 @@
 #include "stage.h"
 #include "enemy.h"
 #include "item.h"
+#include "effect.h"
 
 //-----äOïîïœêîêÈåæ
 //”Ãﬁä÷òA
@@ -142,13 +143,15 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_LOW;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_HIGH;
 					
+					DamageEffect(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+
 					if (enemyMob[en].life <= 0)
 					{
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
@@ -160,13 +163,15 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_NORMAL;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_LOW;
 					
+					DamageEffect(enemyMob[en].pos, MAGIC_TYPE_WATER);
+					
 					if (enemyMob[en].life <= 0)
 					{
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
@@ -178,13 +183,15 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_HIGH;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_NORMAL;
 				
+					DamageEffect(enemyMob[en].pos, MAGIC_TYPE_WIND);
+
 					if (enemyMob[en].life <= 0)
 					{
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
