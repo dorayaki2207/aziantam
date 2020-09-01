@@ -1,7 +1,7 @@
 
 
 //-----’è”’è‹`
-#define ENEMY_MAX 1		//	“G‚Ì”
+#define ENEMY_MAX 2		//	“G‚Ì”
 
 #define DAMAGE_NORMAL	2		//“¯‘®«ÀÞÒ°¼Þ—Ê
 #define DAMAGE_HIGH		3		//—L—˜‘®«ÀÞÒ°¼Þ—Ê
