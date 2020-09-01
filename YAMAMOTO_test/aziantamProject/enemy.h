@@ -1,7 +1,7 @@
 
 
 //-----’è”’è‹`
-#define ENEMY_MAX 20		//	“G‚Ì”
+#define ENEMY_MAX 1		//	“G‚Ì”
 
 #define DAMAGE_NORMAL	2		//“¯‘®«ÀŞÒ°¼Ş—Ê
 #define DAMAGE_HIGH		3		//—L—˜‘®«ÀŞÒ°¼Ş—Ê
@@ -33,7 +33,7 @@ void EnemyGameInit(void);					//
 void EnemyControl(XY pPos);					//´ÈĞ°‚Ì‘€ì
 void EnemyGameDraw(void);					//´ÈĞ°‚Ì•`‰æˆ—
 
-bool SetEnemyMoment(XY pPos);
+bool SetEnemyMoment(XY pPos);				//“G‚ª‘Sˆõ“|‚³‚ê‚½‚Ìˆ—
 
 bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è
 bool PlayerHitCheck(XY sPos, int sSize);

@@ -10,7 +10,6 @@ CHARACTER enemyMob[ENEMY_MAX];
 CHARACTER enemyMobMaster[ENEMY_M_MAX];
 int enemyImage[ENEMY_M_MAX][16];
 
-
 void EnemySystemInit(void)
 {
 	//-----変数の初期化
@@ -40,7 +39,7 @@ void EnemySystemInit(void)
 		enemyMobMaster[type].life = enemyMobMaster[type].lifeMax;
 		enemyMobMaster[type].animCnt = 0;
 	}
-
+	
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//石橋担当MOB
 	LoadDivGraph("char/妖狐.png", 16, 4, 4
@@ -62,7 +61,6 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
-	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		int type = rand() % ENEMY_M_MAX;
@@ -71,11 +69,27 @@ void EnemyGameInit(void)
 		int x = rand() % MAP_M_X;
 		int y = rand() % MAP_M_Y;
 
-		//75番以外のmap配列になったらrandをやりなおす。
-		while (map[y][x] != 75)
+		//stageIDがSTAGE_ID_STARTかSTAGE_ID_MOBだった場合
+		if (GetMapDate() == STAGE_ID_START
+			|| GetMapDate() == STAGE_ID_MOB)
 		{
-			x = rand() % MAP_M_X;
-			y = rand() % MAP_M_Y;
+			//75番以外のmap配列になったらrandをやりなおす。
+			while (map[y][x] != 75)
+			{
+				x = rand() % MAP_M_X;
+				y = rand() % MAP_M_Y;
+			}
+		}
+		
+		//stageIDがSTAGE_ID_ONIだった場合
+		else if (GetMapDate() == STAGE_ID_ONI)
+		{
+			//0番以外のmap配列になったらrandをやりなおす。
+			while (map[y][x] != 0)
+			{
+				x = rand() % MAP_M_X;
+				y = rand() % MAP_M_Y;
+			}
 		}
 	
 		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
@@ -86,39 +100,42 @@ void EnemyGameInit(void)
 		//enemyのposに18足して位置をずらす。
 		enemyMob[ene].pos.x += 18;
 		enemyMob[ene].pos.y += 18;
+
+		
 	}
 
 }
 
 void EnemyControl(XY pPos)
 {
-	
 }
+
 //すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
 bool SetEnemyMoment(XY pPos)
 {
-	for (int e = 0; e < ENEMY_M_MAX; e++)
+	//すべてのenemyの状態を取得
+	for (int e = 0; e < ENEMY_MAX; e++)
 	{
-		//enemyのライフが0以下になって
-		if (enemyMob[e].life <= 0)
+		//stageがモブ（仮）のステージだったら
+		if (GetMapDate() == STAGE_ID_MOB)
+		//if (GetMapDate() == STAGE_ID_MOB && GetMapDate() == STAGE_ID_ONI)
 		{
-			//playerが特定のマップチップ（30、31、41）を踏んだら
-			if (GetEvent(pPos) == EVENT_ID_MIZU)
+			//enemyのライフが0以下になって
+			if (enemyMob[e].life <= 0)
 			{
-				//trueを返す
-				return true;
+				//playerが特定のマップチップ（EVENT_ID_SPEEDDOWN）を踏んだら
+				if (GetEvent(pPos) == EVENT_ID_SPEEDDOWN)
+				{
+					//trueを返す
+					return true;
+				}
 			}
-//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
-			enemyMob[e].pos.x = x * CHIP_SIZE_X - 1;
-			enemyMob[e].pos.y = y * CHIP_SIZE_Y - 1;
-			//上のままだと壁にめり込んだり画面外にはみ出したりするので、
-			//enemyのposに20足して位置をずらす。
-			enemyMob[e].pos.x += 10;
-			enemyMob[e].pos.y += 10;
 		}
 	}
 	return false;
 }
+
+
 void EnemyGameDraw()
 {
 	//-----描画処理

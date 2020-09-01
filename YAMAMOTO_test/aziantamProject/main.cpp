@@ -192,7 +192,7 @@ void GameScene(void)
 	}
 
 	//通常時操作
-	if(!iventFlag && !pauseFlag)
+	if (!iventFlag && !pauseFlag)
 	{
 		//各種機能
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
@@ -212,12 +212,39 @@ void GameScene(void)
 				}
 			}
 		}
+
 		//アイテムとプレイヤーの当たり判定
 		if (ItemHitCheck(playerPos, playerSize.x))
 		{
 			//ｱｲﾃﾑに当たっている
 			DeleteItem();
 		}
+		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		{
+			if (GetMapDate() == STAGE_ID_START)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_MOB);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+			else if (GetMapDate() == STAGE_ID_MOB)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_ONI);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+			/*else if (GetMapDate() == STAGE_ID_ONI)
+			{
+				SetMapData(STAGE_ID_KAPPA);
+			}
+			/*else if (GetMapDate() == STAGE_ID_KAPPA)
+			{
+				SetMapData(STAGE_ID_MOB);
+			}*/
+		}
+		
 		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
 		if (SetEnemyMoment(playerPos))
 		{
