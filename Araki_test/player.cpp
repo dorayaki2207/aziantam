@@ -4,16 +4,20 @@
 #include "keycheck.h"
 #include "stage.h"
 #include "shot.h"
+#include "enemy.h"
 
 //変数
 int playerImage[16];
 CHARACTER player;
 
+int speedCnt;
+int lifeCnt;
 // 定数
 enum PLAYER_SPEED
 {
 	PLAYER_SPEED_LOW = 1,
-	PLAYER_SPEED_NORMAL = 2,
+	PLAYER_SPEED_NORMAL = 3,
+	PLAYER_SPEED_L = 2,
 	PLAYER_SPEED_HIGH = 7,
 	PLAYER_SPEED_MAX 
 };
@@ -38,7 +42,8 @@ void PlayerGameInit(void)
 	player.pos = { 160,135 };								//ｷｬﾗｸﾀの地図上の座標
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
-
+	speedCnt = 0;
+	lifeCnt = 0;
 }
 
 
@@ -52,13 +57,13 @@ XY PlayerControl(void)
 	XY playerPosOffset = playerPosCopy;
 	XY indexPos;							//　ﾏｯﾌﾟ配列座標
 
-	for (int dir = 0; dir < DIR_MAX; dir++)
+	/*for (int dir = 0; dir < DIR_MAX; dir++)
 	{
 		if (player.moveDir)
 		{
 			player.moveDir = (DIR)dir;
 		}
-	}
+	}*/
 	if (player.life > 0)
 	{
 		//-----移動処理
@@ -181,66 +186,140 @@ XY PlayerControl(void)
 		if (player.pos.x > mapSize.x * CHIP_SIZE_X - player.offsetSize.x)player.pos.x = mapSize.x * CHIP_SIZE_X - player.offsetSize.x;
 		if (player.pos.x < 0 + player.offsetSize.x)player.pos.x = 0 + player.offsetSize.x;
 		if (player.pos.y < 0 + player.offsetSize.y)player.pos.y = 0 + player.offsetSize.y;
-		if (player.pos.y > mapSize.y* CHIP_SIZE_Y - player.offsetSize.y)player.pos.y = mapSize.y * CHIP_SIZE_Y - player.offsetSize.y;
+		if (player.pos.y > mapSize.y * CHIP_SIZE_Y - player.offsetSize.y)player.pos.y = mapSize.y * CHIP_SIZE_Y - player.offsetSize.y;
 
 		// マップ
-		if (stageID == STAGE_ID_START && STAGE_ID_MOB && STAGE_ID_ONI && STAGE_ID_TENGU && STAGE_ID_KAPPA)
-		{
+		/*if (stageID == STAGE_ID_START && STAGE_ID_MOB && STAGE_ID_ONI && STAGE_ID_TENGU && STAGE_ID_KAPPA)
+		{*/
 			if (mapPos.x < -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * mapSize.x + SCREEN_SIZE_X;
 			if (mapPos.x > 0) mapPos.x = 0;
 			if (mapPos.y > 0) mapPos.y = 0;
 			if (mapPos.y < -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y;
-		}
-		else
+		//}
+		/*else
 		{
 			if (mapPos.x < -CHIP_SIZE_X * MAPB_X + SCREEN_SIZE_X) mapPos.x = -CHIP_SIZE_X * MAPB_X + SCREEN_SIZE_X;
 			if (mapPos.x > 0) mapPos.x = 0;
 			if (mapPos.y > 0) mapPos.y = 0;
 			if (mapPos.y < -CHIP_SIZE_Y * MAPB_Y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * MAPB_Y + SCREEN_SIZE_Y;
+		}*/
+
+		/*if (player.life > 0)
+		{
+			if ((PlayerHitCheck(player.pos, player.size)) == true)
+			{
+				if (lifeCnt == 0)
+				{
+					player.life--;
+					lifeCnt = 100;
+				}
+			}
+		}
+		if (lifeCnt > 0)
+		{
+			lifeCnt--;
+			if (lifeCnt < 0)
+			{
+				lifeCnt = 0;
+			}
+		}*/
+	
+		if (PlayerHitCheck(player.pos, player.size.x))
+		{
+			if (lifeCnt == 0)
+			{
+				player.life--;
+				lifeCnt = 100;
+			}
+
 		}
 
-		// 特殊なマップを踏んだ場合の処理
-		// 水
-		if (GetEvent(player.pos) == EVENT_ID_MIZU)
+		if (lifeCnt > 0)
 		{
-			player.moveSpeed = PLAYER_SPEED_HIGH;
+			lifeCnt--;
+			if (lifeCnt < 0)
+			{
+				lifeCnt = 0;
+			}
 		}
-		else
-		{
-			player.moveSpeed = PLAYER_DEF_SPEED;
-		}
-		// 火
-		if (GetEvent(player.pos) == EVENT_ID_HONO)
-		{
-			player.moveSpeed = PLAYER_SPEED_LOW;
-		}
-		else
-		{
-			player.moveSpeed = PLAYER_DEF_SPEED;
-		}
-		// 草
-		if (GetEvent(player.pos) == EVENT_ID_KUSA)
-		{
-			player.moveSpeed = PLAYER_SPEED_NORMAL;
-		}
-		else
-		{
-			player.moveSpeed = PLAYER_DEF_SPEED;
-		}
+			// 特殊なマップを踏んだ場合の処理
+			// 水
+			if (GetEvent(player.pos) == EVENT_ID_MIZU)
+			{
+				speedCnt++;
+				if (speedCnt > 100)
+				{
+					player.moveSpeed = PLAYER_SPEED_HIGH;
+					player.life -= 2;
+					lifeCnt = 100;
+				}
+			}
+			// 毒
+			else if (GetEvent(player.pos) == EVENT_ID_DOKU)
+			{
+				if (speedCnt < 100)
+				{
+					player.moveSpeed = PLAYER_SPEED_LOW;
+					player.life -= 3;
+					lifeCnt = 100;
+				}
+			}
+			// 森
+			else if (GetEvent(player.pos) == EVENT_ID_MORI)
+			{
+				if (speedCnt < 50)
+				{
+					player.moveSpeed = PLAYER_SPEED_NORMAL;
+				}
+			}
+			// 畑
+			else if (GetEvent(player.pos) == EVENT_ID_HATAKE)
+			{
+				if (speedCnt < 50)
+				{
+					player.moveSpeed = PLAYER_SPEED_L;
+				}
+			}
+			// イベント戻す
+			else 
+			{
+				player.moveSpeed = PLAYER_DEF_SPEED;
+			}
+		
+		
 	}
 	return returnValue;
 }
 //プレイヤーの描画
 void PlayerGameDraw(void)
 {
-	player.animCnt++;
-	DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
-		, player.pos.y - player.offsetSize.y + mapPos.y
-		, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
-
-	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
-	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
+	if (player.life > 0)
+	{
+		player.animCnt++;
+		if (lifeCnt % 10 == 0)
+		{
+			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
+				, player.pos.y - player.offsetSize.y + mapPos.y
+				, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
+		}
+		
+		DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
+	}
+	
+	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
+	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+	DrawFormatString(0, 350, 0xffffff, "Life:%d", lifeCnt);
+	DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);
 
+}
+
+//プレイヤーの死
+bool playerDead(void)
+{
+	if (player.life <= 0)
+	{
+		return true;
+	}
 }

@@ -1,2 +1,4 @@
 C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.exe
 C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.pdb
+C:\Users\Owner\Desktop\Araki_test\Debug\BaseProject.exe
+C:\Users\Owner\Desktop\Araki_test\Debug\BaseProject.pdb

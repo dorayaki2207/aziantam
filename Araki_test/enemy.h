@@ -1,8 +1,8 @@
 
 
 //-----定数定義
-#define ENEMY_MAX 20		//	敵の数
-#define ENEMY_MAX_B 2		// ボスの数
+#define ENEMY_MAX 5		//	敵の数
+#define ENEMY_MAX_B 3		// ボスの数
 
 
 //-----列挙型
@@ -36,4 +36,4 @@ int MoveEnemyXY(CHARACTER* enemy, XY playerPos);	//敵をXY座標を基準に動かす
 
 bool EnemyHitCheck(XY sPos, int sSize);		//ｴﾈﾐｰと弾の当たり判定
 
-bool PlayerHitCheck(XY pPos, XY pSize);
+bool PlayerHitCheck(XY pPos, int  pSize);

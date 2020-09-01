@@ -67,7 +67,7 @@ struct CHARACTER
 	int life;		//ｷｬﾗｸﾀの体力
 	int animCnt;	//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	int point;		//ｷｬﾗｸﾀの得点
-
+	bool hitFlag;	//ｷｬﾗｸﾀの当たり管理
 };
 
 struct KEY_LIST
@@ -86,6 +86,15 @@ typedef struct
 	char name[128];		// 項目名格納用変数
 } MenuElement_t;
 
+
+enum MSG_TYPE
+{
+	MSG_START,		//はじめから
+	MSG_LOAD,		//つづきから
+	//MSG_LANK,		//ランキング
+	MSG_MAX
+};
+
 //-----ﾌﾟﾛﾄﾀｲﾌﾟ宣言
 //初期化
 bool SystemInit(void);
@@ -99,3 +108,9 @@ void GameDraw(void);
 //ｹﾞｰﾑｵｰﾊﾞｰ
 void GameOverScene(void);
 void GameOverDraw(void);
+//ｹﾞｰﾑｸﾘｱ
+void GameClearScene(void);
+void GameClearDraw(void);
+
+//-----ｸﾞﾛｰﾊﾞﾙ化
+extern SCENE SceneID;

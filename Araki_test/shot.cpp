@@ -2,6 +2,7 @@
 #include "main.h"
 #include "stage.h"
 #include "shot.h"
+#include "item.h"
 
 
 
@@ -34,9 +35,9 @@ void ShotSystemInit(void)
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
 			shot[sh] = shotMaster[type];
-			//shot[sh].pos = { 0,0 };
+			shot[sh].pos = { 0,0 };
 			shot[sh].life = 0;
-			//shot[sh].animCnt = 0;
+			shot[sh].animCnt = 0;
 		}
 	}
 
@@ -128,6 +129,10 @@ void ShotGameDraw(void)
 				, shot[sh].pos.y - shot[sh].offsetSize.y + shot[sh].size.y + mapPos.y
 				, 0xFFFFFF, false);
 		}
+		//-----î•ñˆ—
+		DrawFormatString(0, 100, 0xFFFFFF, "shotPos : %d,%d", shot[sh].pos.x, shot[sh].pos.y);
+		DrawFormatString(0, 120, 0xFFFFFF, "shotAni : %d", shot[sh].animCnt);
+		DrawFormatString(0, 160, 0xFFFFFF, "shotLife : %d", shot[sh].life);
 	}
 }
 
@@ -142,13 +147,16 @@ void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype)
 		//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ð’T‚·
 		if (shot[sh].life <= 0)
 		{
-			//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ð”­ŽË
-			shot[sh].charType = ptype;
-			shot[sh].pos = { pPos.x, pPos.y };		//’e‚ÌêŠ
-			shot[sh].moveDir = pDir;				//’e‚Ìi‚Þ‚×‚«êŠ
-			shot[sh].life = shot[sh].lifeMax;		//’e‚ðŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
+			//if (ItemMOBControl(ptype))
+		//	{
+				//Œ‚‚Á‚Ä‚¢‚È‚¢’e‚ð”­ŽË
+				shot[sh].charType = ptype;
+				shot[sh].pos = { pPos.x, pPos.y };		//’e‚ÌêŠ
+				shot[sh].moveDir = pDir;				//’e‚Ìi‚Þ‚×‚«êŠ
+				shot[sh].life = shot[sh].lifeMax;		//’e‚ðŒ‚‚Á‚½‚±‚Æ‚É‚·‚é
+			//}
 		}
-
+		
 		break;
 	}
 }

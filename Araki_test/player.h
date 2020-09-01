@@ -1,7 +1,7 @@
 //#pragma once
 
 //定数
-#define PLAYER_DEF_SPEED  4		//ﾌﾟﾚｲﾔｰの初期移動量
+#define PLAYER_DEF_SPEED  5		//ﾌﾟﾚｲﾔｰの初期移動量
 #define PLAYER_MAX_LIFE  100	//ﾌﾟﾚｲﾔｰの最大体力
 
 #define SCROLL_X_MIN	200		//ｽｸﾛｰﾙ可能頭座標X
@@ -15,3 +15,4 @@ void PlayerSystemInit(void);	//ﾌﾟﾚｲﾔｰ情報の初期化
 void PlayerGameInit(void);		//ﾌﾟﾚｲﾔｰの初期化
 XY PlayerControl(void);			//ﾌﾟﾚｲﾔｰの操作
 void PlayerGameDraw(void);		//ﾌﾟﾚｲﾔｰの描画
+bool playerDead(void);				//プレイヤーの死
