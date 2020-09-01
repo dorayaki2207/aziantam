@@ -23,7 +23,7 @@ int GameOverCnt;
 bool iventFlag;
 
 //PAUSEŠÖ˜A
-bool paseFlag;
+bool pauseFlag;
 int keyImage;
 
 //“–‚½‚è”»’è—p

@@ -1,2 +1,4 @@
 C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.exe
 C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.pdb
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\YAMAMOTO_test\aziantamProject\Debug\BaseProject.exe
+C:\Users\どら焼き\Desktop\アジアンタム\aziantam\YAMAMOTO_test\aziantamProject\Debug\BaseProject.pdb

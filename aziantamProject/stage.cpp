@@ -8,7 +8,6 @@
 #include "stage.h"
 
 // 変数
-int mapChipImage[STAGE_ID_MAX];
 int chipImage[81];
 int OnichipImage[88];
 int map[MAP_Y][MAP_X];
@@ -256,7 +255,6 @@ void StageSystemInit(void)
 
 	// ﾏｯﾌﾟ作成ﾃﾞｰﾀ
 	stageID = STAGE_ID_START;
-	//SetMapData(stageID);
 	SetMapData(stageID);
 }
 
@@ -632,32 +630,21 @@ void StageGameDraw(void)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
-			switch (stageID)
+			if ((stageID == STAGE_ID_START) 
+				|| (stageID == STAGE_ID_MOB) 
+				|| (stageID == STAGE_ID_KAPPA))
 			{
-			case STAGE_ID_START:
-			case STAGE_ID_MOB:
-			case STAGE_ID_KAPPA:
-				mapChipImage[STAGE_ID_START] = chipImage[map[y][x]];
-				break;
-
-			case STAGE_ID_ONI:
-				mapChipImage[STAGE_ID_ONI] = OnichipImage[map[y][x]];
-				break;
-
-			case STAGE_ID_MAX:
-				break;
-
-			default:
-				break;
-			}
-
-			for (int chip = 0; chip < STAGE_ID_MAX; chip++)
-			{
-
 				DrawGraph(x * CHIP_SIZE_X + mapPos.x
 					, y * CHIP_SIZE_Y + mapPos.y
-					, mapChipImage[chip], true);
+					, chipImage[map[y][x]], true);
 			}
+			else if (stageID == STAGE_ID_ONI)
+			{
+				DrawGraph(x * CHIP_SIZE_X + mapPos.x
+					, y * CHIP_SIZE_Y + mapPos.y
+					, OnichipImage[map[y][x]], true);
+			}
+
 		}
 	}
 }

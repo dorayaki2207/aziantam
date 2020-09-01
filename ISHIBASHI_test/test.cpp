@@ -225,11 +225,13 @@ void GameScene()
 
 		if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
 		{
-			SetMapData(STAGE_ID_ONI2);
+			stageID = STAGE_ID_START;
+			SetMapData(STAGE_ID_START);
 		}
-		if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
+		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
 		{
 			//ãSÉXÉeÅ[ÉWá@ÇÃç’ídÇ…à⁄ìÆÇ≥ÇπÇÈ
+			stageID = STAGE_ID_ONI;
 			SetMapData(STAGE_ID_ONI);			
 		}
 

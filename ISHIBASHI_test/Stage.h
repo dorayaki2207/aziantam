@@ -69,3 +69,4 @@ void GetPos(XY pos);
 //-----¸ÞÛ°ÊÞÙ‰»
 extern XY mapPos;
 extern XY mapSize;
+extern STAGE_ID stageID;

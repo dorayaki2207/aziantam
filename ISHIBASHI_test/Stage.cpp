@@ -5,7 +5,6 @@
 //階段二つのイベントわける
 
 
-int mapChipImage[STAGE_ID_MAX];
 int chipImage[81];
 int chip2Image[81];
 int OnichipImage[88];
@@ -110,7 +109,7 @@ int OniStage[MAP_ONI_Y][MAP_ONI_X] =
 {59,12,13, 8, 9,  10,11,66,57,57,  57,57,57,57,57,  67,11,11, 8, 9,  39,31,12, 9,10,   8, 9, 9,10,66,  62, 2,63,57,57,   2, 2,59,11,58 },
 {59,20,21,16,17,  18,19,12,13, 8,   9,10,11, 8, 9,  13,19,19,16,17,  39,31,20,17,18,  16,17,17,18,11,  58, 2,59, 8,10,  66,57,67,11,66 },
 {59, 0, 0, 0, 0,   0, 0,16,21,16,  17,18,19,16,17,  21, 0, 0,87,47,  68,71,47,47,85,   0, 0, 0, 0,11,  58, 2,59,16,18,   8, 9,10,19, 8 },
-{59, 0,36, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0,39, 3,   3, 3, 3, 3,71,  85, 0, 0, 0,19,  58, 2,59, 0, 0,   8, 9,10, 0,16 },
+{59, 0,36, 0, 0,   0, 0, 0, 0, 0,   0, 0,30,30, 0,   0, 0, 0,39, 3,   3, 3, 3, 3,71,  85, 0, 0, 0,19,  58, 2,59, 0, 0,   8, 9,10, 0,16 },
 
 {59, 0, 0, 0, 0,   0,64,56,56,56,  65, 0, 0, 0, 0,   0, 0, 0,39, 3,   3, 3, 3, 3, 3,  31, 0, 0, 0, 0,   6, 6, 6, 0, 0,  16,17,18, 0,28 },
 {59,27, 0, 0, 0,  64, 2, 2, 2, 2,  59, 0, 0, 0, 0,   0, 0,87, 3, 3,   3, 3, 3, 3, 3,  73,78,78,78,78,   2, 2,59, 0, 0,   0, 0, 0, 0,64 },
@@ -219,10 +218,11 @@ void StageSystemInit(void)
 	mapSize = { 0,0 };
 	aniCnt = 0;
 
+	
 	chipPos = CHIP_POS_NON;
 
 	//ﾏｯﾌﾟﾃﾞｰﾀ
-	stageID = STAGE_ID_START;
+	stageID = STAGE_ID_ONI;
 	SetMapData(stageID);
 }
 
@@ -232,7 +232,7 @@ void StageGameInit(void)
 	mapPos = { 0,0 };
 
 	//ﾏｯﾌﾟﾃﾞｰﾀ
-	stageID = STAGE_ID_START;
+	stageID = STAGE_ID_ONI;
 	SetMapData(stageID);
 }
 
@@ -253,30 +253,17 @@ void StageGameDraw(void)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
-			switch (stageID)
-			{
-			case STAGE_ID_START:
-				mapChipImage[STAGE_ID_START] = chip2Image[map[y][x]];
-				break;
-
-			case STAGE_ID_MOB:
-				mapChipImage[STAGE_ID_MOB] = chipImage[map[y][x]];
-				break;
-
-			case STAGE_ID_ONI:
-				mapChipImage[STAGE_ID_ONI] = OnichipImage[map[y][x]];
-				break;
-			case STAGE_ID_MAX:
-				break;
-			default:
-				break;
-			}
-
-			for (int chip = 0; chip < STAGE_ID_MAX; chip++)
+			if (stageID == STAGE_ID_START)
 			{
 				DrawGraph(x * CHIP_SIZE_X + mapPos.x
 					, y * CHIP_SIZE_Y + mapPos.y
-					, mapChipImage[chip], true);
+					, chip2Image[map[y][x]], true);
+			}
+			else if (stageID == STAGE_ID_ONI)
+			{
+				DrawGraph(x * CHIP_SIZE_X + mapPos.x
+					, y * CHIP_SIZE_Y + mapPos.y
+					, OnichipImage[map[y][x]], true);
 			}
 		}
 	}
@@ -455,6 +442,10 @@ EVENT_ID GetEvent(XY pos)
 	{
 		switch (map[indexPos.y][indexPos.x])
 		{
+		case 66:
+			return EVENT_ID_KAIDAN;
+			break;
+
 		case 27:
 		case 28:
 		case 29:

@@ -49,19 +49,19 @@ void EffectSystemInit(void)
 	}
 
 	//-----¸Þ×Ì¨¯¸‚Ì“o˜^
-	LoadDivGraph("aitem/e_fire.png", EFFECT_ANI, 9, 1
+	LoadDivGraph("item/e_fire.png", EFFECT_ANI, 9, 1
 		, effectMaster[MAGIC_TYPE_FIRE].size.x
 		, effectMaster[MAGIC_TYPE_FIRE].size.y
 		, effectImage[MAGIC_TYPE_FIRE]);
-	LoadDivGraph("aitem/e_wind.png", EFFECT_ANI, 9, 1
+	LoadDivGraph("item/e_wind.png", EFFECT_ANI, 9, 1
 		, effectMaster[MAGIC_TYPE_WIND].size.x
 		, effectMaster[MAGIC_TYPE_WIND].size.y
 		, effectImage[MAGIC_TYPE_WIND]);
-	LoadDivGraph("aitem/e_water.png", EFFECT_ANI, 9, 1
+	LoadDivGraph("item/e_water.png", EFFECT_ANI, 9, 1
 		, effectMaster[MAGIC_TYPE_WATER].size.x
 		, effectMaster[MAGIC_TYPE_WATER].size.y
 		, effectImage[MAGIC_TYPE_WATER]);
-	LoadDivGraph("aitem/e_player.png", EFFECT_ANI, 9, 1
+	LoadDivGraph("item/e_player.png", EFFECT_ANI, 9, 1
 		, effectMaster[MAGIC_TYPE_HEAL].size.x
 		, effectMaster[MAGIC_TYPE_HEAL].size.y
 		, effectImage[MAGIC_TYPE_HEAL]);
