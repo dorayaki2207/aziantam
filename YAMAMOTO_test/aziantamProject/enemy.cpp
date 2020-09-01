@@ -10,6 +10,10 @@ CHARACTER enemyMob[ENEMY_MAX];
 CHARACTER enemyMobMaster[ENEMY_M_MAX];
 int enemyImage[ENEMY_M_MAX][16];
 
+//それぞれのステージに敵の生存確認（true:全滅、false:生存）
+bool eFlag_1 = false;
+bool eFlag_2 = false;
+
 void EnemySystemInit(void)
 {
 	//-----変数の初期化
@@ -61,6 +65,7 @@ void EnemySystemInit(void)
 
 void EnemyGameInit(void)
 {
+	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		int type = rand() % ENEMY_M_MAX;
@@ -113,25 +118,52 @@ void EnemyControl(XY pPos)
 //すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
 bool SetEnemyMoment(XY pPos)
 {
+	bool Flag = true;
+
 	//すべてのenemyの状態を取得
 	for (int e = 0; e < ENEMY_MAX; e++)
 	{
-		//stageがモブ（仮）のステージだったら
-		if (GetMapDate() == STAGE_ID_MOB)
-		//if (GetMapDate() == STAGE_ID_MOB && GetMapDate() == STAGE_ID_ONI)
+		//enemyのライフが0以下になって
+		if (enemyMob[e].life <= 0)
 		{
-			//enemyのライフが0以下になって
-			if (enemyMob[e].life <= 0)
+			//敵が死亡時、1体ずつにtrueを代入する
+			//言い方を変えるとFlagが配列になっていて、1体死んだらtrueを返すような処理
+			//Flag[0] = true;
+			Flag &= true;
+		}
+		else
+		{
+			//敵が生存時、1体ずつにfalseを代入する
+			Flag &= false;
+		}
+	}
+	//Flagがtrueになったら
+	if (Flag)
+	{
+		//stageがモブのステージだったら
+		if (GetMapDate() == STAGE_ID_MOB)
+		{
+			//trueにする
+			eFlag_1 = true;
+		}
+		//stageが鬼のステージだったら
+		else if (GetMapDate() == STAGE_ID_ONI)
+		{
+			eFlag_2 = true;
+		}
+
+		//両方のステージで敵が全滅したら
+		if (eFlag_1 && eFlag_2)
+		{
+			//playerが特定のマップチップ（EVENT_ID_SPEEDDOWN）を踏んだら
+			if (GetEvent(pPos) == EVENT_ID_SPEEDDOWN)
 			{
-				//playerが特定のマップチップ（EVENT_ID_SPEEDDOWN）を踏んだら
-				if (GetEvent(pPos) == EVENT_ID_SPEEDDOWN)
-				{
-					//trueを返す
-					return true;
-				}
+				//trueを返す
+				return true;
 			}
 		}
 	}
+
 	return false;
 }
 
