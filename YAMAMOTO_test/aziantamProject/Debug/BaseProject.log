@@ -1,13 +1,1 @@
-﻿  effect.cpp
-  enemy.cpp
-D:\Users\1916002\Desktop\Github\aziantam\YAMAMOTO_test\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  item.cpp
-D:\Users\1916002\Desktop\Github\aziantam\YAMAMOTO_test\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  keycheck.cpp
-  main.cpp
-D:\Users\1916002\Desktop\Github\aziantam\YAMAMOTO_test\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  OniStage.cpp
-  title.cpp
-  コードを生成中...
-  LINK : 前回のインクリメンタル リンクで D:\Users\1916002\Desktop\Github\aziantam\YAMAMOTO_test\aziantamProject\Debug\BaseProject.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
-  BaseProject.vcxproj -> D:\Users\1916002\Desktop\Github\aziantam\YAMAMOTO_test\aziantamProject\Debug\BaseProject.exe
+﻿  BaseProject.vcxproj -> D:\Users\1916045\Desktop\YAMAMOTO_test\aziantamProject\Debug\BaseProject.exe
