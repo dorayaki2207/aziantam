@@ -99,7 +99,7 @@ XY PlayerControl(void)
 				break;
 			case DIR_DOWN:
 				playerPosCopy.y += player.moveSpeed;
-				playerPosOffset.y = playerPosCopy.y + player.offsetSize.y;				
+				playerPosOffset.y = playerPosCopy.y + player.offsetSize.y;
 				indexPos = Pos2Index(playerPosCopy);
 				//指定した場所を通過可能か
 				if (IsPass(playerPosOffset))
@@ -166,7 +166,7 @@ XY PlayerControl(void)
 		}
 		if (KeyNew[KEY_ID_HEAL])
 		{
-			
+
 			if (healCheckCnt == 0)
 			{
 				CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
@@ -217,6 +217,46 @@ XY PlayerControl(void)
 			}
 		}
 
+		
+		PlayerEvent();
+	}
+
+	return returnValue;
+}
+
+
+//プレイヤーの描画
+void PlayerGameDraw(void)
+{
+	if (player.life > 0)
+	{
+		player.animCnt++;
+		if (lifeCheckCnt % 10 == 0)
+		{
+			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
+				, player.pos.y - player.offsetSize.y + mapPos.y
+				, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
+		}
+	}
+	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
+	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
+	XY indexPos;
+	indexPos = Pos2Index(player.pos);
+
+	//情報処理
+	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
+	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
+
+}
+
+
+void PlayerEvent(void)
+{
+	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB))
+	{
 		// 特殊なマップを踏んだ場合の処理
 			// 水
 		if (GetEvent(player.pos) == EVENT_ID_SPEEDUP)
@@ -262,31 +302,45 @@ XY PlayerControl(void)
 		}
 	}
 
-	return returnValue;
-}
-//プレイヤーの描画
-void PlayerGameDraw(void)
-{
-	if (player.life > 0)
+	if (stageID == STAGE_ID_ONI)
 	{
-		player.animCnt++;
-		if (lifeCheckCnt % 10 == 0)
+		//-----ｲﾍﾞﾝﾄ発生
+		//動きが止まる
+		if (GetEvent(player.pos) == EVENT_ID_STOP)
 		{
-			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
-				, player.pos.y - player.offsetSize.y + mapPos.y
-				, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
+			speedCnt++;
+			if (speedCnt < 100)
+			{
+				player.moveSpeed = PLAYER_SPEED_STOP;
+			}
+			else if (speedCnt >= 100)
+			{
+				player.moveSpeed = PLAYER_SPEED_NORMAL;
+			}
+		}
+		//動きが遅くなる
+		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		{
+			player.moveSpeed = PLAYER_SPEED_LOW;
+		}
+		//ﾀﾞﾒｰｼﾞを受ける
+		else if (GetEvent(player.pos) == EVENT_ID_DAMAGE)
+		{
+			if (lifeCheckCnt == 0)
+			{
+				player.life -= 5;
+				lifeCheckCnt = 100;
+			}
+		}
+		//通常時の移動スピード
+		else
+		{
+			player.moveSpeed = PLAYER_SPEED_NORMAL;
+		}
+
+		if (GetEvent(player.pos) != EVENT_ID_STOP)
+		{
+			speedCnt = 0;
 		}
 	}
-	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
-	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
-	XY indexPos;
-	indexPos = Pos2Index(player.pos);
-
-	//情報処理
-	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
-	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
-	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
-	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
-	DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
-
-}
+ }
