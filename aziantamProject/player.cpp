@@ -13,7 +13,7 @@ CHARACTER player;
 
 int lifeCheckCnt;
 int healCheckCnt;
-
+int speedCnt;
 
 //ﾌﾟﾚｲﾔｰ情報の初期化
 void PlayerSystemInit(void)
@@ -33,12 +33,12 @@ void PlayerSystemInit(void)
 void PlayerGameInit(void)
 {
 	player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
-	player.pos = { SCREEN_SIZE_X/2,SCREEN_SIZE_Y/2 };									//ｷｬﾗｸﾀの地図上の座標
+	player.pos = { 160,135};								//ｷｬﾗｸﾀの地図上の座標
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
 	lifeCheckCnt = 0;
 	healCheckCnt = 0;
-
+	speedCnt = 0;
 }
 
 
@@ -216,6 +216,50 @@ XY PlayerControl(void)
 				lifeCheckCnt = 0;
 			}
 		}
+
+		// 特殊なマップを踏んだ場合の処理
+			// 水
+		if (GetEvent(player.pos) == EVENT_ID_SPEEDUP)
+		{
+			speedCnt++;
+			if (speedCnt > 10)
+			{
+				player.moveSpeed = PLAYER_SPEED_HIGH;
+				player.life -= 2;
+				lifeCheckCnt = 100;
+			}
+		}
+		// 毒
+		else if (GetEvent(player.pos) == EVENT_ID_DOKU)
+		{
+			if (speedCnt < 10)
+			{
+				player.moveSpeed = PLAYER_SPEED_LOW;
+				player.life -= 3;
+				lifeCheckCnt = 100;
+			}
+		}
+		// 森
+		else if (GetEvent(player.pos) == EVENT_ID_MORI)
+		{
+			if (speedCnt < 5)
+			{
+				player.moveSpeed = PLAYER_SPEED_NORMAL;
+			}
+		}
+		// 畑
+		else if (GetEvent(player.pos) == EVENT_ID_HATAKE)
+		{
+			if (speedCnt < 5)
+			{
+				player.moveSpeed = PLAYER_SPEED_L;
+			}
+		}
+		// イベント戻す
+		else
+		{
+			player.moveSpeed = PLAYER_DEF_SPEED;
+		}
 	}
 
 	return returnValue;
@@ -223,11 +267,16 @@ XY PlayerControl(void)
 //プレイヤーの描画
 void PlayerGameDraw(void)
 {
-	player.animCnt++;
-	DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
-		, player.pos.y - player.offsetSize.y + mapPos.y
-		, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
-
+	if (player.life > 0)
+	{
+		player.animCnt++;
+		if (lifeCheckCnt % 10 == 0)
+		{
+			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
+				, player.pos.y - player.offsetSize.y + mapPos.y
+				, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
+		}
+	}
 	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
 	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
 	XY indexPos;
@@ -238,5 +287,6 @@ void PlayerGameDraw(void)
 	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
 	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
 	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
+	DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
 
 }
