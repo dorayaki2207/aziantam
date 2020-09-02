@@ -219,6 +219,33 @@ void GameScene(void)
 			DeleteItem();
 		}
 
+		//確認のためにマップ移動を実装しています。
+		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		{
+			if (GetMapDate() == STAGE_ID_START)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_MOB);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+			else if (GetMapDate() == STAGE_ID_MOB)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_ONI);	
+			//	SetMapData(STAGE_ID_START);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+			
+		}
+
+		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
+		if (SetEnemyMoment(playerPos))
+		{
+			SceneID = SCENE_CLEAR;
+		}
+
 	}
 
 	

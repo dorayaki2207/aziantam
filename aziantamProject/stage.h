@@ -68,3 +68,5 @@ EVENT_ID GetEvent(XY pos);					//指定した座標が特別にｲﾍﾞﾝﾄ�
 
 void SetMapData(STAGE_ID stageID);			//ｽﾃｰｼﾞﾃﾞｰﾀをﾏｯﾌﾟ配列ﾆｺﾋﾟｰする
 void MapRange();
+
+STAGE_ID GetMapDate(void);

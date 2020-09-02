@@ -393,7 +393,7 @@ EVENT_ID GetEvent(XY pos)
 		switch (map[indexPos.y][indexPos.x])
 		{
 		case 66:
-			if (stageID == STAGE_ID_START)
+			/*if (stageID == STAGE_ID_START)
 			{
 				stageID = STAGE_ID_MOB;
 				SetMapData(STAGE_ID_MOB);
@@ -433,9 +433,9 @@ EVENT_ID GetEvent(XY pos)
 				{
 					StageGameDraw();
 				}
-
+				*/
 				return EVENT_ID_KAIDAN;
-				break;*/
+				break;
 
 			// 水
 		case 30:
@@ -547,6 +547,7 @@ void SetMapData(STAGE_ID stage_ID)
 				map[y][x] = stage[y][x];
 			}
 		}
+		stageID = stage_ID;
 	}
 	else if (stage_ID == STAGE_ID_MOB)
 	{
@@ -560,6 +561,7 @@ void SetMapData(STAGE_ID stage_ID)
 				map[y][x] = stageMob[y][x];
 			}
 		}
+		stageID = stage_ID;
 	}
 	else if (stage_ID == STAGE_ID_ONI)
 	{
@@ -572,6 +574,7 @@ void SetMapData(STAGE_ID stage_ID)
 				map[y][x] = stageI[y][x];
 			}
 		}
+		stageID = stage_ID;
 	}
 	/*else if (stage_ID == STAGE_ID_TENGU)
 	{
@@ -585,6 +588,7 @@ void SetMapData(STAGE_ID stage_ID)
 				map[y][x] = stageY[y][x];
 			}
 		}
+		stageID = stage_ID;
 	}
 	else if (stageID == STAGE_ID_KAPPA)
 	{
@@ -598,20 +602,9 @@ void SetMapData(STAGE_ID stage_ID)
 				map[y][x] = stageA[y][x];
 			}
 		}
-	}
-	else if (stageID == STAGE_ID_BOSS)
-	{
-		mapSize.x = MAPB_X;
-		mapSize.y = MAPB_Y;
-
-		for (int y = 0; y < mapSize.y; y++)
-		{
-			for (int x = 0; x < mapSize.x; x++)
-			{
-				map[y][x] = stageB[y][x];
-			}
-		}
+		stageID = stage_ID;
 	}*/
+
 }
 
 // ｹﾞｰﾑ画面の表示処理
@@ -659,4 +652,9 @@ void MapRange()
 	if (mapPos.y > 0) mapPos.y = 0;
 	if (mapPos.y < -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y) mapPos.y = -CHIP_SIZE_Y * mapSize.y + SCREEN_SIZE_Y;
 
+}
+
+STAGE_ID GetMapDate(void)
+{
+	return stageID;
 }
