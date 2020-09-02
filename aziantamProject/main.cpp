@@ -163,7 +163,7 @@ void GameScene(void)
 
 	//¼°Ý‘JˆÚ
 	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
-	if (GameOverSet())
+	if ((GameOverSet()) || (PlayerDid()))
 	{
 		GameOverCnt++;
 		if (GameOverCnt > 100)

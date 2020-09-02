@@ -41,7 +41,14 @@ void PlayerGameInit(void)
 	speedCnt = 0;
 }
 
-
+bool PlayerDid()
+{
+	if (player.life <= 0)
+	{
+		return true;
+	}
+	return false;
+}
 
 //プレイヤーの操作
 XY PlayerControl(void)
@@ -51,6 +58,8 @@ XY PlayerControl(void)
 	XY playerPosCopy = player.pos;
 	XY playerPosOffset = playerPosCopy;
 	XY indexPos;							//　ﾏｯﾌﾟ配列座標
+
+//	if (player.life < 0) SceneID = SCENE_GAMEOVER;
 
 	if (player.life > 0)
 	{
@@ -264,9 +273,12 @@ void PlayerEvent(void)
 			speedCnt++;
 			if (speedCnt > 10)
 			{
-				player.moveSpeed = PLAYER_SPEED_HIGH;
-				player.life -= 2;
-				lifeCheckCnt = 100;
+			//	if (lifeCheckCnt == 0)
+			//	{
+					player.moveSpeed = PLAYER_SPEED_HIGH;
+					player.life -= 2;
+					lifeCheckCnt = 100;
+			//	}
 			}
 		}
 		// 毒

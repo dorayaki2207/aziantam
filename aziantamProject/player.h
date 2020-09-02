@@ -26,3 +26,4 @@ void PlayerGameInit(void);		//ÌßÚ²Ô°‚Ì‰Šú‰»
 XY PlayerControl(void);			//ÌßÚ²Ô°‚Ì‘€ì
 void PlayerGameDraw(void);		//ÌßÚ²Ô°‚Ì•`‰æ
 void PlayerEvent(void);
+bool PlayerDid(void);
