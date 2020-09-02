@@ -68,7 +68,7 @@ void EffectSystemInit(void)
 }
 
 //エフェクトの初期化
-void EffectInit(void)
+void EffectGameInit(void)
 {
 	for (int ef = 0; ef < EFFECT_MAX; ef++)
 	{

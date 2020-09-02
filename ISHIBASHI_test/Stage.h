@@ -70,3 +70,4 @@ void GetPos(XY pos);
 extern XY mapPos;
 extern XY mapSize;
 extern STAGE_ID stageID;
+extern int map[MAP_Y][MAP_X];

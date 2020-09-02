@@ -114,7 +114,7 @@ bool SystemInit(void)
 	EnemySystemInit();			//“Gmob
 	ItemSystmeInit();			//±²ÃÑ
 	ShotSystemInit();			//¼®¯Ä
-	
+	EffectSystemInit();			//´Ìª¸Ä
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("item/‘€ìà–¾.png");
 	clearImage = LoadGraph("item/clear.png");
@@ -145,7 +145,7 @@ void InitScene(void)
 	EnemyGameInit();				//“G
 	ItemGameInit();					//±²ÃÑ
 	ShotGameInit();					//¼®¯Ä
-
+	EffectGameInit();				//´Ìª¸Ä
 	//-----¼°İ‘JˆÚ
 	SceneID = SCENE_TITLE;
 }
@@ -199,8 +199,8 @@ void GameScene(void)
 		playerPos = PlayerControl();		//ÌßÚ²Ô°
 		EnemyControl(playerPos);			//´ÈĞ°
 		ItemDropControl();					//±²ÃÑ
-		ShotControl(playerPos);				//¼®¯Ä
-
+		ShotControl(playerPos);			//¼®¯Ä
+		EffectControl();					//´Ìª¸Ä
 		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
@@ -266,6 +266,7 @@ void GameDraw(void)
 	EnemyGameDraw();			//“G
 	ItemGameDraw();				//±²ÃÑ
 	ShotGameDraw();				//¼®¯Ä
+	EffectGameDraw();			//´Ìª¸Ä
 	//-----²İÍŞİÄØŠÖ˜A
 	if (iventFlag)
 	{

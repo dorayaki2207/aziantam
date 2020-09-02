@@ -22,7 +22,7 @@ extern bool fadeOut;
 //プロトタイプ宣言
 //---------------
 void EffectSystemInit(void);
-void EffectInit(void);					//エフェクトの初期化
+void EffectGameInit(void);					//エフェクトの初期化
 bool FadeInScreen(int fadeStep);		//ﾌｪｰﾄﾞｲﾝの処理
 bool FadeOutScreen(int fadeStep);		//ﾌｪｰﾄﾞｱｳﾄの処理
 //ﾀﾞﾒｰｼﾞｴﾌｪｸﾄ

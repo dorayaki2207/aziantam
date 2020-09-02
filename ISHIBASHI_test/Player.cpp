@@ -45,6 +45,7 @@ void PlayerGameInit(void)
 	player.animCnt = 0;												//	·¬×¸À‚Ì±ÆÒ°¼®Ý
 	lifeCheckCnt = 0;
 	moveCheckCnt = 0;
+	GetPos(player.pos);
 }
 
 XY PlayerControl(void)
