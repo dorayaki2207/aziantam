@@ -143,6 +143,7 @@ void InitScene(void)
 	StageGameInit();				//ｽﾃｰｼﾞ
 	PlayerGameInit();				//ﾌﾟﾚｲﾔｰ
 	EnemyGameInit();				//敵
+	EFlagInit();					//eFlag専用
 	ItemGameInit();					//ｱｲﾃﾑ
 	ShotGameInit();					//ｼｮｯﾄ
 	EffectGameInit();				//ｴﾌｪｸﾄ
@@ -222,6 +223,7 @@ void GameScene(void)
 		//確認のためにマップ移動を実装しています。
 		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
 		{
+			
 			if (GetMapDate() == STAGE_ID_START)
 			{
 				mapPos = { 0,0 };
@@ -232,12 +234,10 @@ void GameScene(void)
 			else if (GetMapDate() == STAGE_ID_MOB)
 			{
 				mapPos = { 0,0 };
-				SetMapData(STAGE_ID_ONI);	
-			//	SetMapData(STAGE_ID_START);
+				SetMapData(STAGE_ID_ONI);
 				PlayerGameInit();
 				EnemyGameInit();
 			}
-			
 		}
 
 		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）

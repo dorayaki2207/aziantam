@@ -59,7 +59,7 @@ XY PlayerControl(void)
 	XY playerPosOffset = playerPosCopy;
 	XY indexPos;							//@Ï¯Ìß”z—ñÀ•W
 
-//	if (player.life < 0) SceneID = SCENE_GAMEOVER;
+	if (player.life < 0) SceneID = SCENE_GAMEOVER;
 
 	if (player.life > 0)
 	{

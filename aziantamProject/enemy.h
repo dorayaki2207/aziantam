@@ -36,4 +36,5 @@ void EnemyGameDraw(void);					//ｴﾈﾐｰの描画処理
 bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//ｴﾈﾐｰと弾の当たり判定
 bool PlayerHitCheck(XY sPos, int sSize);
 
-bool SetEnemyMoment(XY pos);
+bool SetEnemyMoment(XY pos);				//
+bool EFlagInit(void);						//敵がステージごとで全滅したか判断用フラグ専用の初期化

@@ -11,9 +11,9 @@ CHARACTER enemyMob[ENEMY_MAX];
 CHARACTER enemyMobMaster[ENEMY_M_MAX];
 int enemyImage[ENEMY_M_MAX][16];
 
-//それぞれのステージに敵の生存確認（true:全滅、false:生存）
-bool eFlag_1 = false;
-bool eFlag_2 = false;
+//それぞれのステージにいる敵の生存確認（true:全滅、false:生存）
+bool eFlag_1;
+bool eFlag_2;
 
 void EnemySystemInit(void)
 {
@@ -69,11 +69,20 @@ void EnemyGameInit(void)
 	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
+		//stageIDがSTAGE_ID_STARTのときに、以下の処理をする。
+		if (GetMapDate() == STAGE_ID_START)
+		{
+			//ライフを0にする。
+			enemyMob[ene].life = 0;
+		}
 		//stageIDがSTAGE_ID_START以外のときに、以下の処理をする。
-		if (GetMapDate() != STAGE_ID_START)
+		else if(GetMapDate() != STAGE_ID_START)
 		{
 			int type = rand() % ENEMY_M_MAX;
 			enemyMob[ene] = enemyMobMaster[type];
+
+			//ライフをMAXにする。
+			enemyMob[ene].life = enemyMob[ene].lifeMax;
 
 			int x = rand() % MAP_M_X;
 			int y = rand() % MAP_M_Y;
@@ -112,7 +121,13 @@ void EnemyGameInit(void)
 	}
 
 }
-
+//敵がステージごとで全滅したか判断用フラグ専用の初期化
+bool EFlagInit(void)
+{
+	eFlag_1 = false;
+	eFlag_2 = false;
+	return true;
+}
 void EnemyControl(XY pPos)
 {
 }

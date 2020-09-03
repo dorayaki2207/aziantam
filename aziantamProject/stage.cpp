@@ -340,7 +340,8 @@ EVENT_ID GetEvent(XY pos)
 		switch (map[indexPos.y][indexPos.x])
 		{
 		case 66:
-		/*	if (stageID == STAGE_ID_START)
+			
+			/*if (stageID == STAGE_ID_START)
 			{
 				stageID = STAGE_ID_ONI;
 				SetMapData(STAGE_ID_ONI);
