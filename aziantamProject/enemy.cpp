@@ -194,6 +194,14 @@ bool SetEnemyMoment(XY pos)
 				return true;
 			}
 		}
+		else if (eFlag_1 && eFlag_3)
+		{
+			if (GetEvent(pos) == EVENT_ID_SPEEDDOWN)
+			{
+				//true‚ð•Ô‚·
+				return true;
+			}
+		}
 	}
 	return false;
 }
