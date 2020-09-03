@@ -14,6 +14,7 @@ int enemyImage[ENEMY_M_MAX][16];
 //それぞれのステージにいる敵の生存確認（true:全滅、false:生存）
 bool eFlag_1;
 bool eFlag_2;
+bool eFlag_3;
 
 void EnemySystemInit(void)
 {
@@ -88,8 +89,7 @@ void EnemyGameInit(void)
 			int y = rand() % MAP_M_Y;
 
 			//stageIDがSTAGE_ID_STARTかSTAGE_ID_MOBだった場合
-			if (GetMapDate() == STAGE_ID_MOB
-				|| GetMapDate() == STAGE_ID_KAPPA)
+			if (GetMapDate() == STAGE_ID_MOB)
 			{
 				//75番以外のmap配列になったらrandをやりなおす。
 				while (map[y][x] != 75)
@@ -98,14 +98,22 @@ void EnemyGameInit(void)
 					y = rand() % MAP_M_Y;
 				}
 			}
+			else if (GetMapDate() == STAGE_ID_KAPPA)
+			{
+				while (map[y][x] != 40)
+				{
+					x = rand() % MAPA_X;
+					y = rand() % MAPA_Y;
+				}
+			}
 			//stageIDがSTAGE_ID_ONIだった場合
 			else if (GetMapDate() == STAGE_ID_ONI)
 			{
 				//0番以外のmap配列になったらrandをやりなおす。
 				while (map[y][x] != 0)
 				{
-					x = rand() % MAP_M_X;
-					y = rand() % MAP_M_Y;
+					x = rand() % MAPI_X;
+					y = rand() % MAPI_Y;
 				}
 			}
 
@@ -126,6 +134,7 @@ bool EFlagInit(void)
 {
 	eFlag_1 = false;
 	eFlag_2 = false;
+	eFlag_3 = false;
 	return true;
 }
 void EnemyControl(XY pPos)
@@ -168,6 +177,11 @@ bool SetEnemyMoment(XY pos)
 		{
 			//trueにする
 			eFlag_2 = true;
+		}
+		else if (GetMapDate() == STAGE_ID_KAPPA)
+		{
+			//trueにする
+			eFlag_3 = true;
 		}
 
 		//両方のステージで敵が全滅したら

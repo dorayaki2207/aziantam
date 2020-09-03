@@ -238,6 +238,13 @@ void GameScene(void)
 				PlayerGameInit();
 				EnemyGameInit();
 			}
+			else if (GetMapDate() == STAGE_ID_MOB)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_KAPPA);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
 		}
 
 		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）

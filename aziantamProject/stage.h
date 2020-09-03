@@ -16,8 +16,8 @@
 #define MAPI_Y 40
 //#define MAPY_X 32		//山本担当
 //#define MAPY_Y 32
-//#define MAPA_X 32		//荒木担当
-//#define MAPA_Y 32
+#define MAPA_X 40		//荒木担当
+#define MAPA_Y 40
 //#define MAPB_X 32		//ボス
 //#define MAPB_Y 32
 #define MAP_CHIP_X 9
@@ -43,10 +43,7 @@ enum EVENT_ID {
 	EVENT_ID_KAPPA,
 	EVENT_ID_KAIDAN,
 	EVENT_ID_DOKU,
-	EVENT_ID_HATAKE,
 	EVENT_ID_DOKUTU,
-	EVENT_ID_MORI,
-	EVENT_ID_SPEEDUP,
 	EVENT_ID_DAMAGE,		//ﾀﾞﾒｰｼﾞ
 	EVENT_ID_STOP,			//止まる
 	EVENT_ID_SPEEDDOWN,		//動きが遅くなる

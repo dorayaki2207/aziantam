@@ -264,26 +264,13 @@ void PlayerGameDraw(void)
 
 void PlayerEvent(void)
 {
-	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB))
+	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB) || (stageID == STAGE_ID_KAPPA))
 	{
 		// 特殊なマップを踏んだ場合の処理
-			// 水
-		if (GetEvent(player.pos) == EVENT_ID_SPEEDUP)
+		// 毒
+		if (GetEvent(player.pos) == EVENT_ID_DOKU)
 		{
 			speedCnt++;
-			if (speedCnt > 10)
-			{
-			//	if (lifeCheckCnt == 0)
-			//	{
-					player.moveSpeed = PLAYER_SPEED_HIGH;
-					player.life -= 2;
-					lifeCheckCnt = 100;
-			//	}
-			}
-		}
-		// 毒
-		else if (GetEvent(player.pos) == EVENT_ID_DOKU)
-		{
 			if (speedCnt < 10)
 			{
 				player.moveSpeed = PLAYER_SPEED_LOW;
@@ -291,22 +278,7 @@ void PlayerEvent(void)
 				lifeCheckCnt = 100;
 			}
 		}
-		// 森
-		else if (GetEvent(player.pos) == EVENT_ID_MORI)
-		{
-			if (speedCnt < 5)
-			{
-				player.moveSpeed = PLAYER_SPEED_NORMAL;
-			}
-		}
-		// 畑
-		else if (GetEvent(player.pos) == EVENT_ID_HATAKE)
-		{
-			if (speedCnt < 5)
-			{
-				player.moveSpeed = PLAYER_SPEED_L;
-			}
-		}
+		
 		// イベント戻す
 		else
 		{
