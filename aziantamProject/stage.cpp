@@ -250,7 +250,7 @@ void StageSystemInit(void)
 	stageOffset = 0;
 
 	// ﾏｯﾌﾟ作成ﾃﾞｰﾀ
-	stageID = STAGE_ID_KAPPA;
+	stageID = STAGE_ID_START;
 	SetMapData(stageID);
 }
 
@@ -263,7 +263,7 @@ void StageGameInit(void)
 	stageOffset = 0;
 
 	// ﾏｯﾌﾟ作成ﾃﾞｰﾀ
-	stageID = STAGE_ID_KAPPA;
+	stageID = STAGE_ID_START;
 	SetMapData(stageID);
 }
 
@@ -392,17 +392,6 @@ EVENT_ID GetEvent(XY pos)
 		switch (map[indexPos.y][indexPos.x])
 		{
 		case 66:
-			
-			/*if (stageID == STAGE_ID_START)
-			{
-				stageID = STAGE_ID_ONI;
-				SetMapData(STAGE_ID_ONI);
-			}
-			else if (stageID == STAGE_ID_MOB)
-			{
-				stageID = STAGE_ID_ONI;
-				SetMapData(STAGE_ID_ONI);
-			}*/
 			return EVENT_ID_KAIDAN;
 			break;
 

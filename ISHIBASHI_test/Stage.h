@@ -65,7 +65,7 @@ bool IsPass(XY pos);			//指定した座標が通過可能かを返す true:通過できる
 EVENT_ID GetEvent(XY pos);	    // 指定した座標が特別にｲﾍﾞﾝﾄを起こすかを確認する　戻り値：ｲﾍﾞﾝﾄID
 void MapRange();
 
-void GetPos(XY pos);
+
 //-----ｸﾞﾛｰﾊﾞﾙ化
 extern XY mapPos;
 extern XY mapSize;

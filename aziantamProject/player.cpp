@@ -240,7 +240,7 @@ void PlayerGameDraw(void)
 	if (player.life > 0)
 	{
 		player.animCnt++;
-		if (lifeCheckCnt % 10 == 0)
+		if (lifeCheckCnt % 20 == 0)
 		{
 			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
 				, player.pos.y - player.offsetSize.y + mapPos.y

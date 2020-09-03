@@ -222,7 +222,7 @@ void StageSystemInit(void)
 	chipPos = CHIP_POS_NON;
 
 	//Ï¯ÌßÃÞ°À
-	stageID = STAGE_ID_ONI;
+	stageID = STAGE_ID_START;
 	SetMapData(stageID);
 }
 
@@ -232,7 +232,7 @@ void StageGameInit(void)
 	mapPos = { 0,0 };
 
 	//Ï¯ÌßÃÞ°À
-	stageID = STAGE_ID_ONI;
+	stageID = STAGE_ID_START;
 	SetMapData(stageID);
 }
 
@@ -550,28 +550,6 @@ EVENT_ID GetEvent(XY pos)
 
 
 
-void GetPos(XY pos)
-{
-	XY indexPos;
-
-	indexPos = PosToIndex(pos);
-
-	for (int y = 0; y < MAP_ONI_Y; y++)
-	{
-		for (int x = 0; x < MAP_ONI_X; x++)
-		{
-			if (stageID == STAGE_ID_ONI)
-			{
-				if (map[y][x] == 24)
-				{
-					indexPos.x =x;
-					indexPos.y = y;
-				}
-			}
-		}
-	}
-	
-}
 
 //½¸Û°Ù§ŒÀ
 void MapRange()

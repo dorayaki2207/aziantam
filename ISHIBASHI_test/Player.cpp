@@ -39,13 +39,14 @@ void PlayerSystemInit(void)
 
 void PlayerGameInit(void)
 {
-	player.pos = { 150,150};										//　ｷｬﾗｸﾀの地図上の座標
+	player.pos = { 150,150 };										//　ｷｬﾗｸﾀの地図上の座標
 	player.lifeMax = 150;												//	ｷｬﾗｸﾀの体力最大値
 	player.life = player.lifeMax;										//	ｷｬﾗｸﾀの体力
 	player.animCnt = 0;												//	ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	lifeCheckCnt = 0;
 	moveCheckCnt = 0;
-	GetPos(player.pos);
+
+//	GetPos();
 }
 
 XY PlayerControl(void)
@@ -308,6 +309,46 @@ void PlayerGameDraw(void)
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);
+}
+
+void GetPos()
+{
+
+	//if (stageID == STAGE_ID_START)
+	//{
+	//	player.pos = { 150,150 };
+	//}
+	//else if(stageID == STAGE_ID_ONI)
+	//{
+	//	player.pos = { 594,920 };
+	//}
+	//else if (stageID == STAGE_ID_ONI2)
+	//{
+	//	player.pos = { 370,626 };
+	//}
+	
+	if (GetEvent(player.pos) == EVENT_ID_KAIDAN)
+	{
+		//鬼ステージ①の祭壇に移動させる
+		stageID = STAGE_ID_ONI;
+		SetMapData(STAGE_ID_ONI);
+		player.pos = { 300,200 };
+	}
+	if (GetEvent(player.pos) == EVENT_ID_KAIDAN)
+	{
+		//鬼ステージ①の祭壇に移動させる
+		stageID = STAGE_ID_ONI2;
+		SetMapData(STAGE_ID_ONI2);
+		player.pos = { 370,626 };
+	}
+	if (GetEvent(player.pos) == EVENT_ID_KAIDAN2)
+	{
+		//鬼ステージ①の祭壇に移動させる
+		stageID = STAGE_ID_START;
+		SetMapData(STAGE_ID_START);
+		player.pos = { 150,150 };
+	}
+
 }
 
 

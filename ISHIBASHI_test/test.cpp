@@ -223,26 +223,57 @@ void GameScene()
 		itemDropControl();
 		EffectControl();
 
-		if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
-		{
-			
-			stageID = STAGE_ID_ONI2;
-			SetMapData(STAGE_ID_ONI2);
-		}
-		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
-		{
-			stageID = STAGE_ID_START;
-			SetMapData(STAGE_ID_START);
-		}
-		if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
-		{
-			//鬼ステージ①の祭壇に移動させる
-			GetPos(playerPos);
-			stageID = STAGE_ID_ONI;
-			SetMapData(STAGE_ID_ONI);
+		//if (GetEvent(playerPos) == EVENT_ID_DOKUTU)
+		//{
+		//	
+		//	stageID = STAGE_ID_ONI2;
+		//	SetMapData(STAGE_ID_ONI2);
+		//	GetPos();
+		//}
+		//if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		//{
+		//	//鬼ステージ①の祭壇に移動させる
+		//	stageID = STAGE_ID_ONI;
+		//	SetMapData(STAGE_ID_ONI);
+		//	GetPos();
+
+		//}
+		//if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
+		//{
+		//	//鬼ステージ①の祭壇に移動させる
+		//	stageID = STAGE_ID_ONI;
+		//	SetMapData(STAGE_ID_ONI);
+		//	GetPos();
+		//}
 
 
-		}
+		GetPos();
+
+
+		//if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		//{
+		//	//鬼ステージ①の祭壇に移動させる
+		//	stageID = STAGE_ID_ONI;
+		//	SetMapData(STAGE_ID_ONI);
+		////	GetPos();
+
+		//}
+		//
+		//if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		//{
+		//	//鬼ステージ①の祭壇に移動させる
+		//	stageID = STAGE_ID_ONI2;
+		//	SetMapData(STAGE_ID_ONI2);
+		//	GetPos();
+		//}
+		//if (GetEvent(playerPos) == EVENT_ID_KAIDAN2)
+		//{
+		//	//鬼ステージ①の祭壇に移動させる
+		//	stageID = STAGE_ID_START;
+		//	SetMapData(STAGE_ID_START);
+		//	GetPos();
+		//}
+
 
 		//弾とｴﾈﾐｰの当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
