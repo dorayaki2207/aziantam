@@ -41,6 +41,7 @@ void PlayerGameInit(void)
 	speedCnt = 0;
 }
 
+//死亡確認
 bool PlayerDid()
 {
 	if (player.life <= 0)
@@ -227,6 +228,13 @@ XY PlayerControl(void)
 		}
 
 		
+		if (player.pos.x == gatePos[MAGIC_TYPE_FIRE].x && player.pos.y == gatePos[MAGIC_TYPE_FIRE].y)
+		{
+			stageID = STAGE_ID_ONI;
+			SetMapData(STAGE_ID_ONI);
+		}
+
+
 		PlayerEvent();
 	}
 
@@ -328,3 +336,40 @@ void PlayerEvent(void)
 		}
 	}
  }
+
+void MapChange(void)
+{
+	//確認のためにマップ移動を実装しています。
+	if (stageID == STAGE_ID_START)
+	{
+		if (GetMapDate() == STAGE_ID_START)
+		{
+			mapPos = { 0,0 };
+			SetMapData(STAGE_ID_MOB);
+			PlayerGameInit();
+			EnemyGameInit();
+		}
+	}
+	if (stageID == STAGE_ID_MOB)
+	{
+		if (GetMapDate() == STAGE_ID_MOB)
+		{
+			mapPos = { 0,0 };
+			SetMapData(STAGE_ID_KAPPA);
+			PlayerGameInit();
+			EnemyGameInit();
+		}
+		
+	}
+	if (stageID == STAGE_ID_KAPPA)
+	{
+		if (GetMapDate() == STAGE_ID_MOB)
+		{
+			mapPos = { 0,0 };
+			SetMapData(STAGE_ID_ONI);
+			PlayerGameInit();
+			EnemyGameInit();
+		}
+	}
+
+}

@@ -14,6 +14,9 @@ int map[MAP_Y][MAP_X];
 int stageOffset;
 
 int backImage;
+int gateImage[MAGIC_TYPE_MAX - 1][15];
+XY gatePos[MAGIC_TYPE_MAX - 1];
+int aniCnt;
 
 // ﾏｯﾌﾟの配列
 // ﾀﾞﾝｼﾞｮﾝ
@@ -25,8 +28,8 @@ int stage[MAP_START_Y][MAP_START_X] = {
 {16,17,75,75,69,70,26,69, 70,26,69,70,75,75, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6,75,75,80,75,75,  6, 6, 6, 6,75,75,16,17},
 { 7, 8,78,79, 9,10,10,10, 10,10,10,10,10,10, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6,75,75,75,75,75,  6, 6, 6, 6,75,75, 7, 8},
 
-{16,17,75,75,60,61,26,60, 61,26,60,61,75,10, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6,75,75,16,17},
-{ 7, 8,75,75,69,70,26,69, 70,26,69,70,75,10, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6,75,75, 7, 8},
+{16,17,75,75,60,61,26,60, 61,26,60,61,75,10, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6,75, 6, 6,  6, 6, 6, 6,75,75,16,17},
+{ 7, 8,75,75,69,70,26,69, 70,26,69,70,75,10, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6,75, 6, 6,  6, 6, 6, 6,75,75, 7, 8},
 {16,17,75,75,75,75,75,75, 75,75,75,75,75,10,10,10, 10,75,25,25,25,25,25,75, 75,75,75,75,75,75,75,75, 75,75,75,75,75,75,16,17},
 { 7, 8,75,75, 6, 6, 6, 6,  6, 6, 6, 6, 6,75,75,75, 10,75,26,60,61,62,26,75, 75,75,75,75,75,75,60,61, 75,75,75,75,75,75, 7, 8},
 {16,17,75,75, 6, 6, 6, 6,  6, 6, 6, 6, 6,75,75,75, 10,75,26,69,70,62,26,75, 75,75,75,75,75,75,69,70, 67,75,75,75,75,75,16,17},
@@ -243,11 +246,20 @@ void StageSystemInit(void)
 		, CHIP_SIZE_Y
 		, OnichipImage);
 	backImage = LoadGraph("char/blok.png");
+	//---ゲート
+	LoadDivGraph("item/gate_fire.png", 15, 5, 3, 50, 50, gateImage[MAGIC_TYPE_FIRE]);
+	LoadDivGraph("item/gate_water.png", 15, 5, 3, 50, 50, gateImage[MAGIC_TYPE_WATER]);
+	LoadDivGraph("item/gate_wind.png", 15, 5, 3, 50, 50, gateImage[MAGIC_TYPE_WIND]);
 
 	mapPos.x = 0;
 	mapPos.y = 0;
-	//mapSize = { 0,0 };
+	gatePos[MAGIC_TYPE_FIRE] = { 920,120 };
+	gatePos[MAGIC_TYPE_WATER] = { 1120,1070 };
+	gatePos[MAGIC_TYPE_WIND] = { 280,1200 };
+	aniCnt = 0;
+
 	stageOffset = 0;
+	
 
 	// ﾏｯﾌﾟ作成ﾃﾞｰﾀ
 	stageID = STAGE_ID_START;
@@ -259,7 +271,11 @@ void StageGameInit(void)
 {
 	mapPos.x = 0;
 	mapPos.y = 0;
+	//gatePos[MAGIC_TYPE_FIRE] = { 800,300 };
+	//gatePos[MAGIC_TYPE_WATER] = { 800,750 };
+	//gatePos[MAGIC_TYPE_WIND] = { 600,900 };
 	
+
 	stageOffset = 0;
 
 	// ﾏｯﾌﾟ作成ﾃﾞｰﾀ
@@ -568,6 +584,7 @@ void StageGameDraw(void)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
+			aniCnt++;
 			if ((stageID == STAGE_ID_START) 
 				|| (stageID == STAGE_ID_MOB)
 				|| (stageID == STAGE_ID_KAPPA))
@@ -575,14 +592,39 @@ void StageGameDraw(void)
 				DrawGraph(x * CHIP_SIZE_X + mapPos.x
 					, y * CHIP_SIZE_Y + mapPos.y
 					, chipImage[map[y][x]], true);
+
+				for (int type = 0; type < MAGIC_TYPE_MAX - 1; type++)
+				{
+					
+					DrawGraph(gatePos[type].x + mapPos.x
+						, gatePos[type].y + mapPos.y
+						, gateImage[type][(aniCnt / 650) % 5], true);
+				}
+
+				
 			}
 			else if (stageID == STAGE_ID_ONI)
 			{
 				DrawGraph(x * CHIP_SIZE_X + mapPos.x
 					, y * CHIP_SIZE_Y + mapPos.y
 					, OnichipImage[map[y][x]], true);
-			}
 
+				DrawGraph(gatePos[MAGIC_TYPE_FIRE].x + mapPos.x
+					, gatePos[MAGIC_TYPE_FIRE].y + mapPos.y
+					, gateImage[MAGIC_TYPE_FIRE][(aniCnt / 30) % 18], true);
+			}
+			else if (stageID == STAGE_ID_MOB)
+			{
+				DrawGraph(gatePos[MAGIC_TYPE_WIND].x + mapPos.x
+					, gatePos[MAGIC_TYPE_WIND].y + mapPos.y
+					, gateImage[MAGIC_TYPE_WIND][(aniCnt / 30) % 18], true);
+			}
+			else if (stageID == STAGE_ID_KAPPA)
+			{
+				DrawGraph(gatePos[MAGIC_TYPE_WATER].x + mapPos.x
+					, gatePos[MAGIC_TYPE_WATER].y + mapPos.y
+					, gateImage[MAGIC_TYPE_WATER][(aniCnt / 30) % 18], true);
+			}
 		}
 	}
 }
