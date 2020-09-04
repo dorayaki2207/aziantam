@@ -55,6 +55,8 @@ extern XY mapPos;
 extern XY mapSize;
 extern STAGE_ID stageID;		//ｽﾃｰｼﾞID
 extern int map[MAP_Y][MAP_X];
+extern XY gatePos[MAGIC_TYPE_MAX -1];
+
 
 //ﾌﾟﾛﾄﾀｲﾌﾟ宣言
 void StageSystemInit(void);					//ｽﾃｰｼﾞ情報の初期化

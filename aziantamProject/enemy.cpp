@@ -137,6 +137,7 @@ bool EFlagInit(void)
 	eFlag_3 = false;
 	return true;
 }
+
 void EnemyControl(XY pPos)
 {
 }
@@ -228,6 +229,16 @@ void EnemyGameDraw()
 		DrawFormatString(0, 200, 0xFFFFFF,"enemyHP:%d", enemyMob[ene].life, true);
 	}
 
+}
+
+int MoveEnemyY(CHARACTER* enemy, XY playerPos)
+{
+	return 0;
+}
+
+int MoveEnemyXY(CHARACTER* enemy, XY playerPos)
+{
+	return 0;
 }
 
 //-----¥»–∞Ç∆íeÇÃìñÇΩÇËîªíËÅ@(true : Ç†ÇΩÇË, false : ÇÕÇ∏ÇÍ)
