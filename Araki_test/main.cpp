@@ -1,13 +1,16 @@
-#include "DxLib.h"
+// タイトルシーン　セレクト途中:石橋
+//攻撃お札が全て0枚になったら終了。
+
+#include <DxLib.h>
 #include "main.h"
 #include "keycheck.h"
+#include "title.h"
 #include "effect.h"
 #include "stage.h"
 #include "player.h"
 #include "enemy.h"
 #include "shot.h"
 #include "item.h"
-#include <time.h>
 
 
 //-----変数
@@ -16,24 +19,12 @@ SCENE SceneID;
 SCENE ScenePreID;	//過去のｼｰﾝ格納用
 int SceneCounter;
 int GameOverCnt;
-
 //ｲﾝﾍﾞﾝﾄﾘ関連
 bool iventFlag;
 
 //PAUSE関連
-bool paseFlag;
+bool pauseFlag;
 int keyImage;
-
-MSG_TYPE msgType;
-int titleCounter;
-
-int msgImage[MSG_MAX];
-bool msgCheck[MSG_MAX];
-bool msgFlag;
-int msgCnt;
-int rogoImage;
-int bgImage;
-int msgID;
 
 //当たり判定用
 XY playerSize;
@@ -41,19 +32,21 @@ XY playerSize;
 //ｴﾝﾃﾞｨﾝｸﾞ関連
 int clearImage;
 int overImage;
+int clear_bgImage;
+int over_bgImage;
+
 
 //Win関数
-int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 
-	if (!SystemInit()) return -1;
+	if (!SystemInit())return -1;
 
 	//-----ｹﾞｰﾑﾙｰﾌﾟ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		//keyの情報取得
 		KeyCheck();
-
 		//ｼｰﾝｶｳﾝﾄﾘｾｯﾄ
 		if (SceneID != ScenePreID)
 		{
@@ -80,6 +73,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		case SCENE_GAMEOVER:
 			GameOverScene();
 			break;
+		//ｹﾞｰﾑｸﾘｱｼｰﾝ
+		case SCENE_CLEAR:
+			GameClearScene();
+			break;
+
+		case SCENE_MAX:
+			break;
+
 		default:
 			return -1;
 			break;
@@ -100,29 +101,26 @@ bool SystemInit(void)
 	SetWindowText("月夜～三つの神宝～");
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16);
 	ChangeWindowMode(true);
-	if (DxLib_Init() == -1) return false;
+	if (DxLib_Init() == -1)return false;
 	SetDrawScreen(DX_SCREEN_BACK);
-	
 	
 	//-----key情報の初期化
 	KeyInit();
 
 	//-----各ﾓｼﾞｭｰﾙの初期化
+	TitleSystemInit();			//ﾀｲﾄﾙ
 	StageSystemInit();			//ｽﾃｰｼﾞ
 	PlayerSystemInit();			//ﾌﾟﾚｲﾔｰ
 	EnemySystemInit();			//敵mob
 	ItemSystmeInit();			//ｱｲﾃﾑ
 	ShotSystemInit();			//ｼｮｯﾄ
-	
+	EffectSystemInit();			//ｴﾌｪｸﾄ
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("item/操作説明.png");
-	rogoImage = LoadGraph("item/rogo_.png");
-	bgImage = LoadGraph("item/bg.png");
 	clearImage = LoadGraph("item/clear.png");
 	overImage = LoadGraph("item/over.png");
-	LoadDivGraph(("item/msg.png"), MSG_MAX, 1, MSG_MAX, 400, 100, msgImage);
-
-
+	clear_bgImage = LoadGraph("item/bg_clear.png");
+	over_bgImage = LoadGraph("item/bg_over.png");
 	//-----変数の初期化
 	//ｼｰﾝ関連
 	SceneCounter = 0;
@@ -133,16 +131,7 @@ bool SystemInit(void)
 	pauseFlag = false;
 	//ｲﾝﾍﾞﾝﾄリ
 	iventFlag = false;
-	
-	msgType = MSG_START;
-	msgFlag = 0;
-	for (int m = 0; m < MSG_MAX; m++)
-	{
-		msgCheck[m] = 0;
-	}
-	msgCnt = 0;
-	titleCounter = 0;
-	msgID = 0;
+	//当たり判定用
 	playerSize = { 20,20 };
 
 	return true;
@@ -154,141 +143,16 @@ void InitScene(void)
 	StageGameInit();				//ｽﾃｰｼﾞ
 	PlayerGameInit();				//ﾌﾟﾚｲﾔｰ
 	EnemyGameInit();				//敵
+	EFlagInit();					//eFlag専用
 	ItemGameInit();					//ｱｲﾃﾑ
 	ShotGameInit();					//ｼｮｯﾄ
-
+	EffectGameInit();				//ｴﾌｪｸﾄ
 	//-----ｼｰﾝ遷移
 	SceneID = SCENE_TITLE;
 }
 
 
 
-
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-//ﾀｲﾄﾙｼｰﾝ
-void TitleScene(void)
-{
-	titleCounter++;
-
-	if (msgType == MSG_START)
-	{
-		//-----ｼｰﾝ遷移
-		if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_GAME;
-	}
-	else if (msgType == MSG_LOAD)
-	{
-		if (KeyDownTrigger[KEY_ID_SPACE]) msgFlag = true;
-		if ((msgCnt > 250) || KeyDownTrigger[KEY_ID_ENTER])
-		{
-			msgCnt = 0;
-			msgFlag = false;
-		}
-	}
-
-	
-
-	//-----描画
-	TitleDraw();
-
-}
-//ﾀｲﾄﾙの描画
-void TitleDraw(void)
-{
-	for (int i = 0; i < MSG_MAX; i++)
-	{
-		if (!msgCheck[i])
-		{
-			switch (msgType)
-			{
-			case MSG_START:
-				msgCheck[MSG_START] = true;
-				msgCheck[MSG_LOAD] = false;
-				break;
-			case MSG_LOAD:
-				msgCheck[MSG_LOAD] = true;
-				msgCheck[MSG_START] = false;
-				break;
-			case MSG_MAX:
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	if (KeyDownTrigger[KEY_ID_UP])
-	{
-		msgID--;
-		if (msgID < 0) msgID = MSG_MAX - 1;
-		//	msgType = MSG_START;
-	}
-
-	if (KeyDownTrigger[KEY_ID_DOWN])
-	{
-		msgID++;
-		if (msgID > MSG_MAX - 1) msgID = 0;
-	}
-
-	if (msgID == 0)
-	{
-		msgType = MSG_START;
-	}
-	else if (msgID == 1)
-	{
-		msgType = MSG_LOAD;
-	}
-
-	//-----描画処理
-	DrawGraph(0, 0, bgImage, true);
-	DrawGraph((SCREEN_SIZE_X - 400) / 2, 10, rogoImage, true);
-
-	for (int i = 0; i < MSG_MAX; i++)							//ﾒｯｾｰｼﾞ
-	{
-		//選択時
-		if (msgCheck[i])
-		{
-			if (msgType == MSG_START)
-			{
-				if ((titleCounter / 30) % 2 == 0)
-				{
-					DrawGraph((SCREEN_SIZE_X - 400) / 2, 400, msgImage[MSG_START], true);
-				}
-
-			}
-			else if (msgType == MSG_LOAD)
-			{
-				if ((titleCounter / 30) % 2 == 0)
-				{
-					DrawGraph((SCREEN_SIZE_X - 400) / 2, 500, msgImage[MSG_LOAD], true);
-
-				}
-			}
-		}
-		//未選択時
-		else
-		{
-			DrawGraph((SCREEN_SIZE_X - 400) / 2, 400 + 100 * i, msgImage[i], true);
-		}
-	}
-
-	//つづきからする、を選択した時のﾒｯｾｰｼﾞ
-	if (msgFlag)
-	{
-		msgCnt++;
-		DrawBox(250, 200, 550, 450, 0xFFFFFF, true);
-		SetFontSize(16);
-		DrawString(295, 240,
-			"　　 　　※※※\nセーブデータが存在しません\n\n　　＜はじめかする＞\n\n  を選び始めてください",
-			0x000000);
-		SetFontSize(12);
-		DrawString(255, 410, "※この画面はENTER KEY\n　又は、時間経過で閉じます", 0x000000);
-	}
-
-	//-----情報処理
-	DrawFormatString(0, 0, 0xFFFFFF, "Title:%d", SceneCounter);
-
-}
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -297,10 +161,10 @@ void GameScene(void)
 {
 	XY playerPos;		//ﾌﾟﾚｲﾔｰの座標格納領域
 
-	//ｼｰﾝ遷移
-	if (KeyDownTrigger[KEY_ID_SPACE]) fadeOut = true;
 
-	/*if (playerDead())
+	//ｼｰﾝ遷移
+	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
+	if ((GameOverSet()) || (PlayerDid()))
 	{
 		GameOverCnt++;
 		if (GameOverCnt > 100)
@@ -308,19 +172,8 @@ void GameScene(void)
 			SceneID = SCENE_GAMEOVER;
 			GameOverCnt = 0;
 		}
-	}*/
-	// ゲームオーバー
-	//////////////////////////////////
-	/*if (GameOverSet())
-	{
-		GameOverCnt++;
-		if (GameOverCnt > 100)
-		{
-			SceneID = SCENE_GAMEOVER;
-			GameOverCnt = 0;
-		}
-	}*/
-	/////////////////////////////////
+	}
+
 	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
 	if (KeyDownTrigger[KEY_ID_IVENT]) iventFlag = !iventFlag;
@@ -346,21 +199,15 @@ void GameScene(void)
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 		playerPos = PlayerControl();		//ﾌﾟﾚｲﾔｰ
 		EnemyControl(playerPos);			//ｴﾈﾐｰ
-		ItemControl();						//ｱｲﾃﾑ
-		ShotControl(playerPos);				//ｼｮｯﾄ
-
-		// イベント処理
-		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
-		{
-			SetMapData(STAGE_ID_MOB);
-		}
-
+		ItemDropControl();					//ｱｲﾃﾑ
+		ShotControl(playerPos);			//ｼｮｯﾄ
+		EffectControl();					//ｴﾌｪｸﾄ
 		//ｴﾈﾐｰと弾の当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
 			if (shot[sh].life > 0)
 			{
-				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x))
+				if (EnemyHitCheck(shot[sh].pos, shot[sh].size.x, &shot[sh]))
 				{
 					DeleteShot(sh);
 				}
@@ -372,13 +219,47 @@ void GameScene(void)
 			//ｱｲﾃﾑに当たっている
 			DeleteItem();
 		}
+
+		//確認のためにマップ移動を実装しています。
+		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		{
+			
+			if (GetMapDate() == STAGE_ID_START)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_MOB);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+			else if (GetMapDate() == STAGE_ID_MOB)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_ONI);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+			else if (GetMapDate() == STAGE_ID_MOB)
+			{
+				mapPos = { 0,0 };
+				SetMapData(STAGE_ID_KAPPA);
+				PlayerGameInit();
+				EnemyGameInit();
+			}
+		}
+
+		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
+		if (SetEnemyMoment(playerPos))
+		{
+			SceneID = SCENE_CLEAR;
+		}
+
 	}
 
+	
+	
 
 	//-----描画
 	GameDraw(); 
-
-	return;
 }
 
 
@@ -392,6 +273,7 @@ void GameDraw(void)
 	EnemyGameDraw();			//敵
 	ItemGameDraw();				//ｱｲﾃﾑ
 	ShotGameDraw();				//ｼｮｯﾄ
+	EffectGameDraw();			//ｴﾌｪｸﾄ
 	//-----ｲﾝﾍﾞﾝﾄﾘ関連
 	if (iventFlag)
 	{
@@ -422,7 +304,8 @@ void GameDraw(void)
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
 	DrawFormatString(0, 120, 0xFFFFFF, "map:%d,%d", mapPos.x,mapPos.y);
-	//DrawFormatString(0, 140, 0xFFFFFF, "GameOver:%d", GameOverCnt);
+	DrawFormatString(0, 140, 0xFFFFFF, "GameOver:%d", GameOverCnt);
+
 }
 
 
@@ -445,7 +328,8 @@ void GameOverScene(void)
 void GameOverDraw(void)
 {
 	//-----描画処理
-	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 2, overImage, true);
+	DrawGraph(0, 0, over_bgImage, true);
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 3, overImage, true);
 
 	//-----情報処理
 	DrawFormatString(0, 0, 0xFFFFFF, "GameOver:%d", SceneCounter);
@@ -453,6 +337,12 @@ void GameOverDraw(void)
 
 }
 
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 //ｹﾞｰﾑｸﾘｱｼｰﾝ
 void GameClearScene(void)
 {
@@ -465,7 +355,8 @@ void GameClearScene(void)
 void GameClearDraw(void)
 {
 	//-----描画処理
-	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 2, clearImage, true);
+	DrawGraph(0, 0, clear_bgImage, true);
+	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 3, clearImage, true);
 
 
 	//-----情報処理
@@ -473,4 +364,3 @@ void GameClearDraw(void)
 
 
 }
-

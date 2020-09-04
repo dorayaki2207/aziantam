@@ -1,8 +1,11 @@
 
 
 //-----定数定義
-#define ENEMY_MAX 5		//	敵の数
-#define ENEMY_MAX_B 3		// ボスの数
+#define ENEMY_MAX 20		//	敵の数
+
+#define DAMAGE_NORMAL	2		//同属性ﾀﾞﾒｰｼﾞ量
+#define DAMAGE_HIGH		3		//有利属性ﾀﾞﾒｰｼﾞ量
+#define DAMAGE_LOW		1		//不利属性ﾀﾞﾒｰｼﾞ量
 
 
 //-----列挙型
@@ -30,10 +33,8 @@ void EnemyGameInit(void);					//
 void EnemyControl(XY pPos);					//ｴﾈﾐｰの操作
 void EnemyGameDraw(void);					//ｴﾈﾐｰの描画処理
 
-int MoveEnemyX(CHARACTER* enemy, XY playerPos);		//敵をX座標を基準に動かす
-int MoveEnemyY(CHARACTER* enemy, XY playerPos);		//敵をY座標を基準に動かす
-int MoveEnemyXY(CHARACTER* enemy, XY playerPos);	//敵をXY座標を基準に動かす
+bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//ｴﾈﾐｰと弾の当たり判定
+bool PlayerHitCheck(XY sPos, int sSize);
 
-bool EnemyHitCheck(XY sPos, int sSize);		//ｴﾈﾐｰと弾の当たり判定
-
-bool PlayerHitCheck(XY pPos, int  pSize);
+bool SetEnemyMoment(XY pos);				//
+bool EFlagInit(void);						//敵がステージごとで全滅したか判断用フラグ専用の初期化
