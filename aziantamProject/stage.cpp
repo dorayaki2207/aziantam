@@ -407,19 +407,26 @@ EVENT_ID GetEvent(XY pos)
 			break;
 
 			// 毒沼
-		case 54:
-		case 55:
+		
 		case 56:
 		case 63:
-		case 64:
-		case 65:
-		case 72:
 		case 73:
 		case 78:
-		case 79:
 			// ｲﾍﾞﾝﾄの発生場所
 			return EVENT_ID_DOKU;
 			break;
+
+		case 55:
+		case 65:
+		case 72:
+		case 79:
+			return EVENT_ID_SPEEDDOWN;
+			break;
+
+		case 54:
+		case 64:
+		case 74:
+			return EVENT_ID_DAMAGE;
 
 		default:
 			break;

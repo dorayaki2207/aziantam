@@ -1,3 +1,7 @@
 ﻿  player.cpp
 D:\Users\1916002\Desktop\新しいフォルダー (2)\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  stage.cpp
+D:\Users\1916002\Desktop\新しいフォルダー (2)\aziantamProject\stage.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\Users\1916002\Desktop\新しいフォルダー (2)\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
   BaseProject.vcxproj -> D:\Users\1916002\Desktop\新しいフォルダー (2)\aziantamProject\Debug\BaseProject.exe

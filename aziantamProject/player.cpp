@@ -281,13 +281,25 @@ void PlayerEvent(void)
 			}
 		}*/
 		// ì≈
-		if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		if (GetEvent(player.pos) == EVENT_ID_DOKU)
 		{
 			speedCnt++;
+			if (speedCnt < 10)
+			{
+				player.moveSpeed = PLAYER_SPEED_LOW;
+			}
+			else if (speedCnt >= 10)
+			{
+				player.moveSpeed = PLAYER_SPEED_NORMAL;
+			}
+		}
+		//ìÆÇ´Ç™íxÇ≠Ç»ÇÈ
+		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		{
 			player.moveSpeed = PLAYER_SPEED_LOW;
 		}
 		//É_ÉÅÅ[ÉW
-		else if (GetEvent(player.pos) == EVENT_ID_DOKU)
+		else if (GetEvent(player.pos) == EVENT_ID_DAMAGE)
 		{
 			if (lifeCheckCnt == 0)
 			{
