@@ -3,6 +3,7 @@
 #include "stage.h"
 #include "enemy.h"
 #include "item.h"
+#include "effect.h"
 
 //-----外部変数宣言
 //ﾓﾌﾞ関連
@@ -10,9 +11,10 @@ CHARACTER enemyMob[ENEMY_MAX];
 CHARACTER enemyMobMaster[ENEMY_M_MAX];
 int enemyImage[ENEMY_M_MAX][16];
 
-//それぞれのステージに敵の生存確認（true:全滅、false:生存）
-bool eFlag_1 = false;
-bool eFlag_2 = false;
+//それぞれのステージにいる敵の生存確認（true:全滅、false:生存）
+bool eFlag_1;
+bool eFlag_2;
+bool eFlag_3;
 
 void EnemySystemInit(void)
 {
@@ -43,7 +45,7 @@ void EnemySystemInit(void)
 		enemyMobMaster[type].life = enemyMobMaster[type].lifeMax;
 		enemyMobMaster[type].animCnt = 0;
 	}
-	
+
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//石橋担当MOB
 	LoadDivGraph("char/妖狐.png", 16, 4, 4
@@ -68,55 +70,78 @@ void EnemyGameInit(void)
 	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
-		int type = rand() % ENEMY_M_MAX;
-		enemyMob[ene] = enemyMobMaster[type];
-
-		int x = rand() % MAP_M_X;
-		int y = rand() % MAP_M_Y;
-
-		//stageIDがSTAGE_ID_STARTかSTAGE_ID_MOBだった場合
-		if (GetMapDate() == STAGE_ID_START
-			|| GetMapDate() == STAGE_ID_MOB)
+		//stageIDがSTAGE_ID_STARTのときに、以下の処理をする。
+		if (GetMapDate() == STAGE_ID_START)
 		{
-			//75番以外のmap配列になったらrandをやりなおす。
-			while (map[y][x] != 75)
-			{
-				x = rand() % MAP_M_X;
-				y = rand() % MAP_M_Y;
-			}
+			//ライフを0にする。
+			enemyMob[ene].life = 0;
 		}
-		
-		//stageIDがSTAGE_ID_ONIだった場合
-		else if (GetMapDate() == STAGE_ID_ONI)
+		//stageIDがSTAGE_ID_START以外のときに、以下の処理をする。
+		else if(GetMapDate() != STAGE_ID_START)
 		{
-			//0番以外のmap配列になったらrandをやりなおす。
-			while (map[y][x] != 0)
+			int type = rand() % ENEMY_M_MAX;
+			enemyMob[ene] = enemyMobMaster[type];
+
+			//ライフをMAXにする。
+			enemyMob[ene].life = enemyMob[ene].lifeMax;
+
+			int x = rand() % MAP_M_X;
+			int y = rand() % MAP_M_Y;
+
+			//stageIDがSTAGE_ID_STARTかSTAGE_ID_MOBだった場合
+			if (GetMapDate() == STAGE_ID_MOB)
 			{
-				x = rand() % MAP_M_X;
-				y = rand() % MAP_M_Y;
+				//75番以外のmap配列になったらrandをやりなおす。
+				while (map[y][x] != 75)
+				{
+					x = rand() % MAP_M_X;
+					y = rand() % MAP_M_Y;
+				}
 			}
+			else if (GetMapDate() == STAGE_ID_KAPPA)
+			{
+				while (map[y][x] != 40)
+				{
+					x = rand() % MAPA_X;
+					y = rand() % MAPA_Y;
+				}
+			}
+			//stageIDがSTAGE_ID_ONIだった場合
+			else if (GetMapDate() == STAGE_ID_ONI)
+			{
+				//0番以外のmap配列になったらrandをやりなおす。
+				while (map[y][x] != 0)
+				{
+					x = rand() % MAPI_X;
+					y = rand() % MAPI_Y;
+				}
+			}
+
+			//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
+			enemyMob[ene].pos.x = x * CHIP_SIZE_X - 1;
+			enemyMob[ene].pos.y = y * CHIP_SIZE_Y - 1;
+
+			//上のままだと壁にめり込んだり画面外にはみ出したりするので、
+			//enemyのposに18足して位置をずらす。
+			enemyMob[ene].pos.x += 18;
+			enemyMob[ene].pos.y += 18;
 		}
-	
-		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
-		enemyMob[ene].pos.x = x * CHIP_SIZE_X - 1;
-		enemyMob[ene].pos.y = y * CHIP_SIZE_Y - 1;
-
-		//上のままだと壁にめり込んだり画面外にはみ出したりするので、
-		//enemyのposに18足して位置をずらす。
-		enemyMob[ene].pos.x += 18;
-		enemyMob[ene].pos.y += 18;
-
-		
 	}
 
 }
-
+//敵がステージごとで全滅したか判断用フラグ専用の初期化
+bool EFlagInit(void)
+{
+	eFlag_1 = false;
+	eFlag_2 = false;
+	eFlag_3 = false;
+	return true;
+}
 void EnemyControl(XY pPos)
 {
 }
-
 //すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
-bool SetEnemyMoment(XY pPos)
+bool SetEnemyMoment(XY pos)
 {
 	bool Flag = true;
 
@@ -137,6 +162,7 @@ bool SetEnemyMoment(XY pPos)
 			Flag &= false;
 		}
 	}
+
 	//Flagがtrueになったら
 	if (Flag)
 	{
@@ -149,21 +175,34 @@ bool SetEnemyMoment(XY pPos)
 		//stageが鬼のステージだったら
 		else if (GetMapDate() == STAGE_ID_ONI)
 		{
+			//trueにする
 			eFlag_2 = true;
+		}
+		else if (GetMapDate() == STAGE_ID_KAPPA)
+		{
+			//trueにする
+			eFlag_3 = true;
 		}
 
 		//両方のステージで敵が全滅したら
 		if (eFlag_1 && eFlag_2)
 		{
-			//playerが特定のマップチップ（EVENT_ID_SPEEDDOWN）を踏んだら
-			if (GetEvent(pPos) == EVENT_ID_SPEEDDOWN)
+			//playerが特定のマップチップ
+			if (GetEvent(pos) == EVENT_ID_SPEEDDOWN)
+			{
+				//trueを返す
+				return true;
+			}
+		}
+		else if (eFlag_1 && eFlag_3)
+		{
+			if (GetEvent(pos) == EVENT_ID_SPEEDDOWN)
 			{
 				//trueを返す
 				return true;
 			}
 		}
 	}
-
 	return false;
 }
 
@@ -213,13 +252,15 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_LOW;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_HIGH;
 					
+					DamageEffect(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+
 					if (enemyMob[en].life <= 0)
 					{
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
@@ -231,13 +272,15 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_NORMAL;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_LOW;
 					
+					DamageEffect(enemyMob[en].pos, MAGIC_TYPE_WATER);
+					
 					if (enemyMob[en].life <= 0)
 					{
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}
@@ -249,13 +292,15 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 					if ((*shot).charType == MAGIC_TYPE_WATER) enemyMob[en].life -= DAMAGE_HIGH;
 					if ((*shot).charType == MAGIC_TYPE_WIND) enemyMob[en].life -= DAMAGE_NORMAL;
 				
+					DamageEffect(enemyMob[en].pos, MAGIC_TYPE_WIND);
+
 					if (enemyMob[en].life <= 0)
 					{
-						if (randam > 20)
+						if (randam > 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
 						}
-						else if (randam <= 20)
+						else if (randam <= 5)
 						{
 							ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
 						}

@@ -11,6 +11,7 @@
 #include "enemy.h"
 #include "shot.h"
 #include "item.h"
+#include "mark.h"
 
 
 //-----変数
@@ -23,7 +24,7 @@ int GameOverCnt;
 bool iventFlag;
 
 //PAUSE関連
-bool paseFlag;
+bool pauseFlag;
 int keyImage;
 
 //当たり判定用
@@ -114,7 +115,8 @@ bool SystemInit(void)
 	EnemySystemInit();			//敵mob
 	ItemSystmeInit();			//ｱｲﾃﾑ
 	ShotSystemInit();			//ｼｮｯﾄ
-	
+	EffectSystemInit();			//ｴﾌｪｸﾄ
+	MarkSystemInit();
 	//-----ｸﾞﾗﾌｨｯｸ登録
 	keyImage = LoadGraph("item/操作説明.png");
 	clearImage = LoadGraph("item/clear.png");
@@ -143,9 +145,11 @@ void InitScene(void)
 	StageGameInit();				//ｽﾃｰｼﾞ
 	PlayerGameInit();				//ﾌﾟﾚｲﾔｰ
 	EnemyGameInit();				//敵
+	EFlagInit();					//eFlag専用
 	ItemGameInit();					//ｱｲﾃﾑ
 	ShotGameInit();					//ｼｮｯﾄ
-
+	EffectGameInit();				//ｴﾌｪｸﾄ
+	MarkGameInit();
 	//-----ｼｰﾝ遷移
 	SceneID = SCENE_TITLE;
 }
@@ -163,7 +167,7 @@ void GameScene(void)
 
 	//ｼｰﾝ遷移
 	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
-	if (GameOverSet())
+	if ((GameOverSet()) || (PlayerDid()))
 	{
 		GameOverCnt++;
 		if (GameOverCnt > 100)
@@ -192,15 +196,15 @@ void GameScene(void)
 	}
 
 	//通常時操作
-	if (!iventFlag && !pauseFlag)
+	if(!iventFlag && !pauseFlag)
 	{
 		//各種機能
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 		playerPos = PlayerControl();		//ﾌﾟﾚｲﾔｰ
 		EnemyControl(playerPos);			//ｴﾈﾐｰ
 		ItemDropControl();					//ｱｲﾃﾑ
-		ShotControl(playerPos);				//ｼｮｯﾄ
-
+		ShotControl(playerPos);			//ｼｮｯﾄ
+		EffectControl();					//ｴﾌｪｸﾄ
 		//ｴﾈﾐｰと弾の当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
@@ -212,15 +216,17 @@ void GameScene(void)
 				}
 			}
 		}
-
 		//アイテムとプレイヤーの当たり判定
 		if (ItemHitCheck(playerPos, playerSize.x))
 		{
 			//ｱｲﾃﾑに当たっている
 			DeleteItem();
 		}
+
+		//確認のためにマップ移動を実装しています。
 		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
 		{
+			/*
 			if (GetMapDate() == STAGE_ID_START)
 			{
 				mapPos = { 0,0 };
@@ -235,16 +241,15 @@ void GameScene(void)
 				PlayerGameInit();
 				EnemyGameInit();
 			}
-			/*else if (GetMapDate() == STAGE_ID_ONI)
+			else if (GetMapDate() == STAGE_ID_MOB)
 			{
+				mapPos = { 0,0 };
 				SetMapData(STAGE_ID_KAPPA);
-			}
-			/*else if (GetMapDate() == STAGE_ID_KAPPA)
-			{
-				SetMapData(STAGE_ID_MOB);
+				PlayerGameInit();
+				EnemyGameInit();
 			}*/
 		}
-		
+
 		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
 		if (SetEnemyMoment(playerPos))
 		{
@@ -271,6 +276,8 @@ void GameDraw(void)
 	EnemyGameDraw();			//敵
 	ItemGameDraw();				//ｱｲﾃﾑ
 	ShotGameDraw();				//ｼｮｯﾄ
+	EffectGameDraw();			//ｴﾌｪｸﾄ
+	MarkGameDraw();
 	//-----ｲﾝﾍﾞﾝﾄﾘ関連
 	if (iventFlag)
 	{

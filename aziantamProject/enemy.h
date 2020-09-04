@@ -28,11 +28,16 @@ enum ENEMY_BOSS
 };
 
 //-----関数ﾌﾟﾛﾄﾀｲﾌﾟ宣言
+//基本処理
 void EnemySystemInit(void);					//ｴﾈﾐｰ情報の初期化
 void EnemyGameInit(void);					//	
 void EnemyControl(XY pPos);					//ｴﾈﾐｰの操作
 void EnemyGameDraw(void);					//ｴﾈﾐｰの描画処理
+int MoveEnemyX(CHARACTER* enemy, XY playerPos); //自機のX座標に調節するように動かす　戻り値：移動した量
+int MoveEnemyY(CHARACTER* enemy, XY playerPos); //自機のY座標に調節するように動かす　戻り値：移動した量
+int MoveEnemyXY(CHARACTER* enemy, XY playerPos); //自機のXとYの遠いほうから座標を調節するように動かす　戻り値：移動した量
 
+//当たり判定
 bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//ｴﾈﾐｰと弾の当たり判定
 bool PlayerHitCheck(XY sPos, int sSize);
 

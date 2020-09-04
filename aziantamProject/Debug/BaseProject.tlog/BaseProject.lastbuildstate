@@ -1,2 +1,6 @@
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v142:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=10.0
+<<<<<<< HEAD
+Debug|Win32|D:\Users\1916004\Desktop\aziantam\aziantamProject\|
+=======
 Debug|Win32|D:\Users\1916002\Desktop\新しいフォルダー (2)\aziantamProject\|
+>>>>>>> 66372ff99aff6bd92bc3f914fc67d2c2e66d3c56
