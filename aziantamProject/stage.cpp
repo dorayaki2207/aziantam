@@ -410,6 +410,7 @@ EVENT_ID GetEvent(XY pos)
 		
 		case 56:
 		case 63:
+		case 64:
 		case 73:
 		case 78:
 			// ｲﾍﾞﾝﾄの発生場所
@@ -424,7 +425,6 @@ EVENT_ID GetEvent(XY pos)
 			break;
 
 		case 54:
-		case 64:
 		case 74:
 			return EVENT_ID_DAMAGE;
 
