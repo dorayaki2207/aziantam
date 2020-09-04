@@ -3,8 +3,9 @@
 ////	敵の当たり判定に　狐だと火の御札、一反木綿だと風の御札、海坊主だと水の御札
 ////	回復の御札は全部の敵MOBから確率で出現するようにする
 ////	敵が倒されたら　ｱｲﾃﾑHPを減らしていく
-#include "DxLib.h"
+#include <DxLib.h>
 #include "main.h"
+#include "stage.h"
 #include "item.h"
 
 
@@ -39,10 +40,10 @@ void ItemSystmeInit(void)
 		itemFmaster[i].pos = { 0,0 };																//　御札の地図上の座標
 		itemFmaster[i].size = { 20,20 };															//	御札の画像ｻｲｽﾞ
 		itemFmaster[i].offsetSize = { itemFmaster[i].size.x / 2,itemFmaster[i].size.y / 2 };		//　御札のｵﾌｾｯﾄ
-		itemFmaster[i].point = 0;																	//	御札の枚数
-		itemFmaster[i].lifeMax = 20;																//	御札の体力最大値（表示時間）
-		itemFmaster[i].life = itemFmaster[i].lifeMax;		
-		itemFmaster[i].hitFlag = false;//	御札の体力
+		itemFmaster[i].point = 2;																	//	御札の枚数
+		itemFmaster[i].lifeMax = 200;																//	御札の体力最大値（表示時間）
+		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	御札の体力
+		itemFmaster[i].hitFlag = false;
 	}
 
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
@@ -79,8 +80,8 @@ void ItemSystmeInit(void)
 void ItemGameInit(void)
 {
 	//御札（ﾄﾞﾛｯﾌﾟ用
-	for (int type = 0; type < MAGIC_TYPE_MAX; type++)
-	{
+	for (int type = 0; type < MAGIC_TYPE_MAX;type++)
+	{ 
 		for (int i = 0; i < ITEM_MAX; i++)
 		{
 
@@ -100,7 +101,7 @@ void ItemGameInit(void)
 
 }
 
-void ItemControl(void)
+void ItemDropControl(void)
 {
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
@@ -113,7 +114,7 @@ void ItemControl(void)
 	}
 }
 
-bool ItemMOBControl(MAGIC_TYPE type)
+bool ItemMobControl(MAGIC_TYPE type)
 {
 	//御札が一枚以上ある場合、処理可能
 	if (itemF[type].point > 0)
@@ -123,6 +124,7 @@ bool ItemMOBControl(MAGIC_TYPE type)
 	}
 	return false;
 }
+
 
 void ItemGameDraw(void)
 {
@@ -134,15 +136,15 @@ void ItemGameDraw(void)
 		if (itemF[i].life > 0)
 		{
 			//-----画像描画
-			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y
+			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
 				, itemFImage[itemF[i].charType]
 				, true);
 
-			DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y
-				, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y
+			DrawBox(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+				, itemF[i].pos.x - itemF[i].offsetSize.x + itemF[i].size.x + mapPos.x
+				, itemF[i].pos.y - itemF[i].offsetSize.y + itemF[i].size.y + mapPos.y
 				, 0xFF00FF, false);
 		}
 	}
@@ -264,6 +266,7 @@ bool ItemHitCheck(XY sPos, int sSize)
 	return false;
 }
 
+
 //-----ドロップアイテム生成
 void ItemDrop(XY ePos, MAGIC_TYPE type)
 {
@@ -283,7 +286,8 @@ void ItemDrop(XY ePos, MAGIC_TYPE type)
 	}
 }
 
-//-----弾を消滅させる
+
+//-----ドロップアイテム消滅
 void DeleteItem()
 {
 	for (int item = 0; item < ITEM_MAX; item++)
@@ -295,16 +299,15 @@ void DeleteItem()
 			break;
 		}
 	}
-
-};
-
+}
 bool GameOverSet()
 {
-	if ((itemF[MAGIC_TYPE_FIRE].point == 0)
-		&& (itemF[MAGIC_TYPE_WATER].point == 0)
+	if ((itemF[MAGIC_TYPE_FIRE].point == 0) 
+		&& (itemF[MAGIC_TYPE_WATER].point == 0) 
 		&& (itemF[MAGIC_TYPE_WIND].point == 0))
 	{
 		return true;
 	}
 	return false;
 }
+;

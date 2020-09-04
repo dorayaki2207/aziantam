@@ -5,9 +5,6 @@
 #define SHOT_LIFE_MAX	46		//’e‚М‘М—Н
 #define SHOT_MAX		20		//’e‚М‘Ќђ”
 
-#define DAMAGE_NORMAL	2		//“Ї‘®ђ«АЮТ°јЮ—К
-#define DAMAGE_HIGH		3		//—L—‘®ђ«АЮТ°јЮ—К
-#define DAMAGE_LOW		1		//•s—‘®ђ«АЮТ°јЮ—К
 
 //-----ЉЦђ”МЯЫДАІМЯђйЊѕ
 void ShotSystemInit(void);									//’eЏо•с‚МЏ‰Љъ‰»

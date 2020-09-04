@@ -13,6 +13,7 @@ enum SCENE
 	SCENE_TITLE,		//ﾀｲﾄﾙｼｰﾝ
 	SCENE_GAME,			//ｹﾞｰﾑｼｰﾝ
 	SCENE_GAMEOVER,		//ｹﾞｰﾑｵｰﾊﾞｰｼｰﾝ
+	SCENE_CLEAR,		//ｹﾞｰﾑｸﾘｱ
 	SCENE_MAX
 };
 
@@ -33,6 +34,13 @@ enum MAGIC_TYPE
 	MAGIC_TYPE_WIND,		//属性：風
 	MAGIC_TYPE_HEAL,		//属性：回復
 	MAGIC_TYPE_MAX
+};
+
+enum MSG_TYPE
+{
+	MSG_START,		//はじめから
+	MSG_LOAD,		//つづきから
+	MSG_MAX
 };
 
 
@@ -68,6 +76,7 @@ struct CHARACTER
 	int animCnt;	//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	int point;		//ｷｬﾗｸﾀの得点
 	bool hitFlag;	//ｷｬﾗｸﾀの当たり管理
+
 };
 
 struct KEY_LIST
@@ -79,21 +88,6 @@ struct KEY_LIST
 	int shot;
 };
 
-// メニュー項目の表示
-typedef struct
-{
-	int x, y;			// 座標格納用変数
-	char name[128];		// 項目名格納用変数
-} MenuElement_t;
-
-
-enum MSG_TYPE
-{
-	MSG_START,		//はじめから
-	MSG_LOAD,		//つづきから
-	//MSG_LANK,		//ランキング
-	MSG_MAX
-};
 
 //-----ﾌﾟﾛﾄﾀｲﾌﾟ宣言
 //初期化
@@ -102,6 +96,7 @@ void InitScene(void);
 //ﾀｲﾄﾙ
 void TitleScene(void);
 void TitleDraw(void);
+void TitleControl();
 //ｹﾞｰﾑ
 void GameScene(void);
 void GameDraw(void);
