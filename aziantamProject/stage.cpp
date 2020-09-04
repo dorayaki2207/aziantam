@@ -14,9 +14,6 @@ int map[MAP_Y][MAP_X];
 int stageOffset;
 
 int backImage;
-int gateImage[MAGIC_TYPE_MAX - 1][15];
-XY gatePos[MAGIC_TYPE_MAX - 1];
-int aniCnt;
 
 // ﾏｯﾌﾟの配列
 // ﾀﾞﾝｼﾞｮﾝ
@@ -246,18 +243,10 @@ void StageSystemInit(void)
 		, CHIP_SIZE_Y
 		, OnichipImage);
 	backImage = LoadGraph("char/blok.png");
-	//---ゲート
-//	LoadDivGraph("item/gate_fire.png", 15, 5, 3, 50, 50, gateImage[MAGIC_TYPE_FIRE]);
-//	LoadDivGraph("item/gate_water.png", 15, 5, 3, 50, 50, gateImage[MAGIC_TYPE_WATER]);
-//	LoadDivGraph("item/gate_wind.png", 15, 5, 3, 50, 50, gateImage[MAGIC_TYPE_WIND]);
 
 	mapPos.x = 0;
 	mapPos.y = 0;
-//	gatePos[MAGIC_TYPE_FIRE] = { 920,120 };
-//	gatePos[MAGIC_TYPE_WATER] = { 1120,1070 };
-//	gatePos[MAGIC_TYPE_WIND] = { 280,1200 };
-	aniCnt = 0;
-
+	
 	stageOffset = 0;
 	
 
@@ -601,7 +590,6 @@ void StageGameDraw(void)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
-			aniCnt++;
 			if ((stageID == STAGE_ID_START) 
 				|| (stageID == STAGE_ID_MOB)
 				|| (stageID == STAGE_ID_KAPPA))
@@ -610,15 +598,7 @@ void StageGameDraw(void)
 					, y * CHIP_SIZE_Y + mapPos.y
 					, chipImage[map[y][x]], true);
 
-				/*for (int type = 0; type < MAGIC_TYPE_MAX - 1; type++)
-				{
-					
-					DrawGraph(gatePos[type].x + mapPos.x
-						, gatePos[type].y + mapPos.y
-						, gateImage[type][(aniCnt / 650) % 5], true);
-				}
-				*/
-				
+			
 			}
 			else if (stageID == STAGE_ID_ONI)
 			{
@@ -626,22 +606,7 @@ void StageGameDraw(void)
 					, y * CHIP_SIZE_Y + mapPos.y
 					, OnichipImage[map[y][x]], true);
 
-				/*DrawGraph(gatePos[MAGIC_TYPE_FIRE].x + mapPos.x
-					, gatePos[MAGIC_TYPE_FIRE].y + mapPos.y
-					, gateImage[MAGIC_TYPE_FIRE][(aniCnt / 30) % 18], true);
-			*/}
-			/*else if (stageID == STAGE_ID_MOB)
-			{
-				DrawGraph(gatePos[MAGIC_TYPE_WIND].x + mapPos.x
-					, gatePos[MAGIC_TYPE_WIND].y + mapPos.y
-					, gateImage[MAGIC_TYPE_WIND][(aniCnt / 30) % 18], true);
 			}
-			else if (stageID == STAGE_ID_KAPPA)
-			{
-				DrawGraph(gatePos[MAGIC_TYPE_WATER].x + mapPos.x
-					, gatePos[MAGIC_TYPE_WATER].y + mapPos.y
-					, gateImage[MAGIC_TYPE_WATER][(aniCnt / 30) % 18], true);
-			}*/
 		}
 	}
 }

@@ -53,6 +53,10 @@ bool MarkSystemInit(void)
 
 bool MarkGameInit(void)
 {
+	//	gatePos[MAGIC_TYPE_FIRE] = { 920,120 };
+//	gatePos[MAGIC_TYPE_WATER] = { 1120,1070 };
+//	gatePos[MAGIC_TYPE_WIND] = { 280,1200 };
+
 	for (int st = 0; st < STAGE_ID_MAX; st++)
 	{
 		if (GetMapDate() == STAGE_ID_START)

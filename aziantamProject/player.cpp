@@ -382,6 +382,7 @@ void SetInitMoment(STAGE_ID stageID)
 	PlayerPosInit();
 	EnemyGameInit();
 }
+
 //playerの座標（向き含む）専用の初期化関数
 bool PlayerPosInit(void)
 {

@@ -10,6 +10,8 @@
 CHARACTER enemyMob[ENEMY_MAX];
 CHARACTER enemyMobMaster[ENEMY_M_MAX];
 int enemyImage[ENEMY_M_MAX][16];
+int moveCnt;
+int moveFlag;
 
 //それぞれのステージにいる敵の生存確認（true:全滅、false:生存）
 bool eFlag_1;
@@ -21,17 +23,17 @@ void EnemySystemInit(void)
 	//-----変数の初期化
 	//狐
 	enemyMobMaster[ENEMY_I_MOB].charType = ENEMY_I_MOB;			//	ｴﾈﾐｰの種類	：	ｷﾂﾈ
-	enemyMobMaster[ENEMY_I_MOB].moveSpeed = 4;					//	ｷﾂﾈの移動量
+	enemyMobMaster[ENEMY_I_MOB].moveSpeed = 2;					//	ｷﾂﾈの移動量
 	enemyMobMaster[ENEMY_I_MOB].lifeMax = 3;					//	ｷﾂﾈの体力最大値
 	enemyMobMaster[ENEMY_I_MOB].point = 1;						//	ｷﾂﾈの得点
 	//一反木綿
 	enemyMobMaster[ENEMY_Y_MOB].charType = ENEMY_Y_MOB;			//	ｴﾈﾐｰの種類	：	一反木綿
-	enemyMobMaster[ENEMY_Y_MOB].moveSpeed = 4;					//	一反木綿の移動量
+	enemyMobMaster[ENEMY_Y_MOB].moveSpeed = 3;					//	一反木綿の移動量
 	enemyMobMaster[ENEMY_Y_MOB].lifeMax = 3;					//	一反木綿の体力最大値
 	enemyMobMaster[ENEMY_Y_MOB].point = 1;						//	一反木綿の得点
 	//海坊主
 	enemyMobMaster[ENEMY_A_MOB].charType = ENEMY_A_MOB;			//	ｴﾈﾐｰの種類	：	海坊主						
-	enemyMobMaster[ENEMY_A_MOB].moveSpeed = 4;					//	海坊主の移動量
+	enemyMobMaster[ENEMY_A_MOB].moveSpeed = 1;					//	海坊主の移動量
 	enemyMobMaster[ENEMY_A_MOB].lifeMax = 3;					//	海坊主の体力最大値
 	enemyMobMaster[ENEMY_A_MOB].point = 1;						//	海坊主の得点
 	//ﾓﾌﾞまとめて処理
@@ -45,6 +47,10 @@ void EnemySystemInit(void)
 		enemyMobMaster[type].life = enemyMobMaster[type].lifeMax;
 		enemyMobMaster[type].animCnt = 0;
 	}
+
+	moveCnt = 0;
+	moveFlag = false;
+
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//石橋担当MOB
@@ -113,7 +119,7 @@ void EnemyGameInit(void)
 				while (map[y][x] != 0)
 				{
 					x = rand() % MAPI_X;
-					y = rand() % MAPI_Y;
+					y = rand() % MAPI_Y -(MAPI_Y -30);
 				}
 			}
 
@@ -140,6 +146,68 @@ bool EFlagInit(void)
 
 void EnemyControl(XY pPos)
 {
+	moveCnt++;
+	//敵の種類毎に動作を変更する
+	for (int en = 0; en < ENEMY_MAX; en++)
+	{
+		CHARACTER enemyCopy = enemyMob[en];
+		XY enemyPosCopy = enemyCopy.pos;
+
+		if ((moveCnt / 60) % 2 == 0) moveFlag = false;
+		else moveFlag = true;
+
+
+		//生きているｴﾈﾐｰのみ表示
+		if (enemyMob[en].life > 0)
+		{
+			if (moveFlag)
+			{
+				switch (enemyMob[en].charType)
+				{
+				case ENEMY_I_MOB:
+					if (!MoveEnemyX(&enemyCopy, pPos)) MoveEnemyY(&enemyCopy, pPos);
+					break;
+
+				case ENEMY_Y_MOB:
+					if (!MoveEnemyY(&enemyCopy, pPos)) MoveEnemyX(&enemyCopy, pPos);
+					break;
+
+				case ENEMY_A_MOB:
+					MoveEnemyXY(&enemyCopy, pPos);
+					break;
+				case ENEMY_M_MAX:
+					break;
+				default:
+					break;
+				}
+
+				switch (enemyCopy.moveDir)
+				{
+				case DIR_RIGHT:
+					enemyPosCopy.x = enemyCopy.pos.x + 18;
+					break;
+				case DIR_LEFT:
+					enemyPosCopy.x = enemyCopy.pos.x - 18;
+					break;
+				case DIR_UP:
+					enemyPosCopy.y = enemyCopy.pos.y - 18;
+					break;
+				case DIR_DOWN:
+					enemyPosCopy.y = enemyCopy.pos.y + 18;
+				}
+
+				enemyMob[en].moveDir = enemyCopy.moveDir;
+
+				if (IsPass(enemyPosCopy))
+				{
+					enemyMob[en].pos = enemyCopy.pos;
+				}
+
+			}
+		}
+	}
+
+
 }
 //すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
 bool SetEnemyMoment(XY pos)
@@ -186,23 +254,12 @@ bool SetEnemyMoment(XY pos)
 		}
 
 		//両方のステージで敵が全滅したら
-		if (eFlag_1 && eFlag_2)
+		if (eFlag_1 && eFlag_2 && eFlag_3)
 		{
-			//playerが特定のマップチップ
-			if (GetEvent(pos) == EVENT_ID_SPEEDDOWN)
-			{
-				//trueを返す
-				return true;
-			}
+			return true;
+
 		}
-		else if (eFlag_1 && eFlag_3)
-		{
-			if (GetEvent(pos) == EVENT_ID_SPEEDDOWN)
-			{
-				//trueを返す
-				return true;
-			}
-		}
+		
 	}
 	return false;
 }
@@ -215,6 +272,8 @@ void EnemyGameDraw()
 	{
 		if (enemyMob[ene].life > 0)
 		{
+			enemyMob[ene].animCnt++;
+
 			DrawGraph(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
 				, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
 				, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
@@ -231,14 +290,78 @@ void EnemyGameDraw()
 
 }
 
+int MoveEnemyX(CHARACTER* enemy, XY playerPos)
+{
+	//-----enemy操作
+	int diff = playerPos.x - (*enemy).pos.x;
+	int enemySpeed = (*enemy).moveSpeed;
+	//X軸
+	if (diff >= 0)
+	{
+		//ｽﾋﾟｰﾄﾞの調整をする
+		enemySpeed = diff < enemySpeed ? diff : enemySpeed;
+
+		//X座標が違う場合は敵を移動させる
+		(*enemy).moveDir = DIR_RIGHT;
+		(*enemy).pos.x += enemySpeed;
+	}
+	else
+	{
+		enemySpeed = -diff < enemySpeed ? -diff : enemySpeed;
+
+		(*enemy).moveDir = DIR_LEFT;
+		(*enemy).pos.x -= enemySpeed;
+	}
+
+
+	return enemySpeed;
+}
+
 int MoveEnemyY(CHARACTER* enemy, XY playerPos)
 {
-	return 0;
+	//-----enemy操作
+	int diff = playerPos.y - (*enemy).pos.y;
+	int enemySpeed = (*enemy).moveSpeed;
+	//Y軸
+	if (diff >= 0)
+	{
+		//ｽﾋﾟｰﾄﾞの調整をする
+		enemySpeed = diff < enemySpeed ? diff : enemySpeed;
+
+		//Y座標が違う場合は敵を移動させる
+		(*enemy).moveDir = DIR_DOWN;
+		(*enemy).pos.y += enemySpeed;
+	}
+	else
+	{
+		enemySpeed = -diff < enemySpeed ? -diff : enemySpeed;
+		//Y座標が違う場合は敵を移動させる
+		(*enemy).moveDir = DIR_UP;
+		(*enemy).pos.y -= enemySpeed;
+	}
+
+	return enemySpeed;
+
 }
 
 int MoveEnemyXY(CHARACTER* enemy, XY playerPos)
 {
-	return 0;
+	int diffX = playerPos.x - (*enemy).pos.x;
+	int diffY = playerPos.y - (*enemy).pos.y;
+	int enemySpeed = (*enemy).moveSpeed;
+
+	if (abs(diffX) <= abs(diffY))
+	{
+		//ｽﾋﾟｰﾄﾞの調整をする
+		enemySpeed = MoveEnemyY(enemy, playerPos);
+	}
+	else
+	{
+		enemySpeed = MoveEnemyX(enemy, playerPos);
+	}
+
+	return enemySpeed;
+
 }
 
 //-----ｴﾈﾐｰと弾の当たり判定　(true : あたり, false : はずれ)

@@ -20,6 +20,7 @@ SCENE SceneID;
 SCENE ScenePreID;	//‰ß‹Ž‚Ì¼°ÝŠi”[—p
 int SceneCounter;
 int GameOverCnt;
+int GameClearCnt;
 //²ÝÍÞÝÄØŠÖ˜A
 bool iventFlag;
 
@@ -127,6 +128,7 @@ bool SystemInit(void)
 	//¼°ÝŠÖ˜A
 	SceneCounter = 0;
 	GameOverCnt = 0;
+	GameClearCnt = 0;
 	SceneID = SCENE_INIT;
 	ScenePreID = SCENE_MAX;
 	//PAUSE
@@ -165,17 +167,8 @@ void GameScene(void)
 	XY playerPos;		//ÌßÚ²Ô°‚ÌÀ•WŠi”[—Ìˆæ
 
 
-	//¼°Ý‘JˆÚ
-	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
-	if ((GameOverSet()) || (PlayerDid()))
-	{
-		GameOverCnt++;
-		if (GameOverCnt > 100)
-		{
-			SceneID = SCENE_GAMEOVER;
-			GameOverCnt = 0;
-		}
-	}
+	
+
 
 	//-----²ÍÞÝÄØ‹@”\
 	//·°ˆ—
@@ -225,12 +218,29 @@ void GameScene(void)
 
 		MapChange();
 
+		//¼°Ý‘JˆÚ
+		if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
+		if ((GameOverSet()) || (PlayerDid()))
+		{
+			GameOverCnt++;
+			if (GameOverCnt > 100)
+			{
+				SceneID = SCENE_GAMEOVER;
+				GameOverCnt = 0;
+			}
+		}
 
 		//‚·‚×‚Ä‚Ìenemy‚ð“|‚µ‚½Žž‚Ìˆ—itrue:ƒNƒŠƒAƒV[ƒ“‚É‘JˆÚAfalse:‚Ü‚¾“|‚¹‚Ä‚È‚¢j
 		if (SetEnemyMoment(playerPos))
 		{
-			SceneID = SCENE_CLEAR;
+			GameClearCnt++;
+			if (GameClearCnt > 100)
+			{
+				SceneID = SCENE_CLEAR;
+				GameClearCnt = 0;
+			}
 		}
+
 
 	}
 
