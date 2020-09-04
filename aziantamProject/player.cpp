@@ -248,6 +248,9 @@ void PlayerGameDraw(void)
 		}
 	}
 	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
+	DrawBox(32, 25, player.lifeMax, 16, GetColor(255, 0, 0), true);
+	DrawBox(32, 25, player.life, 16, GetColor(0, 255, 0), true);
+	DrawBox(32, 25, player.lifeMax, 16, GetColor(255, 255, 0), false);
 	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);
@@ -267,6 +270,16 @@ void PlayerEvent(void)
 	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB) || (stageID == STAGE_ID_KAPPA))
 	{
 		// ì¡éÍÇ»É}ÉbÉvÇì•ÇÒÇæèÍçáÇÃèàóù
+		/*if (GetEvent(player.pos) == EVENT_ID_DOKU)
+		{
+			speedCnt++;
+			if (speedCnt < 10)
+			{
+				player.moveSpeed = PLAYER_SPEED_LOW;
+				player.life -= 3;
+				lifeCheckCnt = 100;
+			}
+		}*/
 		// ì≈
 		if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
 		{
