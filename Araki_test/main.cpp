@@ -221,7 +221,7 @@ void GameScene(void)
 		}
 
 		//確認のためにマップ移動を実装しています。
-		if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
+		/*if (GetEvent(playerPos) == EVENT_ID_KAIDAN)
 		{
 			
 			if (GetMapDate() == STAGE_ID_START)
@@ -245,7 +245,7 @@ void GameScene(void)
 				PlayerGameInit();
 				EnemyGameInit();
 			}
-		}
+		}*/
 
 		//すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
 		if (SetEnemyMoment(playerPos))
