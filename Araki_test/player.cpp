@@ -240,7 +240,7 @@ void PlayerGameDraw(void)
 	if (player.life > 0)
 	{
 		player.animCnt++;
-		if (lifeCheckCnt % 10 == 0)
+		if (lifeCheckCnt % 20 == 0)
 		{
 			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
 				, player.pos.y - player.offsetSize.y + mapPos.y
@@ -248,19 +248,18 @@ void PlayerGameDraw(void)
 		}
 	}
 	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
-	DrawBox(32, 25, player.lifeMax, 16, GetColor(255, 0, 0), true);
-	DrawBox(32, 25, player.life, 16, GetColor(0, 255, 0), true);
-	DrawBox(32, 25, player.lifeMax, 16, GetColor(255, 255, 0), false);
+	DrawBox(100, 32, player.lifeMax, 16, GetColor(255, 0, 0), true);
+	DrawBox(100, 32, player.life, 16, GetColor(0, 255, 0), true);
+	DrawBox(100, 32, player.lifeMax, 16, GetColor(255, 255, 0), false);
 	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);
 
 	//情報処理
 	DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
-	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+	DrawFormatString(0, 18, 0xFFFFFF, "playerHp%d", player.life);
 	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
 	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
-	DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
 
 }
 
@@ -270,31 +269,9 @@ void PlayerEvent(void)
 	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB) || (stageID == STAGE_ID_KAPPA))
 	{
 		// 特殊なマップを踏んだ場合の処理
-		/*if (GetEvent(player.pos) == EVENT_ID_DOKU)
-		{
-			speedCnt++;
-			if (speedCnt < 10)
-			{
-				player.moveSpeed = PLAYER_SPEED_LOW;
-				player.life -= 3;
-				lifeCheckCnt = 100;
-			}
-		}*/
 		// 毒
-		if (GetEvent(player.pos) == EVENT_ID_DOKU)
-		{
-			speedCnt++;
-			if (speedCnt < 100)
-			{
-				player.moveSpeed = PLAYER_SPEED_LOW;
-			}
-			else if (speedCnt >= 100)
-			{
-				player.moveSpeed = PLAYER_SPEED_NORMAL;
-			}
-		}
 		//動きが遅くなる
-		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
 		{
 			player.moveSpeed = PLAYER_SPEED_LOW;
 		}
@@ -306,6 +283,10 @@ void PlayerEvent(void)
 				player.life -= 5;
 				lifeCheckCnt = 100;
 			}
+		}
+		else if (GetEvent(player.pos) == EVENT_ID_KAPPA)
+		{
+			player.moveSpeed = PLAYER_SPEED_L;
 		}
 		// イベント戻す
 		else
