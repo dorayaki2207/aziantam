@@ -241,7 +241,7 @@ void PlayerGameDraw(void)
 	if (player.life > 0)
 	{
 		player.animCnt++;
-		if (lifeCheckCnt % 10 == 0)
+		if (lifeCheckCnt % 20 == 0)
 		{
 			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
 				, player.pos.y - player.offsetSize.y + mapPos.y
@@ -271,31 +271,9 @@ void PlayerEvent(void)
 	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB) || (stageID == STAGE_ID_KAPPA))
 	{
 		// 特殊なマップを踏んだ場合の処理
-		/*if (GetEvent(player.pos) == EVENT_ID_DOKU)
-		{
-			speedCnt++;
-			if (speedCnt < 10)
-			{
-				player.moveSpeed = PLAYER_SPEED_LOW;
-				player.life -= 3;
-				lifeCheckCnt = 100;
-			}
-		}*/
 		// 毒
-		if (GetEvent(player.pos) == EVENT_ID_DOKU)
-		{
-			speedCnt++;
-			if (speedCnt < 10)
-			{
-				player.moveSpeed = PLAYER_SPEED_LOW;
-			}
-			else if (speedCnt >= 10)
-			{
-				player.moveSpeed = PLAYER_SPEED_NORMAL;
-			}
-		}
 		//動きが遅くなる
-		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
+		if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
 		{
 			player.moveSpeed = PLAYER_SPEED_LOW;
 		}
@@ -305,8 +283,12 @@ void PlayerEvent(void)
 			if (lifeCheckCnt == 0)
 			{
 				player.life -= 5;
-				lifeCheckCnt = 10;
+				lifeCheckCnt = 100;
 			}
+		}
+		else if (GetEvent(player.pos) == EVENT_ID_KAPPA)
+		{
+			player.moveSpeed = PLAYER_SPEED_L;
 		}
 		// イベント戻す
 		else
