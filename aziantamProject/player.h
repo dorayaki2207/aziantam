@@ -27,3 +27,6 @@ void PlayerGameDraw(void);		//ﾌﾟﾚｲﾔｰの描画
 void PlayerEvent(void);			//ｲﾍﾞﾝﾄ処理
 void MapChange(void);			//ﾏｯﾌﾟ移動
 bool PlayerDid(void);			//死亡確認
+
+void SetInitMoment(STAGE_ID stageID);//ステージ移動時専用の初期化関数
+bool PlayerPosInit(void);		//playerの座標専用の初期化関数

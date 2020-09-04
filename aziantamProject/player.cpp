@@ -1,11 +1,12 @@
 #include <DxLib.h>
 #include "main.h"
+#include "stage.h"
 #include "player.h"
 #include "keycheck.h"
-#include "stage.h"
 #include "shot.h"
 #include "enemy.h"
 #include "effect.h"
+#include "mark.h"
 
 //変数
 int playerImage[16];
@@ -227,14 +228,6 @@ XY PlayerControl(void)
 			}
 		}
 
-		
-		if (player.pos.x == gatePos[MAGIC_TYPE_FIRE].x && player.pos.y == gatePos[MAGIC_TYPE_FIRE].y)
-		{
-			stageID = STAGE_ID_ONI;
-			SetMapData(STAGE_ID_ONI);
-		}
-
-
 		PlayerEvent();
 	}
 
@@ -365,39 +358,70 @@ void PlayerEvent(void)
 	}
  }
 
+
 void MapChange(void)
 {
-	//確認のためにマップ移動を実装しています。
-	if (stageID == STAGE_ID_START)
+	
+	if (GetMapDate() != STAGE_ID_START)
 	{
-		if (GetMapDate() == STAGE_ID_START)
+		if (MarkHitCheck(STAGE_ID_START, player.pos, player.size))
 		{
-			mapPos = { 0,0 };
-			SetMapData(STAGE_ID_MOB);
-			PlayerGameInit();
-			EnemyGameInit();
+			stageID = STAGE_ID_START;
+			SetInitMoment(stageID);
 		}
 	}
-	if (stageID == STAGE_ID_MOB)
+	else
 	{
-		if (GetMapDate() == STAGE_ID_MOB)
+		if (MarkHitCheck(STAGE_ID_MOB, player.pos, player.size))
 		{
-			mapPos = { 0,0 };
-			SetMapData(STAGE_ID_KAPPA);
-			PlayerGameInit();
-			EnemyGameInit();
+			stageID = STAGE_ID_MOB;
+			SetInitMoment(stageID);
 		}
-		
+		else if (MarkHitCheck(STAGE_ID_ONI, player.pos, player.size))
+		{
+			stageID = STAGE_ID_ONI;
+			SetInitMoment(stageID);
+		}
+		else if (MarkHitCheck(STAGE_ID_KAPPA, player.pos, player.size))
+		{
+			
+			stageID = STAGE_ID_KAPPA;
+			SetInitMoment(stageID);
+			
+		}
 	}
-	if (stageID == STAGE_ID_KAPPA)
+}
+//ステージ移動時専用の初期化関数
+void SetInitMoment(STAGE_ID stageID)
+{
+	mapPos = { 0,0 };
+	SetMapData(stageID);
+	MarkGameInit();
+	PlayerPosInit();
+	EnemyGameInit();
+}
+//playerの座標（向き含む）専用の初期化関数
+bool PlayerPosInit(void)
+{
+	if (GetMapDate() == STAGE_ID_START)
 	{
-		if (GetMapDate() == STAGE_ID_MOB)
-		{
-			mapPos = { 0,0 };
-			SetMapData(STAGE_ID_ONI);
-			PlayerGameInit();
-			EnemyGameInit();
-		}
+		player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
+		player.pos = { 160,135 };								//ｷｬﾗｸﾀの地図上の座標
 	}
-
+	else if (GetMapDate() == STAGE_ID_MOB)
+	{
+		player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
+		player.pos = { 160,135 };								//ｷｬﾗｸﾀの地図上の座標
+	}
+	else if (GetMapDate() == STAGE_ID_ONI)
+	{
+		player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
+		player.pos = { 160,135 };								//ｷｬﾗｸﾀの地図上の座標
+	}
+	else if (GetMapDate() == STAGE_ID_KAPPA)
+	{
+		player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
+		player.pos = { 160,135 };								//ｷｬﾗｸﾀの地図上の座標
+	}
+	return true;
 }

@@ -11,6 +11,7 @@
 #include "enemy.h"
 #include "shot.h"
 #include "item.h"
+#include "mark.h"
 
 
 //-----•Ï”
@@ -115,6 +116,7 @@ bool SystemInit(void)
 	ItemSystmeInit();			//±²ÃÑ
 	ShotSystemInit();			//¼®¯Ä
 	EffectSystemInit();			//´Ìª¸Ä
+	MarkSystemInit();
 	//-----¸Ş×Ì¨¯¸“o˜^
 	keyImage = LoadGraph("item/‘€ìà–¾.png");
 	clearImage = LoadGraph("item/clear.png");
@@ -147,6 +149,7 @@ void InitScene(void)
 	ItemGameInit();					//±²ÃÑ
 	ShotGameInit();					//¼®¯Ä
 	EffectGameInit();				//´Ìª¸Ä
+	MarkGameInit();
 	//-----¼°İ‘JˆÚ
 	SceneID = SCENE_TITLE;
 }
@@ -250,6 +253,8 @@ void GameDraw(void)
 	ItemGameDraw();				//±²ÃÑ
 	ShotGameDraw();				//¼®¯Ä
 	EffectGameDraw();			//´Ìª¸Ä
+	MarkGameDraw();
+
 	//-----²İÍŞİÄØŠÖ˜A
 	if (iventFlag)
 	{
