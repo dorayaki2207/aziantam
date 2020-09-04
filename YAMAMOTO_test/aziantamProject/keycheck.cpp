@@ -55,6 +55,7 @@ void KeyCheck(void)
 	KeyNew[KEY_ID_WATER] = CheckHitKey(KEY_INPUT_X);
 	KeyNew[KEY_ID_WIND] = CheckHitKey(KEY_INPUT_C);
 	KeyNew[KEY_ID_HEAL] = CheckHitKey(KEY_INPUT_V);
+	KeyNew[KEY_ID_STAGE] = CheckHitKey(KEY_INPUT_NUMPAD0);
 
 
 	for (int keyID = 0; keyID < KEY_ID_MAX; keyID++)

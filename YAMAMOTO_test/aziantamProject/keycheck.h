@@ -22,6 +22,7 @@ enum KEY_ID
 	KEY_ID_WATER,	//UŒ‚F…
 	KEY_ID_WIND,	//UŒ‚F•—
 	KEY_ID_HEAL,	//‰ñ•œ
+	KEY_ID_STAGE,	//stage‘JˆÚ—p
 
 	KEY_ID_MAX
 };
