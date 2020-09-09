@@ -25,6 +25,7 @@ void PlayerSystemInit(void);	//ÌßÚ²Ô°î•ñ‚Ì‰Šú‰»
 void PlayerGameInit(void);		//ÌßÚ²Ô°‚Ì‰Šú‰»
 XY PlayerControl(void);			//ÌßÚ²Ô°‚Ì‘€ì
 void PlayerGameDraw(void);		//ÌßÚ²Ô°‚Ì•`‰æ
+void PlayerTextDraw();
 void PlayerEvent(void);			//²ÍŞİÄˆ—
 void MapChange(void);			//Ï¯ÌßˆÚ“®
 bool PlayerDid(void);			//€–SŠm”F

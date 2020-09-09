@@ -171,21 +171,25 @@ void ItemGameDraw(void)
 void ItemI_Draw(void)
 {
 	//âŒÇÃå‰éD
-	DrawGraph(350, 250, itemFIImage[MAGIC_TYPE_FIRE], true);
-	DrawFormatString(380, 254, 0xFF22FF, "Åó", true);
-	DrawFormatString(410, 253, 0xFF22FF, "%d", itemF[MAGIC_TYPE_FIRE].point);
+	DrawGraph(430, 250, itemFIImage[MAGIC_TYPE_FIRE], true);
+	DrawFormatString(480, 254, 0xFF22FF, "Å~", true);
+	DrawFormatString(530, 253, 0xFF22FF, "%d", itemF[MAGIC_TYPE_FIRE].point);
+	DrawFormatString(560, 254, 0xFF22FF, "ñá", true);
 	//êÖÇÃå‰éD
-	DrawGraph(350, 300, itemFIImage[MAGIC_TYPE_WATER], true);
-	DrawFormatString(380, 304, 0xFF22FF, "Åó", true);
-	DrawFormatString(410, 303, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WATER].point);
+	DrawGraph(430, 300, itemFIImage[MAGIC_TYPE_WATER], true);
+	DrawFormatString(480, 304, 0xFF22FF, "Å~", true);
+	DrawFormatString(530, 303, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WATER].point);
+	DrawFormatString(560, 304, 0xFF22FF, "ñá", true);
 	//ïóÇÃå‰éD
-	DrawGraph(350, 350, itemFIImage[MAGIC_TYPE_WIND], true);
-	DrawFormatString(380, 354, 0xFF22FF, "Åó", true);
-	DrawFormatString(410, 353, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WIND].point);
+	DrawGraph(430, 350, itemFIImage[MAGIC_TYPE_WIND], true);
+	DrawFormatString(480, 354, 0xFF22FF, "Å~", true);
+	DrawFormatString(530, 353, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WIND].point);
+	DrawFormatString(560, 354, 0xFF22FF, "ñá", true);
 	//âÒïúÇÃå‰éD
-	DrawGraph(350, 400, itemFIImage[MAGIC_TYPE_HEAL], true);
-	DrawFormatString(380, 404, 0xFF22FF, "Åó", true);
-	DrawFormatString(410, 403, 0xFF22FF, "%d", itemF[MAGIC_TYPE_HEAL].point);
+	DrawGraph(430, 420, itemFIImage[MAGIC_TYPE_HEAL], true);
+	DrawFormatString(480, 424, 0xFF22FF, "Å~", true);
+	DrawFormatString(530, 423, 0xFF22FF, "%d", itemF[MAGIC_TYPE_HEAL].point);
+	DrawFormatString(560, 424, 0xFF22FF, "ñá", true);
 
 }
 //

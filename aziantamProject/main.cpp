@@ -23,7 +23,8 @@ int GameOverCnt;
 int GameClearCnt;
 //ｲﾝﾍﾞﾝﾄﾘ関連
 bool iventFlag;
-
+int iconImage;
+int magicImage;
 //PAUSE関連
 bool pauseFlag;
 int keyImage;
@@ -119,6 +120,8 @@ bool SystemInit(void)
 	EffectSystemInit();			//ｴﾌｪｸﾄ
 	MarkSystemInit();
 	//-----ｸﾞﾗﾌｨｯｸ登録
+	iconImage = LoadGraph("char/icon.png");
+	magicImage = LoadGraph("char/type.png");
 	keyImage = LoadGraph("item/操作説明.png");
 	clearImage = LoadGraph("item/clear.png");
 	overImage = LoadGraph("item/over.png");
@@ -269,8 +272,15 @@ void GameDraw(void)
 	if (iventFlag)
 	{
 		SetDrawBright(255, 255, 255);
-		DrawBox(100, 100, 700, 600, 0xFFFFFF, true);
+		DrawBox(150, 120, 650, 520, 0xFFFFFF, true);
+		//プレイヤー情報
+		DrawBox(199, 149, 350 + 1, 300 + 1, 0xff22ff, false);
+		DrawGraph(200, 150, iconImage, true);
+		DrawGraph(200, 350, magicImage, true);
+		PlayerTextDraw();
 		//御札
+		DrawBox(400, 150, 600, 500, 0xff22ff, false);
+		DrawFormatString(412, 180, 0xff22ff, "*---*　所持札　*---*", true);
 		ItemI_Draw();
 
 	}

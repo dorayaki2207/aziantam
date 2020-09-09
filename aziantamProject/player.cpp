@@ -267,6 +267,16 @@ void PlayerGameDraw(void)
 
 }
 
+void PlayerTextDraw()
+{
+	//ライフ描画
+	DrawFormatString(200, 310, 0xff22ff, "体力　：　%d", player.life);
+	DrawBox(212, 330, 212 + player.lifeMax / 2, 340, GetColor(255, 0, 0), true);
+	DrawBox(212, 330, 212 + player.life / 2, 340, GetColor(0, 255, 0), true);
+	DrawBox(212, 330, 212 + player.lifeMax / 2, 340, GetColor(255, 255, 0), false);
+
+}
+
 
 void PlayerEvent(void)
 {
