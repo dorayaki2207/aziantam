@@ -175,25 +175,27 @@ XY PlayerControl(void)
 		{
 			CreateShot(player.pos, player.moveDir, MAGIC_TYPE_WIND);
 		}
-		if (KeyNew[KEY_ID_HEAL])
+		if (player.life != player.lifeMax)
 		{
 
-			if (healCheckCnt == 0)
+			if (KeyNew[KEY_ID_HEAL])
 			{
-				CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
+				if (healCheckCnt == 0)
+				{
+					CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
 
-				healCheckCnt = 100;
-				if (player.lifeMax > player.life)
-				{
-					player.life++;
-				}
-				if (player.life > player.lifeMax)
-				{
-					player.life = player.lifeMax;
+					healCheckCnt = 100;
+					if (player.lifeMax > player.life)
+					{
+						player.life++;
+					}
+					if (player.life > player.lifeMax)
+					{
+						player.life = player.lifeMax;
+					}
 				}
 			}
 		}
-
 		if (healCheckCnt > 0)
 		{
 			healCheckCnt--;
@@ -212,7 +214,7 @@ XY PlayerControl(void)
 			if (lifeCheckCnt == 0)
 			{
 				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
-				player.life--;
+				player.life -= 8;
 				lifeCheckCnt = 100;
 			}
 
@@ -241,7 +243,7 @@ void PlayerGameDraw(void)
 	if (player.life > 0)
 	{
 		player.animCnt++;
-		if (lifeCheckCnt % 20 == 0)
+		if (lifeCheckCnt % 5 == 0)
 		{
 			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
 				, player.pos.y - player.offsetSize.y + mapPos.y
@@ -249,9 +251,9 @@ void PlayerGameDraw(void)
 		}
 	}
 	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
-	DrawBox(32, 25, player.lifeMax, 16, GetColor(255, 0, 0), true);
-	DrawBox(32, 25, player.life, 16, GetColor(0, 255, 0), true);
-	DrawBox(32, 25, player.lifeMax, 16, GetColor(255, 255, 0), false);
+	DrawBox(32, 25, 32 + player.lifeMax, 16, GetColor(255, 0, 0), true);
+	DrawBox(32, 25, 32 + player.life, 16, GetColor(0, 255, 0), true);
+	DrawBox(32, 25, 32 + player.lifeMax, 16, GetColor(255, 255, 0), false);
 	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);

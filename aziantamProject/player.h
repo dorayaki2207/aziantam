@@ -2,7 +2,7 @@
 
 //定数
 #define PLAYER_DEF_SPEED  4		//ﾌﾟﾚｲﾔｰの初期移動量
-#define PLAYER_MAX_LIFE  500	//ﾌﾟﾚｲﾔｰの最大体力
+#define PLAYER_MAX_LIFE  250	//ﾌﾟﾚｲﾔｰの最大体力
 
 #define SCROLL_X_MIN	200		//ｽｸﾛｰﾙ可能頭座標X
 #define SCROLL_X_MAX	500		//ｽｸﾛｰﾙ可能頭座標Y
