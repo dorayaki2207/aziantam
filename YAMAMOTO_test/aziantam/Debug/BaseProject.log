@@ -1,3 +1,12 @@
-﻿  mark.cpp
-D:\Users\1916045\Desktop\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  BaseProject.vcxproj -> D:\Users\1916045\Desktop\aziantam\Debug\BaseProject.exe
+﻿  enemy.cpp
+C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  enemyBoss.cpp
+C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  main.cpp
+C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  mark.cpp
+C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  player.cpp
+C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
+  BaseProject.vcxproj -> C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\Debug\BaseProject.exe
