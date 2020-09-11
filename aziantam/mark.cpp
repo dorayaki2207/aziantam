@@ -88,7 +88,7 @@ bool MarkGameInit(void)
 			int y = rand() % MAP_Y;
 
 
-			if ((GetMapDate() == STAGE_ID_MOB) && (eFlag_mob))
+			if ((GetMapDate() == STAGE_ID_MOB))
 			{
 
 				while (map[y][x] != 75)
@@ -97,7 +97,7 @@ bool MarkGameInit(void)
 					y = rand() % MAP_Y;
 				}
 			}
-			else if ((GetMapDate() == STAGE_ID_KAPPA) && (eFlag_kappa))
+			else if ((GetMapDate() == STAGE_ID_KAPPA))
 			{
 				while (map[y][x] != 40)
 				{
@@ -105,7 +105,7 @@ bool MarkGameInit(void)
 					y = rand() % MAP_Y;
 				}
 			}
-			else if ((GetMapDate() == STAGE_ID_ONI) && (eFlag_oni))
+			else if ((GetMapDate() == STAGE_ID_ONI))
 			{
 				while (map[y][x] != 0)
 				{
@@ -141,14 +141,14 @@ void MarkControl()
 
 				markClear[STAGE_ID_MOB].flag = true;
 			}
-			else if ((eFlag_oni) && (markClear[stage].type == STAGE_ID_KAPPA))
+			if ((eFlag_oni) && (markClear[stage].type == STAGE_ID_KAPPA))
 			{
 				markClear[STAGE_ID_ONI].pos = { 920,120 };
 
 				markClear[STAGE_ID_ONI].flag = true;
 
 			}
-			else if ((eFlag_kappa) && (markClear[stage].type == STAGE_ID_ONI))
+			if ((eFlag_kappa) && (markClear[stage].type == STAGE_ID_ONI))
 			{
 				markClear[STAGE_ID_KAPPA].pos = { 1120,1070 };
 
