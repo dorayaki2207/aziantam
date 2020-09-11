@@ -29,7 +29,7 @@ void EnemyBossSystemInit(void)
 	//ﾓﾌﾞまとめて処理
 	for (int type = 0; type < ENEMY_B_MAX; type++)
 	{
-		eBoss[type].moveSpeed = 4;					
+		eBoss[type].moveSpeed = 2;					
 		eBoss[type].lifeMax = 12;					
 		eBoss[type].moveDir = DIR_DOWN;
 		eBoss[type].pos = { 0,0 };
@@ -63,40 +63,40 @@ void EnemyBossSystemInit(void)
 
 }
 
-void EnemyBossGameInit(void)
+void EnemyBossGameInit(STAGE_ID stageID)
 {
 	for (int ene = 0; ene < ENEMY_B_MAX; ene++)
 	{
 		int x = rand() % MAP_M_X;
 		int y = rand() % MAP_M_Y;
 
-		//if (eBoss[ene].stageType == STAGE_ID_MOB)
-		//{
-		//	//75番以外のmap配列になったらrandをやりなおす。
-		//	while (map[y][x] != 75)
-		//	{
-		//		x = rand() % MAP_M_X;
-		//		y = rand() % MAP_M_Y;
-		//	}
-		//}
-		//else if (eBoss[ene].stageType = STAGE_ID_KAPPA)
-		//{
-		//	while (map[y][x] != 40)
-		//	{
-		//		x = rand() % MAPA_X;
-		//		y = rand() % MAPA_Y;
-		//	}
-		//}
-		////stageIDがSTAGE_ID_ONIだった場合
-		//else if (eBoss[ene].stageType = STAGE_ID_ONI)
-		//{
-		//	//0番以外のmap配列になったらrandをやりなおす。
-		//	while (map[y][x] != 0)
-		//	{
-		//		x = rand() % MAPI_X;
-		//		y = rand() % MAPI_Y;
-		//	}
-		//}
+		if ((eBoss[ene].stageType == STAGE_ID_MOB) && (stageID == STAGE_ID_MOB))
+		{
+			//75番以外のmap配列になったらrandをやりなおす。
+			while (map[y][x] != 75)
+			{
+				x = rand() % MAP_M_X;
+				y = rand() % MAP_M_Y;
+			}
+		}
+		else if ((eBoss[ene].stageType == STAGE_ID_KAPPA) && (stageID == STAGE_ID_KAPPA))
+		{
+			while (map[y][x] != 40)
+			{
+				x = rand() % MAPA_X;
+				y = rand() % MAPA_Y;
+			}
+		}
+		//stageIDがSTAGE_ID_ONIだった場合
+		else if ((eBoss[ene].stageType == STAGE_ID_ONI) && (stageID == STAGE_ID_ONI))
+		{
+			//0番以外のmap配列になったらrandをやりなおす。
+			while (map[y][x] != 0)
+			{
+				x = rand() % MAPI_X;
+				y = rand() % MAPI_Y;
+			}
+		}
 
 		//enemyのposをrandで決めた場所とCHIP_SIZEで計算して配置位置を決める。
 		eBoss[ene].pos.x = x * CHIP_SIZE_X - 1;
@@ -116,8 +116,7 @@ void EnemyBossControl(XY pPos)
 	for (int en = 0; en < ENEMY_B_MAX; en++)
 	{
 		
-		if (((eBoss[en].stageType != STAGE_ID_START) == (stageID != STAGE_ID_START))
-			&& ((eBoss[en].stageType != STAGE_ID_ONI2) == (stageID != STAGE_ID_ONI2)))
+		if (eBoss[en].stageType == stageID)
 		{
 			CHARACTER eBossCopy = eBoss[en];
 			XY eBossPosCopy = eBossCopy.pos;
@@ -130,19 +129,7 @@ void EnemyBossControl(XY pPos)
 			{
 				if (eMoveFlag)
 				{
-					int diffX = pPos.x - eBoss[en].pos.x;
-					int diffY = pPos.y - eBoss[en].pos.y;
-					
-					if (abs(diffX) <= abs(diffY))
-					{
-						//ｽﾋﾟｰﾄﾞの調整をする
-						eBoss[en].moveSpeed = MoveBossY(&eBossCopy, pPos);
-					}
-					else
-					{
-						eBoss[en].moveSpeed = MoveBossX(&eBossCopy, pPos);
-					}
-
+					MoveBossXY(&eBossCopy, pPos);
 
 					switch (eBossCopy.moveDir)
 					{
@@ -225,12 +212,31 @@ int MoveBossY(CHARACTER* enemy, XY playerPos)
 
 }
 
+int MoveBossXY(CHARACTER* enemy, XY playerPos)
+{
+	int diffX = playerPos.x - (*enemy).pos.x;
+	int diffY = playerPos.y - (*enemy).pos.y;
+	int enemySpeed = (*enemy).moveSpeed;
+
+	if (abs(diffX) <= abs(diffY))
+	{
+		//ｽﾋﾟｰﾄﾞの調整をする
+		enemySpeed = MoveEnemyY(enemy, playerPos);
+	}
+	else
+	{
+		enemySpeed = MoveEnemyX(enemy, playerPos);
+	}
+
+	return enemySpeed;
+
+}
 void EnemyBossGameDraw(void)
 {
 	//-----描画処理
 	for (int ene = 0; ene < ENEMY_B_MAX; ene++)
 	{
-		if ((stageID != STAGE_ID_START) && (stageID != STAGE_ID_ONI2))
+		if (stageID == eBoss[ene].stageType)
 		{
 			if (eBoss[ene].life > 0)
 			{
@@ -242,13 +248,10 @@ void EnemyBossGameDraw(void)
 					, eBossImage[eBoss[ene].charType][eBoss[ene].moveDir * 4 + ((eBoss[ene].animCnt / 40) % 4)]
 					, true);
 
-				/*	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
-						, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
-						, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x + mapPos.x
-						, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y + mapPos.y
-						, 0xFF00FF, false);*/
 			}
-			DrawFormatString(0, 200, 0xFFFFFF,"enemyHP:%d", eBoss[ENEMY_ONI].life, true);
+			DrawFormatString(0, 200, 0xFFFFFF,"鬼HP:%d", eBoss[ENEMY_ONI].life, true);
+			DrawFormatString(0, 220, 0xFFFFFF, "天狗HP:%d", eBoss[ENEMY_TENG].life, true);
+			DrawFormatString(0, 240, 0xFFFFFF, "河童HP:%d", eBoss[ENEMY_KAPPA].life, true);
 		}
 	}
 
@@ -259,7 +262,7 @@ bool EnemyBossHitCheck(XY sPos, int sSize, CHARACTER* shot)
 	//全ての敵に当たり判定を実施する
 	for (int en = 0; en < ENEMY_B_MAX; en++)
 	{
-		if ((stageID != STAGE_ID_START) && (stageID != STAGE_ID_ONI2))
+		if(stageID == eBoss[en].stageType)
 		{
 			if (eBoss[en].life > 0)
 			{
@@ -278,6 +281,7 @@ bool EnemyBossHitCheck(XY sPos, int sSize, CHARACTER* shot)
 
 						DamageEffect(eBoss[en].pos, MAGIC_TYPE_FIRE);
 
+						break;
 					case ENEMY_KAPPA:
 						if ((*shot).charType == MAGIC_TYPE_FIRE) eBoss[en].life -= DAMAGE_HIGH;
 						if ((*shot).charType == MAGIC_TYPE_WATER) eBoss[en].life -= DAMAGE_NORMAL;
@@ -316,7 +320,7 @@ bool Player_BHitCheck(XY sPos, int sSize)
 	//全ての敵に当たり判定を実施する
 	for (int en = 0; en < ENEMY_B_MAX; en++)
 	{
-		if ((stageID != STAGE_ID_START) && (stageID != STAGE_ID_ONI2))
+		if (stageID == eBoss[en].stageType) 
 		{
 			if (eBoss[en].life > 0)
 			{

@@ -5,7 +5,6 @@
 #include "keycheck.h"
 #include "shot.h"
 #include "enemy.h"
-#include "enemyBoss.h"
 #include "effect.h"
 #include "mark.h"
 
@@ -220,20 +219,15 @@ XY PlayerControl(void)
 			{
 				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
 				player.life -= 8;
+				if (didFlag)
+				{
+					player.life -= 25;
+				}
 				lifeCheckCnt = 100;
 			}
 
 		}
-		if (Player_BHitCheck(player.pos, player.size.x))
-		{
-			if (lifeCheckCnt == 0)
-			{
-				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
-				player.life -= 20;
-				lifeCheckCnt = 100;
-			}
-		}
-
+		
 		if (lifeCheckCnt > 0)
 		{
 			lifeCheckCnt--;
@@ -264,21 +258,25 @@ void PlayerGameDraw(void)
 		}
 	}
 //	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
-	//ライフ描画
-	DrawBox(32, 25, 32 + player.lifeMax, 16, GetColor(255, 0, 0), true);
-	DrawBox(32, 25, 32 + player.life, 16, GetColor(0, 255, 0), true);
-	DrawBox(32, 25, 32 + player.lifeMax, 16, GetColor(255, 255, 0), false);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);
 
 	////情報処理
 //	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
-	//DrawFormatString(0, 180, 0xFFFFFF, "playerPos:%d,%d", player.pos.x, player.pos.y);
-	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
+//	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
 	//DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
 	//DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
 	//DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
 //	DrawFormatString(0, 0, 0xffffff, "speed:%d", player.moveSpeed);
+
+}
+
+void PlayerDraw(void)
+{
+	//ライフ描画
+	DrawBox(32, 25, 32 + player.lifeMax, 16, GetColor(255, 0, 0), true);
+	DrawBox(32, 25, 32 + player.life, 16, GetColor(0, 255, 0), true);
+	DrawBox(32, 25, 32 + player.lifeMax, 16, GetColor(255, 255, 0), false);
 
 }
 
@@ -369,6 +367,8 @@ void PlayerEvent(void)
 
 void MapChange(void)
 {
+
+	
 	
 	if (GetMapDate() != STAGE_ID_START)
 	{
@@ -376,6 +376,7 @@ void MapChange(void)
 		{
 			stageID = STAGE_ID_START;
 			SetInitMoment(stageID);
+
 		}
 	}
 	else
@@ -424,7 +425,7 @@ void MapChange(void)
 			mapPos = { 0 +(-16),0 + (-630) };
 		}
 
-		if ((player.pos.x == 334 || player.pos.x == 336 || player.pos.x == 338)
+		if ((player.pos.x == 334 || player.pos.x == 336 || player.pos.x == 338 || player.pos.x == 340)
 			&& (player.pos.y == 590 || player.pos.y == 588 || player.pos.y == 580))
 		{
 			stageID = STAGE_ID_ONI;

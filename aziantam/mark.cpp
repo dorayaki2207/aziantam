@@ -12,18 +12,29 @@
 #include "enemy.h"
 
 MARK mark[STAGE_ID_MAX];
+MARK markClear[STAGE_ID_MAX];
+
 int markImage[STAGE_ID_MAX][20];
+int markClearImage[STAGE_ID_MAX][10];
 
 bool MarkSystemInit(void)
 {
 	for (int st = 0; st < STAGE_ID_MAX; st++)
 	{
-		mark[st].pos = {0,0};
+		mark[st].pos = { 0,0 };
 		mark[st].size = { 40,40 };
 		mark[st].aniCnt = 0;
 		mark[st].flag = true;
-	}
 
+		markClear[st].pos = { 0,0 };
+		markClear[st].size = { 80,80 };
+		markClear[st].aniCnt = 0;
+		markClear[st].flag = false;
+	//	markClear[STAGE_ID_START].flag = false;
+	}
+	markClear[STAGE_ID_MOB].type = STAGE_ID_MOB;
+	markClear[STAGE_ID_KAPPA].type = STAGE_ID_KAPPA;
+	markClear[STAGE_ID_ONI].type = STAGE_ID_ONI;
 
 	//StartStage
 	LoadDivGraph("item/stageGate/start_stage.png", 20, 5, 4
@@ -48,6 +59,12 @@ bool MarkSystemInit(void)
 		, mark[STAGE_ID_KAPPA].size.y
 		, markImage[STAGE_ID_KAPPA]);
 
+	//ClearEffect
+	for (int s = 0; s < STAGE_ID_MAX; s++)
+	{
+		LoadDivGraph("item/stageGate/Effect_Clear.png", 10, 5, 2
+			, markClear[s].size.x, markClear[s].size.y, markClearImage[s]);
+	}
 	return true;
 }
 
@@ -57,17 +74,7 @@ bool MarkGameInit(void)
 	{
 		if (GetMapDate() == STAGE_ID_START)
 		{
-		/*	int x = GetRand(MAP_X);
-			int y = GetRand(MAP_Y);
-			
-			while (map[y][x] != 75)
-			{
-				x = GetRand(MAP_X);
-				y = GetRand(MAP_Y);
-			}
-			mark[st].pos.x = x * CHIP_SIZE_X;
-			mark[st].pos.y = y * CHIP_SIZE_Y;*/
-			
+
 			mark[STAGE_ID_MOB].pos = { 280,1200 };
 			mark[STAGE_ID_KAPPA].pos = { 1120,1070 };
 			mark[STAGE_ID_ONI].pos = { 920,120 };
@@ -80,7 +87,8 @@ bool MarkGameInit(void)
 			int x = rand() % MAP_X;
 			int y = rand() % MAP_Y;
 
-			if (GetMapDate() == STAGE_ID_MOB)
+
+			if ((GetMapDate() == STAGE_ID_MOB) && (eFlag_mob))
 			{
 
 				while (map[y][x] != 75)
@@ -89,7 +97,7 @@ bool MarkGameInit(void)
 					y = rand() % MAP_Y;
 				}
 			}
-			else if (GetMapDate() == STAGE_ID_KAPPA)
+			else if ((GetMapDate() == STAGE_ID_KAPPA) && (eFlag_kappa))
 			{
 				while (map[y][x] != 40)
 				{
@@ -97,7 +105,7 @@ bool MarkGameInit(void)
 					y = rand() % MAP_Y;
 				}
 			}
-			else if (GetMapDate() == STAGE_ID_ONI)
+			else if ((GetMapDate() == STAGE_ID_ONI) && (eFlag_oni))
 			{
 				while (map[y][x] != 0)
 				{
@@ -110,7 +118,7 @@ bool MarkGameInit(void)
 
 			
 			mark[st].flag = false;
-		//	mark[STAGE_ID_START].flag = true;
+
 		}
 		
 		mark[st].aniCnt = 0;
@@ -119,6 +127,40 @@ bool MarkGameInit(void)
 	return true;
 }
 
+
+void MarkControl()
+{
+
+	for (int stage = 0; stage < STAGE_ID_MAX; stage++)
+	{
+		if (GetMapDate() == STAGE_ID_START)
+		{
+			if ((eFlag_mob) && (markClear[stage].type == STAGE_ID_MOB))
+			{
+				markClear[STAGE_ID_MOB].pos = { 280,1200 };
+
+				markClear[STAGE_ID_MOB].flag = true;
+			}
+			else if ((eFlag_oni) && (markClear[stage].type == STAGE_ID_KAPPA))
+			{
+				markClear[STAGE_ID_ONI].pos = { 920,120 };
+
+				markClear[STAGE_ID_ONI].flag = true;
+
+			}
+			else if ((eFlag_kappa) && (markClear[stage].type == STAGE_ID_ONI))
+			{
+				markClear[STAGE_ID_KAPPA].pos = { 1120,1070 };
+
+				markClear[STAGE_ID_KAPPA].flag = true;
+			}
+		}
+		else if ((GetMapDate() != STAGE_ID_START) && (GetMapDate() != STAGE_ID_ONI2))
+		{
+			markClear[stage].flag = false;
+		}
+	}
+}
 
 bool MarkHitCheck(STAGE_ID Id,XY pPos,XY size)
 {
@@ -147,6 +189,12 @@ void MarkGameDraw(void)
 				mark[m].aniCnt++;
 				DrawGraph(mark[m].pos.x + mapPos.x, mark[m].pos.y + mapPos.y, markImage[m][(mark[m].aniCnt % 40) / 5], true);
 			}
+			if (markClear[m].flag)
+			{
+				markClear[m].aniCnt++;
+				DrawGraph(markClear[m].pos.x - 20 + mapPos.x, markClear[m].pos.y - 20 + mapPos.y, markClearImage[m][(markClear[m].aniCnt % 20) / 3], true);
+			}
+
 		}
 	}
 

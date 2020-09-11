@@ -23,6 +23,7 @@ void ItemGameInit(void);				//
 void ItemDropControl(void);				//	±²ÃÑ‚Ì‘€ì
 void ItemGameDraw(void);				//@±²ÃÑ•`‰æˆ—
 void ItemI_Draw(void);					//	²İÍŞİÄØ—p‚Ì±²ÃÑ‰æ‘œ•`‰æ
+void ItemDraw(void);					//	²İÍŞİÄØ—p‚Ì±²ÃÑ‰æ‘œ•`‰æ
 bool ItemMobControl(MAGIC_TYPE type);	//	MOB“GŒğíˆ—
 bool ItemHitCheck(XY sPos, int sSize);	//	ÄŞÛ¯Ìß±²ÃÑ‚Ì“–‚½‚è”»’è
 void ItemDrop(XY ePos, MAGIC_TYPE type);//	ÄŞÛ¯Ìßˆ—

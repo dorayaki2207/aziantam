@@ -1,3 +1,8 @@
-﻿  enemy.cpp
-D:\Users\1916004\Desktop\school\aziantamProject\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-  BaseProject.vcxproj -> D:\Users\1916004\Desktop\school\aziantamProject\Debug\BaseProject.exe
+﻿  main.cpp
+D:\Users\1916004\Desktop\school\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  mark.cpp
+D:\Users\1916004\Desktop\school\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  player.cpp
+D:\Users\1916004\Desktop\school\aziantam\stage.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
+  BaseProject.vcxproj -> D:\Users\1916004\Desktop\school\aziantam\Debug\BaseProject.exe

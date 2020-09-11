@@ -37,3 +37,7 @@ bool SetEnemyMoment(XY pos);				//
 bool EFlagInit(void);						//敵がステージごとで全滅したか判断用フラグ専用の初期化
 
 
+extern bool didFlag;
+extern bool eFlag_mob;
+extern bool eFlag_oni;
+extern bool eFlag_kappa;

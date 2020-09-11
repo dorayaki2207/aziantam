@@ -11,10 +11,10 @@
 
 enum PLAYER_SPEED
 {
-	PLAYER_SPEED_LOW = 2,		//’x‚¢
+	PLAYER_SPEED_LOW = 3,		//’x‚¢
 	PLAYER_SPEED_L = 2,
-	PLAYER_SPEED_NORMAL = 4,	//’Êí
-	PLAYER_SPEED_HIGH = 6,		//‘¬‚¢
+	PLAYER_SPEED_NORMAL = 5,	//’Êí
+	PLAYER_SPEED_HIGH = 7,		//‘¬‚¢
 	PLAYER_SPEED_STOP = 0,		//Ž~‚Ü‚é
 	PLAYER_SPEED_MAX
 };
@@ -25,6 +25,7 @@ void PlayerSystemInit(void);	//ÌßÚ²Ô°î•ñ‚Ì‰Šú‰»
 void PlayerGameInit(void);		//ÌßÚ²Ô°‚Ì‰Šú‰»
 XY PlayerControl(void);			//ÌßÚ²Ô°‚Ì‘€ì
 void PlayerGameDraw(void);		//ÌßÚ²Ô°‚Ì•`‰æ
+void PlayerDraw(void);
 void PlayerTextDraw();
 void PlayerEvent(void);			//²ÍÞÝÄˆ—
 void MapChange(void);			//Ï¯ÌßˆÚ“®

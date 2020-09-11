@@ -9,7 +9,6 @@
 #include "stage.h"
 #include "player.h"
 #include "enemy.h"
-#include "enemyBoss.h"
 #include "shot.h"
 #include "item.h"
 #include "mark.h"
@@ -30,6 +29,7 @@ int magicH;
 bool pauseFlag;
 int keyImage;
 
+int setImage;
 //当たり判定用
 XY playerSize;
 
@@ -116,7 +116,6 @@ bool SystemInit(void)
 	StageSystemInit();			//ｽﾃｰｼﾞ
 	PlayerSystemInit();			//ﾌﾟﾚｲﾔｰ
 	EnemySystemInit();			//敵mob
-	EnemyBossSystemInit();		//敵boss
 	ItemSystmeInit();			//ｱｲﾃﾑ
 	ShotSystemInit();			//ｼｮｯﾄ
 	EffectSystemInit();			//ｴﾌｪｸﾄ
@@ -129,6 +128,7 @@ bool SystemInit(void)
 	overImage = LoadGraph("item/over.png");
 	clear_bgImage = LoadGraph("item/bg_clear.png");
 	over_bgImage = LoadGraph("item/bg_over.png");
+	setImage = LoadGraph("item/set.png");
 	//-----変数の初期化
 	//ｼｰﾝ関連
 	SceneCounter = 0;
@@ -152,7 +152,7 @@ void InitScene(void)
 	StageGameInit();				//ｽﾃｰｼﾞ
 	PlayerGameInit();				//ﾌﾟﾚｲﾔｰ
 //	EnemyGameInit();				//敵
-	EnemyBossGameInit();
+//	EnemyBossGameInit();
 	EFlagInit();					//eFlag専用
 	ItemGameInit();					//ｱｲﾃﾑ
 	ShotGameInit();					//ｼｮｯﾄ
@@ -171,10 +171,6 @@ void InitScene(void)
 void GameScene(void)
 {
 	XY playerPos;		//ﾌﾟﾚｲﾔｰの座標格納領域
-
-
-	
-
 
 	//-----ｲﾍﾞﾝﾄﾘ機能
 	//ｷｰ処理
@@ -201,10 +197,10 @@ void GameScene(void)
 		//-----各ｵﾌﾞｼﾞｪｸﾄ操作
 		playerPos = PlayerControl();		//ﾌﾟﾚｲﾔｰ
 		EnemyControl(playerPos);			//ｴﾈﾐｰ
-		EnemyBossControl(playerPos);
 		ItemDropControl();					//ｱｲﾃﾑ
 		ShotControl(playerPos);			//ｼｮｯﾄ
 		EffectControl();					//ｴﾌｪｸﾄ
+		MarkControl();
 		//ｴﾈﾐｰと弾の当たり判定
 		for (int sh = 0; sh < SHOT_MAX; sh++)
 		{
@@ -214,7 +210,6 @@ void GameScene(void)
 				{
 					DeleteShot(sh);
 				}
-				if (EnemyBossHitCheck(shot[sh].pos, shot[sh].size.x, &shot[sh])) DeleteShot(sh);
 			}
 		}
 		//アイテムとプレイヤーの当たり判定
@@ -227,8 +222,8 @@ void GameScene(void)
 		MapChange();
 
 		//ｼｰﾝ遷移
-		if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
-		if ((GameOverSet()) || (PlayerDid()))
+	//	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
+		if (/*(GameOverSet()) || */(PlayerDid()))
 		{
 			GameOverCnt++;
 			if (GameOverCnt > 100)
@@ -248,8 +243,6 @@ void GameScene(void)
 				GameClearCnt = 0;
 			}
 		}
-
-
 	}
 
 	
@@ -267,12 +260,18 @@ void GameDraw(void)
 	//-----各ｵﾌﾞｼﾞｪｸﾄ描画処理
 	StageGameDraw();			//ｽﾃｰｼﾞ
 	EnemyGameDraw();			//敵
-	EnemyBossGameDraw();
 	PlayerGameDraw();			//ﾌﾟﾚｲﾔｰ
 	ItemGameDraw();				//ｱｲﾃﾑ
 	ShotGameDraw();				//ｼｮｯﾄ
 	EffectGameDraw();			//ｴﾌｪｸﾄ
 	MarkGameDraw();
+
+	DrawGraph(0, 0, setImage, true);
+	DrawBox(0, 0, 320, 100, 0xffffff, false);
+	
+	ItemDraw();
+	PlayerDraw();
+
 
 	//-----ｲﾝﾍﾞﾝﾄﾘ関連
 	if (iventFlag)
@@ -310,7 +309,7 @@ void GameDraw(void)
 	
 	//-----情報処理
 	//DrawFormatString(0, 0, 0xFFFFFF, "Game:%d", SceneCounter);
-	//DrawFormatString(0, 120, 0xFFFFFF, "map:%d,%d", mapPos.x,mapPos.y);
+//	DrawFormatString(0, 120, 0xFFFFFF, "map:%d,%d", mapPos.x,mapPos.y);
 	//DrawFormatString(0, 140, 0xFFFFFF, "GameOver:%d", GameOverCnt);
 
 }
@@ -339,7 +338,7 @@ void GameOverDraw(void)
 	DrawGraph((SCREEN_SIZE_X - 400) / 2, (SCREEN_SIZE_Y - 200) / 3, overImage, true);
 
 	//-----情報処理
-	DrawFormatString(0, 0, 0xFFFFFF, "GameOver:%d", SceneCounter);
+//	DrawFormatString(0, 0, 0xFFFFFF, "GameOver:%d", SceneCounter);
 
 
 }
@@ -367,7 +366,7 @@ void GameClearDraw(void)
 
 
 	//-----情報処理
-	DrawFormatString(0, 0, 0xFFFFFF, "GameClear:%d", SceneCounter);
+//	DrawFormatString(0, 0, 0xFFFFFF, "GameClear:%d", SceneCounter);
 
 
 }

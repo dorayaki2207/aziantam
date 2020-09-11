@@ -15,6 +15,8 @@ int enemyImage[ENEMY_M_MAX][16];
 int moveCnt;
 int moveFlag;
 int enemyDid;
+bool didFlag;
+
 //それぞれのステージにいる敵の生存確認（true:全滅、false:生存）
 bool eFlag_mob;
 bool eFlag_oni;
@@ -54,6 +56,7 @@ void EnemySystemInit(void)
 	moveCnt = 0;
 	moveFlag = false;
 	enemyDid = 0;
+	didFlag = false;
 
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//石橋担当MOB
@@ -77,7 +80,29 @@ void EnemySystemInit(void)
 	{
 		int type = rand() % ENEMY_M_MAX;
 		enemyMob[ene] = enemyMobMaster[type];
+		/*int tmp[ENEMY_MAX];
 
+		if (ene < ENEMY_MAX /3)
+		{
+			if (tmp[ene] == ENEMY_MAX / 3)
+			{
+				enemyMob[ene].stageType = STAGE_ID_MOB;
+			}
+		}
+		else if (ene< ENEMY_MAX - (ENEMY_MAX /3))
+		{
+			if (tmp[ene] == ENEMY_MAX - (ENEMY_MAX / 3))
+			{
+				enemyMob[ene].stageType = STAGE_ID_KAPPA;
+			}
+		}
+		else if (ene < ENEMY_MAX)
+		{
+			if (tmp[ene] == ENEMY_MAX)
+			{
+				enemyMob[ene].stageType = STAGE_ID_ONI;
+			}
+		}*/
 
 		if (ene == 0 || ene == 1 || ene == 2)
 		{
@@ -91,12 +116,29 @@ void EnemySystemInit(void)
 		{
 			enemyMob[ene].stageType = STAGE_ID_ONI;
 		}
+		/*if (ene == 0 || ene == 1 || ene == 2 || ene == 3 || ene == 4 || ene == 5 || ene == 6 || ene == 7 || ene == 8 || ene == 9
+			|| ene == 10 || ene == 11 || ene == 12 || ene == 13 || ene == 14 || ene == 15 || ene == 16 || ene == 17 || ene == 18 || ene == 19)
+		{
+			enemyMob[ene].stageType = STAGE_ID_MOB;
+		}
+		else if (ene == 20 || ene == 21 || ene == 22 || ene == 23 || ene == 24 || ene == 25 || ene == 26 || ene == 27 || ene == 28 || ene == 29
+			|| ene == 30 || ene == 31 || ene == 32 || ene == 33 || ene == 34 || ene == 35 || ene == 36 || ene == 37 || ene == 38 || ene == 39)
+
+		{
+			enemyMob[ene].stageType = STAGE_ID_KAPPA;
+		}
+		else if (ene == 40 || ene == 41 || ene == 42 || ene == 43 || ene == 44 || ene == 45 || ene == 46 || ene == 47 || ene == 48 || ene == 49
+			|| ene == 50 || ene == 51 || ene == 52 || ene == 53 || ene == 54 || ene == 55 || ene == 56 || ene == 57 || ene == 58 || ene == 59)
+		{
+			enemyMob[ene].stageType = STAGE_ID_ONI;
+		}*/
 	}
 }
 
 
 void EnemyGameInit(STAGE_ID stageID)
 {
+	
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 
@@ -148,6 +190,8 @@ void EnemyGameInit(STAGE_ID stageID)
 //敵がステージごとで全滅したか判断用フラグ専用の初期化
 bool EFlagInit(void)
 {
+	didFlag = false;
+
 	eFlag_mob = false;
 	eFlag_oni = false;
 	eFlag_kappa = false;
@@ -214,10 +258,16 @@ void EnemyControl(XY pPos)
 						enemyMob[en].pos = enemyCopy.pos;
 					}
 
+					if (GameOverSet())
+					{
+						enemyMob[en].pos = pPos;
+						didFlag = true;
+					}
+
 				}
 			}
 
-
+			
 			/*if (enemyMob[en].life <= 0)
 			{
 				enemyDid++;
@@ -279,6 +329,7 @@ bool SetEnemyMoment(XY pos)
 				//trueにする
 				eFlag_mob = true;
 				mark[STAGE_ID_START].flag = true;
+				
 			}
 			//stageが鬼のステージだったら
 			else if ((GetMapDate() == STAGE_ID_ONI) && (enemyMob[e].stageType == STAGE_ID_ONI))
@@ -295,12 +346,15 @@ bool SetEnemyMoment(XY pos)
 			}
 		}
 		//両方のステージで敵が全滅したら
-		if (eFlag_mob && eFlag_oni && eFlag_kappa)
-		{
-			return true;
 
+		if (GetMapDate() == STAGE_ID_START)
+		{
+			if (eFlag_mob && eFlag_oni && eFlag_kappa)
+			{
+				return true;
+
+			}
 		}
-		
 	}
 	return false;
 }

@@ -9,7 +9,7 @@ struct MARK
 	XY size;
 	int aniCnt;
 	int flag;
-	
+	int type;
 };
 
 
@@ -18,6 +18,7 @@ bool MarkSystemInit(void);
 bool MarkGameInit(void);
 void MarkGameDraw(void);
 
+void MarkControl();
 bool MarkHitCheck(STAGE_ID Id, XY pPos, XY size);
 
 extern MARK mark[];

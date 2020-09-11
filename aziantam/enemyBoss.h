@@ -15,12 +15,13 @@ enum ENEMY_BOSS
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
 //Šî–{ˆ—
 void EnemyBossSystemInit(void);					//´ÈĞ°î•ñ‚Ì‰Šú‰»
-void EnemyBossGameInit(void);					//	
+void EnemyBossGameInit(STAGE_ID stageID);					//	
 void EnemyBossControl(XY pPos);					//´ÈĞ°‚Ì‘€ì
 void EnemyBossGameDraw(void);					//´ÈĞ°‚Ì•`‰æˆ—
 
 int MoveBossX(CHARACTER* enemy, XY playerPos);
 int MoveBossY(CHARACTER* enemy, XY playerPos);
+int MoveBossXY(CHARACTER* enemy, XY playerPos);
 //“–‚½‚è”»’è
 bool EnemyBossHitCheck(XY sPos, int sSize, CHARACTER* shot);		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è
 bool Player_BHitCheck(XY sPos, int sSize);
