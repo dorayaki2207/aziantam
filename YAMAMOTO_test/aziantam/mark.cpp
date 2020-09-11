@@ -95,20 +95,21 @@ bool MarkGameInit(void)
 				markClear[STAGE_ID_MOB].flag = true;
 				markClear[STAGE_ID_START].flag = false;
 			}
-			else if (eFlag_oni)
+			if (eFlag_oni)
 			{
 				markClear[STAGE_ID_ONI].pos = { 920,120 };
 
 				markClear[STAGE_ID_ONI].flag = true;
 				markClear[STAGE_ID_START].flag = false;
 			}
-			else if (eFlag_kappa)
+			if (eFlag_kappa)
 			{
 				markClear[STAGE_ID_KAPPA].pos = { 1120,1070 };
 
 				markClear[STAGE_ID_KAPPA].flag = true;
 				markClear[STAGE_ID_START].flag = false;
 			}
+			
 			mark[st].flag = true;
 			mark[STAGE_ID_START].flag = false;
 		}

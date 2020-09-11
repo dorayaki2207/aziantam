@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v142:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=10.0
 Debug|Win32|D:\Users\1916004\Desktop\aziantam\YAMAMOTO_test\aziantam\|
+=======
+PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.27.29110:TargetPlatformVersion=10.0.18362.0:
+Debug|Win32|C:\Users\user\Desktop\2020.09.11\YAMAMOTO_test\aziantam\|
+>>>>>>> 3ff2c326b358525279a2cb7a3c92b1580c569d2c
