@@ -274,6 +274,8 @@ void GameDraw(void)
 	EffectGameDraw();			//´Ìª¸Ä
 	MarkGameDraw();
 
+
+
 	//-----²ÝÍÞÝÄØŠÖ˜A
 	if (iventFlag)
 	{
