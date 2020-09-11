@@ -1,10 +1,2 @@
 C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.exe
 C:\Users\どら焼き\Desktop\アジアンタム\aziantam\aziantamProject\Debug\BaseProject.pdb
-C:\Users\user\Desktop\2020.09.02\aziantamProject\Debug\BaseProject.exe
-C:\Users\user\Desktop\2020.09.02\aziantamProject\Debug\BaseProject.pdb
-C:\Users\user\Desktop\学校\ゲームショウ\2020\夏のAGS\2020.09.02\aziantamProject\Debug\BaseProject.exe
-C:\Users\user\Desktop\学校\ゲームショウ\2020\夏のAGS\2020.09.02\aziantamProject\Debug\BaseProject.pdb
-C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.exe
-C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.pdb
-C:\Users\user\Desktop\aziantamProject\Debug\BaseProject.exe
-C:\Users\user\Desktop\aziantamProject\Debug\BaseProject.pdb

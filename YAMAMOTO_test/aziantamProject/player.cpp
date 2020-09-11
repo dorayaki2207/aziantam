@@ -5,8 +5,6 @@
 #include "stage.h"
 #include "shot.h"
 #include "enemy.h"
-#include "effect.h"
-#include "mark.h"
 
 //変数
 int playerImage[16];
@@ -14,7 +12,7 @@ CHARACTER player;
 
 int lifeCheckCnt;
 int healCheckCnt;
-int speedCnt;
+
 
 //ﾌﾟﾚｲﾔｰ情報の初期化
 void PlayerSystemInit(void)
@@ -34,22 +32,15 @@ void PlayerSystemInit(void)
 void PlayerGameInit(void)
 {
 	player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
-	player.pos = { 160,135};								//ｷｬﾗｸﾀの地図上の座標
+	player.pos = { SCREEN_SIZE_X/2,SCREEN_SIZE_Y/2 };									//ｷｬﾗｸﾀの地図上の座標
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
 	lifeCheckCnt = 0;
 	healCheckCnt = 0;
-	speedCnt = 0;
+
 }
 
-bool PlayerDid()
-{
-	if (player.life <= 0)
-	{
-		return true;
-	}
-	return false;
-}
+
 
 //プレイヤーの操作
 XY PlayerControl(void)
@@ -59,8 +50,6 @@ XY PlayerControl(void)
 	XY playerPosCopy = player.pos;
 	XY playerPosOffset = playerPosCopy;
 	XY indexPos;							//　ﾏｯﾌﾟ配列座標
-
-	if (player.life < 0) SceneID = SCENE_GAMEOVER;
 
 	if (player.life > 0)
 	{
@@ -109,7 +98,7 @@ XY PlayerControl(void)
 				break;
 			case DIR_DOWN:
 				playerPosCopy.y += player.moveSpeed;
-				playerPosOffset.y = playerPosCopy.y + player.offsetSize.y;
+				playerPosOffset.y = playerPosCopy.y + player.offsetSize.y;				
 				indexPos = Pos2Index(playerPosCopy);
 				//指定した場所を通過可能か
 				if (IsPass(playerPosOffset))
@@ -176,7 +165,7 @@ XY PlayerControl(void)
 		}
 		if (KeyNew[KEY_ID_HEAL])
 		{
-
+			
 			if (healCheckCnt == 0)
 			{
 				CreateShot(player.pos, player.moveDir, MAGIC_TYPE_HEAL);
@@ -210,7 +199,6 @@ XY PlayerControl(void)
 		{
 			if (lifeCheckCnt == 0)
 			{
-				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
 				player.life--;
 				lifeCheckCnt = 100;
 			}
@@ -226,32 +214,18 @@ XY PlayerControl(void)
 				lifeCheckCnt = 0;
 			}
 		}
-		if (KeyNew[KEY_ID_STAGE])
-		{
-			MarkGameControl(player.pos, 32);
-		}
-
-		
-		PlayerEvent();
 	}
 
 	return returnValue;
 }
-
-
 //プレイヤーの描画
 void PlayerGameDraw(void)
 {
-	if (player.life > 0)
-	{
-		player.animCnt++;
-		if (lifeCheckCnt % 20 == 0)
-		{
-			DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
-				, player.pos.y - player.offsetSize.y + mapPos.y
-				, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
-		}
-	}
+	player.animCnt++;
+	DrawGraph(player.pos.x - player.offsetSize.x + mapPos.x
+		, player.pos.y - player.offsetSize.y + mapPos.y
+		, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
+
 	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
 	DrawFormatString(0, 50, 0xFFFFFF, "player:%d,%d", player.pos.x, player.pos.y);
 	XY indexPos;
@@ -262,74 +236,5 @@ void PlayerGameDraw(void)
 	DrawFormatString(0, 300, 0xFFFFFF, "playerHp%d", player.life);
 	DrawFormatString(0, 350, 0xffffff, "LifeCheck:%d", lifeCheckCnt);
 	DrawFormatString(0, 370, 0xffffff, "moveCheck:%d", healCheckCnt);
-	DrawFormatString(0, 370, 0xffffff, "speedCnt:%d", speedCnt);
 
 }
-
-
-void PlayerEvent(void)
-{
-	if ((stageID == STAGE_ID_START) || (stageID == STAGE_ID_MOB) || (stageID == STAGE_ID_KAPPA))
-	{
-		// 特殊なマップを踏んだ場合の処理
-		// 毒
-		if (GetEvent(player.pos) == EVENT_ID_DOKU)
-		{
-			speedCnt++;
-			if (speedCnt < 10)
-			{
-				player.moveSpeed = PLAYER_SPEED_LOW;
-				player.life -= 3;
-				lifeCheckCnt = 100;
-			}
-		}
-		
-		// イベント戻す
-		else
-		{
-			player.moveSpeed = PLAYER_DEF_SPEED;
-		}
-	}
-
-	if (stageID == STAGE_ID_ONI)
-	{
-		//-----ｲﾍﾞﾝﾄ発生
-		//動きが止まる
-		if (GetEvent(player.pos) == EVENT_ID_STOP)
-		{
-			speedCnt++;
-			if (speedCnt < 100)
-			{
-				player.moveSpeed = PLAYER_SPEED_STOP;
-			}
-			else if (speedCnt >= 100)
-			{
-				player.moveSpeed = PLAYER_SPEED_NORMAL;
-			}
-		}
-		//動きが遅くなる
-		else if (GetEvent(player.pos) == EVENT_ID_SPEEDDOWN)
-		{
-			player.moveSpeed = PLAYER_SPEED_LOW;
-		}
-		//ﾀﾞﾒｰｼﾞを受ける
-		else if (GetEvent(player.pos) == EVENT_ID_DAMAGE)
-		{
-			if (lifeCheckCnt == 0)
-			{
-				player.life -= 5;
-				lifeCheckCnt = 100;
-			}
-		}
-		//通常時の移動スピード
-		else
-		{
-			player.moveSpeed = PLAYER_SPEED_NORMAL;
-		}
-
-		if (GetEvent(player.pos) != EVENT_ID_STOP)
-		{
-			speedCnt = 0;
-		}
-	}
- }
