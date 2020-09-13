@@ -36,24 +36,11 @@ enum MAGIC_TYPE
 	MAGIC_TYPE_MAX
 };
 
-enum MSG_TYPE
-{
-	MSG_START,		//はじめから
-	MSG_LOAD,		//つづきから
-	MSG_MAX
-};
-
 
 
 
 //-----構造体
 //----------------
-//得点管理用
-struct FILE_DATA
-{
-	int Score;				//現在得点
-	int hiScore;			//最高得点
-};
 
 //ﾎﾟｼﾞｼﾞｮﾝ
 struct XY

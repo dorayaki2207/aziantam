@@ -5,7 +5,6 @@
 
 
 //À²ÄÙ¼°İŠÖ˜A
-MSG_TYPE msgType;
 int titleMsgImage;
 int rogoImage;
 int bgImage;
@@ -29,7 +28,7 @@ void TitleSystemInit()
 //	LoadDivGraph(("item/msg.png"), MSG_MAX, 1, MSG_MAX, 400, 100, msgImage);
 
 	//-----‰Šú‰»ˆ—
-	msgType = MSG_START;
+
 	//msgFlag = false;
 	//for (int i = 0; i < MSG_MAX; i++)
 	//{

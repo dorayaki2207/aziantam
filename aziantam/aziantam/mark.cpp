@@ -13,12 +13,15 @@
 
 MARK mark[STAGE_ID_MAX];
 MARK markClear[STAGE_ID_MAX];
+MARK zingi[ITEM_TYPE_B_MAX];
 
 int markImage[STAGE_ID_MAX][20];
 int markClearImage[STAGE_ID_MAX][10];
+int zingiImage[2][ITEM_TYPE_B_MAX];
 
 bool MarkSystemInit(void)
 {
+	//移動用オブジェクト
 	for (int st = 0; st < STAGE_ID_MAX; st++)
 	{
 		mark[st].pos = { 0,0 };
@@ -65,6 +68,35 @@ bool MarkSystemInit(void)
 		LoadDivGraph("item/stageGate/Effect_Clear.png", 10, 5, 2
 			, markClear[s].size.x, markClear[s].size.y, markClearImage[s]);
 	}
+
+
+	//神器
+	zingi[ITEM_TYPE_KEN].type = ITEM_TYPE_KEN;
+	zingi[ITEM_TYPE_KEN].pos = { 550, 510 };
+	zingi[ITEM_TYPE_KEN].flag = false;
+	zingi[ITEM_TYPE_KAGAMI].type = ITEM_TYPE_KAGAMI;
+	zingi[ITEM_TYPE_KAGAMI].pos = { 600, 510 };
+	zingi[ITEM_TYPE_KAGAMI].flag = false;
+	zingi[ITEM_TYPE_MAGATAMA].type = ITEM_TYPE_MAGATAMA;
+	zingi[ITEM_TYPE_MAGATAMA].pos = { 650, 510 };
+	zingi[ITEM_TYPE_MAGATAMA].flag = true;
+	for (int type = 0; type < ITEM_TYPE_B_MAX; type++)
+	{
+		zingi[type].size = { 50,50 };
+		zingi[type].aniCnt = 0;
+	//	zingi[type].flag = true;
+	}
+
+	LoadDivGraph("item/zingi_low.png", 3, 3, 1
+		, zingi[ITEM_TYPE_KEN].size.x
+		, zingi[ITEM_TYPE_KEN].size.y
+		, zingiImage[ZINGI_OLD]);
+	LoadDivGraph("item/zingi.png", 3, 3, 1
+		, zingi[ITEM_TYPE_KEN].size.x
+		, zingi[ITEM_TYPE_KEN].size.y
+		, zingiImage[ZINGI_NEW]);
+
+
 	return true;
 }
 
@@ -208,6 +240,20 @@ void MarkGameDraw(void)
 			}
 
 		}
+	}
+
+
+	int itemStatus;
+	int itemImage;
+
+	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
+	{
+		itemStatus = (zingi[i].flag) ? ZINGI_NEW : ZINGI_OLD;
+		itemImage = zingiImage[itemStatus][i];
+
+		DrawGraph(zingi[i].pos.x + mapPos.x
+			, zingi[i].pos.y + mapPos.y
+			, itemImage, true);
 	}
 
 }

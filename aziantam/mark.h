@@ -15,6 +15,7 @@ struct MARK
 
 //プロトタイプ宣言
 bool MarkSystemInit(void);
+void MarkReGameInit(void);
 bool MarkGameInit(void);
 void MarkGameDraw(void);
 

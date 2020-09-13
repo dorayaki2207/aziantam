@@ -1,7 +1,7 @@
 
 
 //-----’è”’è‹`
-#define ENEMY	  3	  
+#define ENEMY	  20	  
 #define ENEMY_MAX ENEMY * 3		//	“G‚Ì”
 
 #define DAMAGE_NORMAL	2		//“¯‘®«ÀŞÒ°¼Ş—Ê
@@ -22,6 +22,7 @@ enum ENEMY_MOB
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
 //Šî–{ˆ—
 void EnemySystemInit(void);					//´ÈĞ°î•ñ‚Ì‰Šú‰»
+void EnemyReGameInit(void);
 void EnemyGameInit(STAGE_ID stageID);
 void EnemyControl(XY pPos);					//´ÈĞ°‚Ì‘€ì
 void EnemyGameDraw(void);					//´ÈĞ°‚Ì•`‰æˆ—
@@ -33,11 +34,11 @@ int MoveEnemyXY(CHARACTER* enemy, XY playerPos); //©‹@‚ÌX‚ÆY‚Ì‰“‚¢‚Ù‚¤‚©‚çÀ•W‚
 bool EnemyHitCheck(XY sPos, int sSize, CHARACTER* shot);		//´ÈĞ°‚Æ’e‚Ì“–‚½‚è”»’è
 bool PlayerHitCheck(XY sPos, int sSize);
 
-bool SetEnemyMoment(XY pos);				//
+bool SetEnemyMoment();				//
 bool EFlagInit(void);						//“G‚ªƒXƒe[ƒW‚²‚Æ‚Å‘S–Å‚µ‚½‚©”»’f—pƒtƒ‰ƒOê—p‚Ì‰Šú‰»
 
 
-extern bool didFlag;
+
 extern bool eFlag_mob;
 extern bool eFlag_oni;
 extern bool eFlag_kappa;

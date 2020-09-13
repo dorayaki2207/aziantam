@@ -5,7 +5,7 @@
 #include "item.h"
 #include "effect.h"
 #include "mark.h"
-#include "enemyBoss.h"
+
 
 //-----外部変数宣言
 //ﾓﾌﾞ関連
@@ -14,8 +14,6 @@ CHARACTER enemyMobMaster[ENEMY_M_MAX];
 int enemyImage[ENEMY_M_MAX][16];
 int moveCnt;
 int moveFlag;
-int enemyDid;
-bool didFlag;
 
 //それぞれのステージにいる敵の生存確認（true:全滅、false:生存）
 bool eFlag_mob;
@@ -55,9 +53,7 @@ void EnemySystemInit(void)
 
 	moveCnt = 0;
 	moveFlag = false;
-	enemyDid = 0;
-	didFlag = false;
-
+	
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//石橋担当MOB
 	LoadDivGraph("char/妖狐.png", 16, 4, 4
@@ -76,65 +72,31 @@ void EnemySystemInit(void)
 		, enemyImage[ENEMY_A_MOB]);
 
 
+	
+}
+
+void EnemyReGameInit()
+{
 	for (int ene = 0; ene < ENEMY_MAX; ene++)
 	{
 		int type = rand() % ENEMY_M_MAX;
 		enemyMob[ene] = enemyMobMaster[type];
-		/*int tmp[ENEMY_MAX];
 
-		if (ene < ENEMY_MAX /3)
-		{
-			if (tmp[ene] == ENEMY_MAX / 3)
-			{
-				enemyMob[ene].stageType = STAGE_ID_MOB;
-			}
-		}
-		else if (ene< ENEMY_MAX - (ENEMY_MAX /3))
-		{
-			if (tmp[ene] == ENEMY_MAX - (ENEMY_MAX / 3))
-			{
-				enemyMob[ene].stageType = STAGE_ID_KAPPA;
-			}
-		}
-		else if (ene < ENEMY_MAX)
-		{
-			if (tmp[ene] == ENEMY_MAX)
-			{
-				enemyMob[ene].stageType = STAGE_ID_ONI;
-			}
-		}*/
-
-		if (ene == 0 || ene == 1 || ene == 2)
+		if (ene >= 0 && ene < ENEMY_MAX / 3)
 		{
 			enemyMob[ene].stageType = STAGE_ID_MOB;
 		}
-		else if (ene == 3 || ene == 4 || ene == 5)
+		else if (ene >= ENEMY_MAX / 3 && ene < ENEMY_MAX - (ENEMY_MAX / 3))
 		{
 			enemyMob[ene].stageType = STAGE_ID_KAPPA;
 		}
-		else if (ene == 6 || ene == 7 || ene == 8)
+		else if (ene >= ENEMY_MAX - (ENEMY_MAX / 3) && ene < ENEMY_MAX)
 		{
 			enemyMob[ene].stageType = STAGE_ID_ONI;
 		}
-		/*if (ene == 0 || ene == 1 || ene == 2 || ene == 3 || ene == 4 || ene == 5 || ene == 6 || ene == 7 || ene == 8 || ene == 9
-			|| ene == 10 || ene == 11 || ene == 12 || ene == 13 || ene == 14 || ene == 15 || ene == 16 || ene == 17 || ene == 18 || ene == 19)
-		{
-			enemyMob[ene].stageType = STAGE_ID_MOB;
-		}
-		else if (ene == 20 || ene == 21 || ene == 22 || ene == 23 || ene == 24 || ene == 25 || ene == 26 || ene == 27 || ene == 28 || ene == 29
-			|| ene == 30 || ene == 31 || ene == 32 || ene == 33 || ene == 34 || ene == 35 || ene == 36 || ene == 37 || ene == 38 || ene == 39)
 
-		{
-			enemyMob[ene].stageType = STAGE_ID_KAPPA;
-		}
-		else if (ene == 40 || ene == 41 || ene == 42 || ene == 43 || ene == 44 || ene == 45 || ene == 46 || ene == 47 || ene == 48 || ene == 49
-			|| ene == 50 || ene == 51 || ene == 52 || ene == 53 || ene == 54 || ene == 55 || ene == 56 || ene == 57 || ene == 58 || ene == 59)
-		{
-			enemyMob[ene].stageType = STAGE_ID_ONI;
-		}*/
 	}
 }
-
 
 void EnemyGameInit(STAGE_ID stageID)
 {
@@ -190,8 +152,6 @@ void EnemyGameInit(STAGE_ID stageID)
 //敵がステージごとで全滅したか判断用フラグ専用の初期化
 bool EFlagInit(void)
 {
-	didFlag = false;
-
 	eFlag_mob = false;
 	eFlag_oni = false;
 	eFlag_kappa = false;
@@ -258,42 +218,16 @@ void EnemyControl(XY pPos)
 						enemyMob[en].pos = enemyCopy.pos;
 					}
 
-					if (GameOverSet())
-					{
-						enemyMob[en].pos = pPos;
-						didFlag = true;
-					}
-
+					
 				}
 			}
-
-			
-			/*if (enemyMob[en].life <= 0)
-			{
-				enemyDid++;
-				if (enemyDid > ENEMY_MAX / 2)
-				{
-					if (stageID == STAGE_ID_ONI)
-					{
-						drawFlag[ENEMY_ONI] = true;
-					}
-					else if (stageID == STAGE_ID_MOB)
-					{
-						drawFlag[ENEMY_TENG] = true;
-					}
-					else if (stageID == STAGE_ID_KAPPA)
-					{
-						drawFlag[ENEMY_KAPPA] = true;
-					}
-				}
-			}*/
 		}
 	}
 
 }
 
 //すべてのenemyを倒した時の処理（true:クリアシーンに遷移、false:まだ倒せてない）
-bool SetEnemyMoment(XY pos)
+bool SetEnemyMoment()
 {
 	bool Flag = true;
 
@@ -318,13 +252,11 @@ bool SetEnemyMoment(XY pos)
 		}
 	}
 
-	for (int e = 0; e < ENEMY_MAX; e++)
-	{
 	//Flagがtrueになったら
 		if (Flag)
 		{
 			//stageがモブのステージだったら
-			if ((GetMapDate() == STAGE_ID_MOB) && (enemyMob[e].stageType == STAGE_ID_MOB))
+			if (GetMapDate() == STAGE_ID_MOB)
 			{
 				//trueにする
 				eFlag_mob = true;
@@ -332,13 +264,13 @@ bool SetEnemyMoment(XY pos)
 				
 			}
 			//stageが鬼のステージだったら
-			else if ((GetMapDate() == STAGE_ID_ONI) && (enemyMob[e].stageType == STAGE_ID_ONI))
+			else if (GetMapDate() == STAGE_ID_ONI)
 			{
-				//trueにする
+					//trueにする
 				eFlag_oni = true;
 				mark[STAGE_ID_START].flag = true;
 			}
-			else if ((GetMapDate() == STAGE_ID_KAPPA) && (enemyMob[e].stageType == STAGE_ID_KAPPA))
+			else if (GetMapDate() == STAGE_ID_KAPPA)
 			{
 				//trueにする
 				eFlag_kappa = true;
@@ -355,7 +287,7 @@ bool SetEnemyMoment(XY pos)
 
 			}
 		}
-	}
+
 	return false;
 }
 
@@ -376,12 +308,6 @@ void EnemyGameDraw()
 					, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
 					, enemyImage[enemyMob[ene].charType][enemyMob[ene].moveDir * 4 + ((enemyMob[ene].animCnt / 40) % 4)]
 					, true);
-
-				/*	DrawBox(enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + mapPos.x
-						, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + mapPos.y
-						, enemyMob[ene].pos.x - enemyMob[ene].offsetSize.x + enemyMob[ene].size.x + mapPos.x
-						, enemyMob[ene].pos.y - enemyMob[ene].offsetSize.y + enemyMob[ene].size.y + mapPos.y
-						, 0xFF00FF, false);*/
 			}
 			//DrawFormatString(0, 200, 0xFFFFFF,"enemyHP:%d", enemyMob[ene].life, true);
 		}
@@ -493,10 +419,12 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 							if (randam > 5)
 							{
 								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_FIRE);
+								break;
 							}
 							else if (randam <= 5)
 							{
 								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+								break;
 							}
 						}
 						break;
@@ -513,10 +441,12 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 							if (randam > 5)
 							{
 								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WATER);
+								break;
 							}
 							else if (randam <= 5)
 							{
 								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+								break;
 							}
 						}
 						break;
@@ -533,10 +463,12 @@ bool EnemyHitCheck(XY sPos, int sSize, CHARACTER *shot)
 							if (randam > 5)
 							{
 								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_WIND);
+								break;
 							}
 							else if (randam <= 5)
 							{
 								ItemDrop(enemyMob[en].pos, MAGIC_TYPE_HEAL);
+								break;
 							}
 						}
 						break;

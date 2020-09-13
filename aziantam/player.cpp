@@ -1,6 +1,7 @@
 #include <DxLib.h>
 #include "main.h"
 #include "stage.h"
+#include "item.h"
 #include "player.h"
 #include "keycheck.h"
 #include "shot.h"
@@ -33,8 +34,8 @@ void PlayerSystemInit(void)
 //プレイヤーの初期化
 void PlayerGameInit(void)
 {
-	player.moveDir = DIR_RIGHT;								//ｷｬﾗｸﾀの向き
-	player.pos = { 160,135};								//ｷｬﾗｸﾀの地図上の座標
+	player.moveDir = DIR_DOWN;								//ｷｬﾗｸﾀの向き
+	player.pos = { 625,600};								//ｷｬﾗｸﾀの地図上の座標
 
 	player.life = player.lifeMax;							//ｷｬﾗｸﾀの体力
 	lifeCheckCnt = 0;
@@ -219,7 +220,7 @@ XY PlayerControl(void)
 			{
 				DamageEffect(player.pos, MAGIC_TYPE_HEAL);
 				player.life -= 8;
-				if (didFlag)
+				if (GameOverSet())
 				{
 					player.life -= 25;
 				}
@@ -425,8 +426,7 @@ void MapChange(void)
 			mapPos = { 0 +(-16),0 + (-630) };
 		}
 
-		if ((player.pos.x == 334 || player.pos.x == 336 || player.pos.x == 338 || player.pos.x == 340)
-			&& (player.pos.y == 590 || player.pos.y == 588 || player.pos.y == 580))
+		if ((player.pos.x >= 320 && player.pos.x < 350) && (player.pos.y >= 580 && player.pos.y <590))
 		{
 			stageID = STAGE_ID_ONI;
 			SetMapData(stageID);

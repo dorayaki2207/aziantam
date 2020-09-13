@@ -68,6 +68,19 @@ bool MarkSystemInit(void)
 	return true;
 }
 
+void MarkReGameInit()
+{
+	for (int st = 0; st < STAGE_ID_MAX; st++)
+	{
+		mark[st].aniCnt = 0;
+		mark[st].flag = true;
+
+		markClear[st].aniCnt = 0;
+		markClear[st].flag = false;
+		//	markClear[STAGE_ID_START].flag = false;
+	}
+}
+
 bool MarkGameInit(void)
 {
 	for (int st = 0; st < STAGE_ID_MAX; st++)
@@ -75,9 +88,9 @@ bool MarkGameInit(void)
 		if (GetMapDate() == STAGE_ID_START)
 		{
 
-			mark[STAGE_ID_MOB].pos = { 280,1200 };
+			mark[STAGE_ID_MOB].pos = { 283,1200 };
 			mark[STAGE_ID_KAPPA].pos = { 1120,1070 };
-			mark[STAGE_ID_ONI].pos = { 920,120 };
+			mark[STAGE_ID_ONI].pos = { 923,120 };
 
 			mark[st].flag = true;
 			mark[STAGE_ID_START].flag = false;
@@ -93,32 +106,31 @@ bool MarkGameInit(void)
 
 				while (map[y][x] != 75)
 				{
-					x = rand() % MAP_X;
-					y = rand() % MAP_Y;
+					x = rand() % MAP_M_X;
+					y = rand() % MAP_M_Y;
 				}
 			}
 			else if ((GetMapDate() == STAGE_ID_KAPPA))
 			{
 				while (map[y][x] != 40)
 				{
-					x = rand() % MAP_X;
-					y = rand() % MAP_Y;
+					x = rand() % MAPA_X;
+					y = rand() % MAPA_Y;
 				}
 			}
 			else if ((GetMapDate() == STAGE_ID_ONI))
 			{
 				while (map[y][x] != 0)
 				{
-					x = rand() % MAP_X;
-					y = rand() % MAP_Y;
+					x = rand() % MAPI_X;
+ 					y = rand() % MAPI_Y;
 				}
 			}
 			mark[STAGE_ID_START].pos.x = x * CHIP_SIZE_X;
 			mark[STAGE_ID_START].pos.y = y * CHIP_SIZE_Y;
 
-			
 			mark[st].flag = false;
-
+			
 		}
 		
 		mark[st].aniCnt = 0;
@@ -137,18 +149,18 @@ void MarkControl()
 		{
 			if ((eFlag_mob) && (markClear[stage].type == STAGE_ID_MOB))
 			{
-				markClear[STAGE_ID_MOB].pos = { 280,1200 };
+				markClear[STAGE_ID_MOB].pos = { 283,1200 };
 
 				markClear[STAGE_ID_MOB].flag = true;
 			}
-			if ((eFlag_oni) && (markClear[stage].type == STAGE_ID_KAPPA))
+			if ((eFlag_oni) && (markClear[stage].type == STAGE_ID_ONI))
 			{
-				markClear[STAGE_ID_ONI].pos = { 920,120 };
+				markClear[STAGE_ID_ONI].pos = { 923,120 };
 
 				markClear[STAGE_ID_ONI].flag = true;
 
 			}
-			if ((eFlag_kappa) && (markClear[stage].type == STAGE_ID_ONI))
+			if ((eFlag_kappa) && (markClear[stage].type == STAGE_ID_KAPPA))
 			{
 				markClear[STAGE_ID_KAPPA].pos = { 1120,1070 };
 

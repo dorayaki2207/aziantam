@@ -151,12 +151,13 @@ void InitScene(void)
 	//-----ŠeµÌÞ¼Þª¸Äˆ—
 	StageGameInit();				//½Ã°¼Þ
 	PlayerGameInit();				//ÌßÚ²Ô°
-//	EnemyGameInit();				//“G
+	EnemyReGameInit();				//“G
 //	EnemyBossGameInit();
 	EFlagInit();					//eFlagê—p
 	ItemGameInit();					//±²ÃÑ
 	ShotGameInit();					//¼®¯Ä
 	EffectGameInit();				//´Ìª¸Ä
+	MarkReGameInit();
 	MarkGameInit();
 	//-----¼°Ý‘JˆÚ
 	SceneID = SCENE_TITLE;
@@ -234,7 +235,7 @@ void GameScene(void)
 		}
 
 		//‚·‚×‚Ä‚Ìenemy‚ð“|‚µ‚½Žž‚Ìˆ—itrue:ƒNƒŠƒAƒV[ƒ“‚É‘JˆÚAfalse:‚Ü‚¾“|‚¹‚Ä‚È‚¢j
-		if (SetEnemyMoment(playerPos))
+		if (SetEnemyMoment())
 		{
 			GameClearCnt++;
 			if (GameClearCnt > 100)

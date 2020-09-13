@@ -293,8 +293,8 @@ void StageSystemInit(void)
 // ｽﾃｰｼﾞ情報のｹﾞｰﾑ初期化
 void StageGameInit(void)
 {
-	mapPos.x = 0;
-	mapPos.y = 0;
+	mapPos.x = -220;
+	mapPos.y = -300;
 	
 
 	stageOffset = 0;

@@ -30,6 +30,7 @@ void ItemSystmeInit(void)
 	//-----•Ï”‚Ì‰Šú‰»
 	//ŒäDiÄŞÛ¯Ìß—p
 	itemFmaster[MAGIC_TYPE_FIRE].charType = MAGIC_TYPE_FIRE;				//	ŒäD‚Ìí—Ş	F	‰Î
+	itemFmaster[MAGIC_TYPE_FIRE].point = 12;
 	itemFmaster[MAGIC_TYPE_WATER].charType = MAGIC_TYPE_WATER;			//	ŒäD‚Ìí—Ş	F	…
 	itemFmaster[MAGIC_TYPE_WIND].charType = MAGIC_TYPE_WIND;			//	ŒäD‚Ìí—Ş	F	•—
 	itemFmaster[MAGIC_TYPE_HEAL].charType = MAGIC_TYPE_HEAL;	//	ŒäD‚Ìí—Ş	F	‰ñ•œ
@@ -43,6 +44,7 @@ void ItemSystmeInit(void)
 		itemFmaster[i].life = itemFmaster[i].lifeMax;												//	ŒäD‚Ì‘Ì—Í
 		itemFmaster[i].hitFlag = false;
 		itemFmaster[i].point = 12;
+
 
 	}
 
@@ -130,16 +132,19 @@ void ItemGameDraw(void)
 {
 	//-----•`‰æˆ—
 	//ŒäDiÄŞÛ¯Ìß—p
-	for (int i = 0; i < ITEM_MAX; i++)
+	if (stageID != STAGE_ID_ONI2)
 	{
-		//¶‚«‚Ä‚éŒäD‚Ì‚İ•\¦
-		if (itemF[i].life > 0)
+		for (int i = 0; i < ITEM_MAX; i++)
 		{
-			//-----‰æ‘œ•`‰æ
-			DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
-				, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
-				, itemFImage[itemF[i].charType]
-				, true);
+			//¶‚«‚Ä‚éŒäD‚Ì‚İ•\¦
+			if (itemF[i].life > 0)
+			{
+				//-----‰æ‘œ•`‰æ
+				DrawGraph(itemF[i].pos.x - itemF[i].offsetSize.x + mapPos.x
+					, itemF[i].pos.y - itemF[i].offsetSize.y + mapPos.y
+					, itemFImage[itemF[i].charType]
+					, true);
+			}
 		}
 	}
 	//Oí‚Ì_Ší
@@ -161,21 +166,24 @@ void ItemGameDraw(void)
 	//	}
 	//}
 }
+
+
 //-----²İÍŞİÄØ—p•`‰æ
 void ItemI_Draw(void)
 {
+	for (int i = 0; i < MAGIC_TYPE_MAX-1; i++)
+	{
+		DrawGraph(430, 250 +50 *i, itemFIImage[i], true);
+	}
 	//‰Î‚ÌŒäD
-	DrawGraph(430, 250, itemFIImage[MAGIC_TYPE_FIRE], true);
 	DrawFormatString(480, 254, 0xFF22FF, "~", true);
 	DrawFormatString(530, 253, 0xFF22FF, "%d", itemF[MAGIC_TYPE_FIRE].point);
 	DrawFormatString(560, 254, 0xFF22FF, "–‡", true);
 	//…‚ÌŒäD
-	DrawGraph(430, 300, itemFIImage[MAGIC_TYPE_WATER], true);
 	DrawFormatString(480, 304, 0xFF22FF, "~", true);
 	DrawFormatString(530, 303, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WATER].point);
 	DrawFormatString(560, 304, 0xFF22FF, "–‡", true);
 	//•—‚ÌŒäD
-	DrawGraph(430, 350, itemFIImage[MAGIC_TYPE_WIND], true);
 	DrawFormatString(480, 354, 0xFF22FF, "~", true);
 	DrawFormatString(530, 353, 0xFF22FF, "%d", itemF[MAGIC_TYPE_WIND].point);
 	DrawFormatString(560, 354, 0xFF22FF, "–‡", true);
@@ -189,25 +197,25 @@ void ItemI_Draw(void)
 void ItemDraw(void)
 {
 	//‰Î‚ÌŒäD
-	DrawGraph(15, 40, itemFIImage[MAGIC_TYPE_FIRE], true);
-	DrawFormatString(45, 40, 0x000000, "~", true);
-	DrawFormatString(75, 40, 0x000000, "%d", itemF[MAGIC_TYPE_FIRE].point);
-	DrawFormatString(105, 40, 0x000000, "–‡", true);
+	DrawGraph(25, 40, itemFIImage[MAGIC_TYPE_FIRE], true);
+	DrawFormatString(55, 40, 0x000000, "~", true);
+	DrawFormatString(85, 40, 0x000000, "%d", itemF[MAGIC_TYPE_FIRE].point);
+	DrawFormatString(115, 40, 0x000000, "–‡", true);
 	//…‚ÌŒäD
-	DrawGraph(15, 70, itemFIImage[MAGIC_TYPE_WATER], true);
-	DrawFormatString(45, 70, 0x000000, "~", true);
-	DrawFormatString(75, 70, 0x000000, "%d", itemF[MAGIC_TYPE_WATER].point);
-	DrawFormatString(105, 70, 0x000000, "–‡", true);
+	DrawGraph(25, 70, itemFIImage[MAGIC_TYPE_WATER], true);
+	DrawFormatString(55, 70, 0x000000, "~", true);
+	DrawFormatString(85, 70, 0x000000, "%d", itemF[MAGIC_TYPE_WATER].point);
+	DrawFormatString(115, 70, 0x000000, "–‡", true);
 	//•—‚ÌŒäD
 	DrawGraph(165, 40, itemFIImage[MAGIC_TYPE_WIND], true);
 	DrawFormatString(195, 40, 0x000000, "~", true);
-	DrawFormatString(245, 40, 0x000000, "%d", itemF[MAGIC_TYPE_WIND].point);
-	DrawFormatString(275, 40, 0x000000, "–‡", true);
+	DrawFormatString(225, 40, 0x000000, "%d", itemF[MAGIC_TYPE_WIND].point);
+	DrawFormatString(255, 40, 0x000000, "–‡", true);
 	//‰ñ•œ‚ÌŒäD
 	DrawGraph(165, 70, itemFIImage[MAGIC_TYPE_HEAL], true);
 	DrawFormatString(195, 70, 0x000000, "~", true);
-	DrawFormatString(245, 70, 0x000000, "%d", itemF[MAGIC_TYPE_HEAL].point);
-	DrawFormatString(275, 70, 0x000000, "–‡", true);
+	DrawFormatString(225, 70, 0x000000, "%d", itemF[MAGIC_TYPE_HEAL].point);
+	DrawFormatString(255, 70, 0x000000, "–‡", true);
 }
 
 //-----’e‚Æ“G‚Ì“–‚½‚è”»’è@(true : ‚ ‚½‚è, false : ‚Í‚¸‚ê)
@@ -228,22 +236,22 @@ bool ItemHitCheck(XY sPos, int sSize)
 				//ŒäD‚ÉG‚ê‚½‚ç‰ÁZ
 				if (itemF[i].charType == MAGIC_TYPE_FIRE)
 				{
-					itemF[i].point += point;
+					itemF[MAGIC_TYPE_FIRE].point += point;
 					itemF[i].hitFlag = true;
 				}
 				if (itemF[i].charType == MAGIC_TYPE_WATER)
 				{
-					itemF[i].point += point;
+					itemF[MAGIC_TYPE_WATER].point += point;
 					itemF[i].hitFlag = true;
 				}
 				if (itemF[i].charType == MAGIC_TYPE_WIND)
 				{
-					itemF[i].point += point;
+					itemF[MAGIC_TYPE_WIND].point += point;
 					itemF[i].hitFlag = true;
 				}
 				if (itemF[i].charType == MAGIC_TYPE_HEAL)
 				{
-					itemF[i].point += point;
+					itemF[MAGIC_TYPE_HEAL].point += point;
 					itemF[i].hitFlag = true;
 				}
 				return true;
