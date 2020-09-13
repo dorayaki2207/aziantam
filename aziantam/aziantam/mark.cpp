@@ -1,0 +1,213 @@
+//mark.cpp
+//2020.09.03
+//山本美由紀
+
+//stage移動するための印、その印に触れればstage移動ができる。
+
+#include <DxLib.h>
+#include <math.h>
+#include "main.h"
+#include "stage.h"
+#include "mark.h"
+#include "enemy.h"
+
+MARK mark[STAGE_ID_MAX];
+MARK markClear[STAGE_ID_MAX];
+
+int markImage[STAGE_ID_MAX][20];
+int markClearImage[STAGE_ID_MAX][10];
+
+bool MarkSystemInit(void)
+{
+	for (int st = 0; st < STAGE_ID_MAX; st++)
+	{
+		mark[st].pos = { 0,0 };
+		mark[st].size = { 40,40 };
+		mark[st].aniCnt = 0;
+		mark[st].flag = true;
+
+		markClear[st].pos = { 0,0 };
+		markClear[st].size = { 80,80 };
+		markClear[st].aniCnt = 0;
+		markClear[st].flag = false;
+	//	markClear[STAGE_ID_START].flag = false;
+	}
+	markClear[STAGE_ID_MOB].type = STAGE_ID_MOB;
+	markClear[STAGE_ID_KAPPA].type = STAGE_ID_KAPPA;
+	markClear[STAGE_ID_ONI].type = STAGE_ID_ONI;
+
+	//StartStage
+	LoadDivGraph("item/stageGate/start_stage.png", 20, 5, 4
+		, mark[STAGE_ID_START].size.x
+		, mark[STAGE_ID_START].size.y
+		, markImage[STAGE_ID_START]);
+	//MobStage
+	LoadDivGraph("item/stageGate/tengu_stage.png", 20, 5, 4
+		, mark[STAGE_ID_MOB].size.x
+		, mark[STAGE_ID_MOB].size.y
+		, markImage[STAGE_ID_MOB]);
+
+	//OniStage
+	LoadDivGraph("item/stageGate/oni_stage.png", 20, 5, 4
+		, mark[STAGE_ID_ONI].size.x
+		, mark[STAGE_ID_ONI].size.y
+		, markImage[STAGE_ID_ONI]);
+
+	//KappaStage
+	LoadDivGraph("item/stageGate/kappa_stage.png", 20, 5, 4
+		, mark[STAGE_ID_KAPPA].size.x
+		, mark[STAGE_ID_KAPPA].size.y
+		, markImage[STAGE_ID_KAPPA]);
+
+	//ClearEffect
+	for (int s = 0; s < STAGE_ID_MAX; s++)
+	{
+		LoadDivGraph("item/stageGate/Effect_Clear.png", 10, 5, 2
+			, markClear[s].size.x, markClear[s].size.y, markClearImage[s]);
+	}
+	return true;
+}
+
+void MarkReGameInit()
+{
+	for (int st = 0; st < STAGE_ID_MAX; st++)
+	{
+		mark[st].aniCnt = 0;
+		mark[st].flag = true;
+
+		markClear[st].aniCnt = 0;
+		markClear[st].flag = false;
+		//	markClear[STAGE_ID_START].flag = false;
+	}
+}
+
+bool MarkGameInit(void)
+{
+	for (int st = 0; st < STAGE_ID_MAX; st++)
+	{
+		if (GetMapDate() == STAGE_ID_START)
+		{
+
+			mark[STAGE_ID_MOB].pos = { 283,1200 };
+			mark[STAGE_ID_KAPPA].pos = { 1120,1070 };
+			mark[STAGE_ID_ONI].pos = { 923,120 };
+
+			mark[st].flag = true;
+			mark[STAGE_ID_START].flag = false;
+		}
+		else if ((GetMapDate() != STAGE_ID_START) &&(GetMapDate() != STAGE_ID_ONI2))
+		{
+			int x = rand() % MAP_X;
+			int y = rand() % MAP_Y;
+
+
+			if ((GetMapDate() == STAGE_ID_MOB))
+			{
+
+				while (map[y][x] != 75)
+				{
+					x = rand() % MAP_M_X;
+					y = rand() % MAP_M_Y;
+				}
+			}
+			else if ((GetMapDate() == STAGE_ID_KAPPA))
+			{
+				while (map[y][x] != 40)
+				{
+					x = rand() % MAPA_X;
+					y = rand() % MAPA_Y;
+				}
+			}
+			else if ((GetMapDate() == STAGE_ID_ONI))
+			{
+				while (map[y][x] != 0)
+				{
+					x = rand() % MAPI_X;
+ 					y = rand() % MAPI_Y;
+				}
+			}
+			mark[STAGE_ID_START].pos.x = x * CHIP_SIZE_X;
+			mark[STAGE_ID_START].pos.y = y * CHIP_SIZE_Y;
+
+			mark[st].flag = false;
+			
+		}
+		
+		mark[st].aniCnt = 0;
+		
+	}
+	return true;
+}
+
+
+void MarkControl()
+{
+
+	for (int stage = 0; stage < STAGE_ID_MAX; stage++)
+	{
+		if (GetMapDate() == STAGE_ID_START)
+		{
+			if ((eFlag_mob) && (markClear[stage].type == STAGE_ID_MOB))
+			{
+				markClear[STAGE_ID_MOB].pos = { 283,1200 };
+
+				markClear[STAGE_ID_MOB].flag = true;
+			}
+			if ((eFlag_oni) && (markClear[stage].type == STAGE_ID_ONI))
+			{
+				markClear[STAGE_ID_ONI].pos = { 923,120 };
+
+				markClear[STAGE_ID_ONI].flag = true;
+
+			}
+			if ((eFlag_kappa) && (markClear[stage].type == STAGE_ID_KAPPA))
+			{
+				markClear[STAGE_ID_KAPPA].pos = { 1120,1070 };
+
+				markClear[STAGE_ID_KAPPA].flag = true;
+			}
+		}
+		else if ((GetMapDate() != STAGE_ID_START) && (GetMapDate() != STAGE_ID_ONI2))
+		{
+			markClear[stage].flag = false;
+		}
+	}
+}
+
+bool MarkHitCheck(STAGE_ID Id,XY pPos,XY size)
+{
+	if (mark[Id].flag)
+	{
+		if ((mark[Id].pos.x - mark[Id].size.x / 2) < (pPos.x + size.x / 2)
+			&& (mark[Id].pos.x + mark[Id].size.x / 2) > (pPos.x - size.x / 2)
+			&& (mark[Id].pos.y - mark[Id].size.y / 2) < (pPos.y + size.y / 2)
+			&& (mark[Id].pos.y + mark[Id].size.y / 2) > (pPos.y - size.y / 2))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void MarkGameDraw(void)
+{
+	
+	for (int m = 0; m < STAGE_ID_MAX; m++)
+	{
+		if (GetMapDate() != STAGE_ID_ONI2)
+		{
+			if (mark[m].flag)
+			{
+				mark[m].aniCnt++;
+				DrawGraph(mark[m].pos.x + mapPos.x, mark[m].pos.y + mapPos.y, markImage[m][(mark[m].aniCnt % 40) / 5], true);
+			}
+			if (markClear[m].flag)
+			{
+				markClear[m].aniCnt++;
+				DrawGraph(markClear[m].pos.x - 20 + mapPos.x, markClear[m].pos.y - 20 + mapPos.y, markClearImage[m][(markClear[m].aniCnt % 20) / 3], true);
+			}
+
+		}
+	}
+
+}
