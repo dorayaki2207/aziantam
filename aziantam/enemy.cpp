@@ -20,6 +20,8 @@ bool eFlag_mob;
 bool eFlag_oni;
 bool eFlag_kappa;
 
+
+
 void EnemySystemInit(void)
 {
 	//-----•Ï”‚Ì‰Šú‰»
@@ -283,8 +285,8 @@ bool SetEnemyMoment()
 		{
 			if (eFlag_mob && eFlag_oni && eFlag_kappa)
 			{
+				
 				return true;
-
 			}
 		}
 

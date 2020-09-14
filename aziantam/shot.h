@@ -9,7 +9,7 @@
 //-----ŠÖ”ÌßÛÄÀ²ÌßéŒ¾
 void ShotSystemInit(void);									//’eî•ñ‚Ì‰Šú‰»
 void ShotGameInit(void);
-void ShotControl(XY pPos);									//’e‚Ì‘€ì
+void ShotControl(XY pPos, int speed);									//’e‚Ì‘€ì
 void ShotGameDraw(void);										//’e‚Ì•`‰æˆ—
 void CreateShot(XY pPos, DIR pDir, MAGIC_TYPE ptype);		//’e‚ğ¶¬‚·‚é
 void DeleteShot(int index);									//’e‚ğÁ–Å‚³‚¹‚é

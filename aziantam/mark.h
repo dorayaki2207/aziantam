@@ -2,6 +2,26 @@
 
 
 
+
+
+#define ZINGI_OLD  0
+#define ZINGI_NEW  1
+
+#define CLEAR_MINI_X 608
+#define CLEAR_MINI_Y 608
+#define CLEAR_MAX_X  640
+#define CLEAR_MAX_Y  640
+
+//列挙型
+enum ITEM_TYPE_B
+{
+	ITEM_TYPE_KEN,				//	三種の神器・剣
+	ITEM_TYPE_KAGAMI,			//	三種の神器・鏡
+	ITEM_TYPE_MAGATAMA,			//	三種の神器・勾玉
+	ITEM_TYPE_B_MAX
+};
+
+
 //構造体
 struct MARK
 {

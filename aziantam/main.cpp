@@ -32,13 +32,17 @@ int keyImage;
 int setImage;
 //“–‚½‚è”»’è—p
 XY playerSize;
-
+int pSpeed;
 //´ÝÃÞ¨Ý¸ÞŠÖ˜A
 int clearImage;
 int overImage;
 int clear_bgImage;
 int over_bgImage;
 
+
+int readImage[2];
+int readCnt;
+bool readFlag;
 
 //WinŠÖ”
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -129,6 +133,8 @@ bool SystemInit(void)
 	clear_bgImage = LoadGraph("item/bg_clear.png");
 	over_bgImage = LoadGraph("item/bg_over.png");
 	setImage = LoadGraph("item/set.png");
+	readImage[0] = LoadGraph("item/book1.png");
+	readImage[1] = LoadGraph("item/book2.png");
 	//-----•Ï”‚Ì‰Šú‰»
 	//¼°ÝŠÖ˜A
 	SceneCounter = 0;
@@ -142,6 +148,10 @@ bool SystemInit(void)
 	iventFlag = false;
 	//“–‚½‚è”»’è—p
 	playerSize = { 20,20 };
+	pSpeed = PLAYER_SPEED_NORMAL;
+
+	readCnt = 0;
+	readFlag = true;
 
 	return true;
 }
@@ -159,6 +169,9 @@ void InitScene(void)
 	EffectGameInit();				//´Ìª¸Ä
 	MarkReGameInit();
 	MarkGameInit();
+
+	readCnt = 0;
+	readFlag = true;
 	//-----¼°Ý‘JˆÚ
 	SceneID = SCENE_TITLE;
 }
@@ -172,6 +185,13 @@ void InitScene(void)
 void GameScene(void)
 {
 	XY playerPos;		//ÌßÚ²Ô°‚ÌÀ•WŠi”[—Ìˆæ
+
+	if (readFlag)
+	{
+		if (KeyDownTrigger[KEY_ID_RIGHT]) readCnt = 1;
+		if (KeyDownTrigger[KEY_ID_LEFT])  readCnt = 0;
+		if (KeyDownTrigger[KEY_ID_SPACE]) readFlag = false;
+	}
 
 	//-----²ÍÞÝÄØ‹@”\
 	//·°ˆ—
@@ -192,14 +212,14 @@ void GameScene(void)
 	}
 
 	//’ÊíŽž‘€ì
-	if(!iventFlag && !pauseFlag)
+	if(!iventFlag && !pauseFlag && !readFlag)
 	{
 		//ŠeŽí‹@”\
 		//-----ŠeµÌÞ¼Þª¸Ä‘€ì
 		playerPos = PlayerControl();		//ÌßÚ²Ô°
 		EnemyControl(playerPos);			//´ÈÐ°
 		ItemDropControl();					//±²ÃÑ
-		ShotControl(playerPos);			//¼®¯Ä
+		ShotControl(playerPos, pSpeed);			//¼®¯Ä
 		EffectControl();					//´Ìª¸Ä
 		MarkControl();
 		//´ÈÐ°‚Æ’e‚Ì“–‚½‚è”»’è
@@ -224,7 +244,7 @@ void GameScene(void)
 
 		//¼°Ý‘JˆÚ
 	//	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_CLEAR;
-		if (/*(GameOverSet()) || */(PlayerDid()))
+		if ((GameOverSet()) || (PlayerDid()))
 		{
 			GameOverCnt++;
 			if (GameOverCnt > 100)
@@ -235,10 +255,10 @@ void GameScene(void)
 		}
 
 		//‚·‚×‚Ä‚Ìenemy‚ð“|‚µ‚½Žž‚Ìˆ—itrue:ƒNƒŠƒAƒV[ƒ“‚É‘JˆÚAfalse:‚Ü‚¾“|‚¹‚Ä‚È‚¢j
-		if (SetEnemyMoment())
+		if (ClearSet())
 		{
 			GameClearCnt++;
-			if (GameClearCnt > 100)
+			if (GameClearCnt > 50)
 			{
 				SceneID = SCENE_CLEAR;
 				GameClearCnt = 0;
@@ -260,13 +280,18 @@ void GameDraw(void)
 
 	//-----ŠeµÌÞ¼Þª¸Ä•`‰æˆ—
 	StageGameDraw();			//½Ã°¼Þ
+	MarkGameDraw();
 	EnemyGameDraw();			//“G
 	PlayerGameDraw();			//ÌßÚ²Ô°
+	EndTextDraw();
 	ItemGameDraw();				//±²ÃÑ
 	ShotGameDraw();				//¼®¯Ä
 	EffectGameDraw();			//´Ìª¸Ä
-	MarkGameDraw();
-
+	
+	if ((readFlag) &&  (!iventFlag) && (!pauseFlag))
+	{
+		DrawGraph((SCREEN_SIZE_X - 450) / 2, (SCREEN_SIZE_Y - 300) / 2, readImage[readCnt], true);
+	}
 	DrawGraph(0, 0, setImage, true);
 	DrawBox(0, 0, 320, 100, 0xffffff, false);
 	
@@ -326,6 +351,10 @@ void GameOverScene(void)
 {
 	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_INIT;
 
+	if (SceneCounter > 150)
+	{
+		SceneID = SCENE_INIT;
+	}
 
 	GameOverDraw();
 }
@@ -355,6 +384,10 @@ void GameClearScene(void)
 {
 	if (KeyDownTrigger[KEY_ID_SPACE]) SceneID = SCENE_INIT;
 
+	if (SceneCounter > 150)
+	{
+		SceneID = SCENE_INIT;
+	}
 	GameClearDraw();
 }
 

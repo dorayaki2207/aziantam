@@ -17,11 +17,6 @@ CHARACTER itemFmaster[MAGIC_TYPE_MAX];
 int itemFImage[MAGIC_TYPE_MAX];				//	ﾄﾞﾛｯﾌﾟｱｲﾃﾑ用画像（F：札の頭文字
 int itemFIImage[MAGIC_TYPE_MAX];			//	ｲﾝﾍﾞﾝﾄﾘ用画像（F：札の頭文字，I：ｲﾝﾍﾞﾝﾄﾘの頭文字
 int itemFBImage[MAGIC_TYPE_MAX];			//	ﾎﾞｽﾊﾞﾄﾙ用画像（F：札の頭文字,　B：ﾊﾞﾄﾙの頭文字
-bool itemFBFlag;							//	表示,非表示用
-//三種の神器
-CHARACTER itemB[ITEM_TYPE_B_MAX];
-int itemBImage[ITEM_TYPE_B_MAX];			//	神器の画像（B：武器の頭文字
-
 
 
 //-----ｱｲﾃﾑ情報の初期化
@@ -48,22 +43,7 @@ void ItemSystmeInit(void)
 
 	}
 
-	//御札（ﾎﾞｽﾊﾞﾄﾙ用
-	itemFBFlag = false;												//	初期：非表示
-
-	//三種の神器
-	itemB[ITEM_TYPE_KEN].charType = ITEM_TYPE_KEN;					//	三種の神器　：　剣
-	itemB[ITEM_TYPE_KAGAMI].charType = ITEM_TYPE_KAGAMI;			//	三種の神器　：　鏡
-	itemB[ITEM_TYPE_MAGATAMA].charType = ITEM_TYPE_MAGATAMA;		//	三種の神器　：　勾玉
-	//三種の神器まとめて処理
-	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
-	{
-		itemB[i].size = { 20,20 };																	//	三種の神器の画像ｻｲｽﾞ
-		itemB[i].offsetSize = { itemB[i].size.x / 2,itemB[i].size.y / 2 };							//　三種の神器のｵﾌｾｯﾄ
-
-	}
-
-
+	
 	//-----ｸﾞﾗﾌｨｯｸの登録
 	//御札(ﾄﾞﾛｯﾌﾟ用
 	LoadDivGraph("item/fudaD.png", 4, 4, 1
@@ -74,9 +54,7 @@ void ItemSystmeInit(void)
 	//御札（ﾎﾞｽﾊﾞﾄﾙ用
 	LoadDivGraph("item/fuda_Big.png", 4, 4, 1
 		, ITEM_B_SIZE, ITEM_B_SIZE, itemFBImage);
-	//三種の神器
-	LoadDivGraph("item/zingi20.png", 3, 3, 1
-		, ITEM_M_SIZE, ITEM_M_SIZE, itemBImage);
+	
 	}
 
 void ItemGameInit(void)
@@ -91,16 +69,6 @@ void ItemGameInit(void)
 			itemF[i].life = 0;
 		}
 	}
-	//三種の神器
-	for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
-	{
-		itemB[i].pos = { 50,120 };									//　三種の神器の地図上の座標
-		itemB[i].lifeMax = 20;										//	三種の神器の体力最大値（表示時間）
-		itemB[i].life = itemB[i].lifeMax;							//	三種の神器の体力
-	}
-
-
-
 }
 
 void ItemDropControl(void)
@@ -132,7 +100,7 @@ void ItemGameDraw(void)
 {
 	//-----描画処理
 	//御札（ﾄﾞﾛｯﾌﾟ用
-	if (stageID != STAGE_ID_ONI2)
+	if ((stageID != STAGE_ID_ONI2) && (stageID != STAGE_ID_START))
 	{
 		for (int i = 0; i < ITEM_MAX; i++)
 		{
@@ -147,24 +115,6 @@ void ItemGameDraw(void)
 			}
 		}
 	}
-	//三種の神器
-	//for (int i = 0; i < ITEM_TYPE_B_MAX; i++)
-	//{
-	//	if (itemB[i].life > 0)
-	//	{
-	//		DrawGraph((itemB[i].pos.x - itemB[i].offsetSize.x) * i
-	//			, itemB[i].pos.y - itemB[i].offsetSize.y
-	//			, itemBImage[itemB[i].charType]
-	//			, true);
-
-	//		DrawBox((itemB[i].pos.x - itemB[i].offsetSize.x) * i
-	//			, itemB[i].pos.y - itemB[i].offsetSize.y
-	//			, (itemB[i].pos.x - itemB[i].offsetSize.x) * i + itemB[i].size.x
-	//			, itemB[i].pos.y - itemB[i].offsetSize.y + itemB[i].size.y
-	//			, 0xFF00FF, false);
-
-	//	}
-	//}
 }
 
 

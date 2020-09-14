@@ -7,14 +7,6 @@
 
 
 
-//-----列挙型
-enum ITEM_TYPE_B
-{
-	ITEM_TYPE_KEN,				//	三種の神器・剣
-	ITEM_TYPE_KAGAMI,			//	三種の神器・鏡
-	ITEM_TYPE_MAGATAMA,			//	三種の神器・勾玉
-	ITEM_TYPE_B_MAX
-};
 
 
 //-----関数ﾌﾟﾛﾄﾀｲﾌﾟ宣言

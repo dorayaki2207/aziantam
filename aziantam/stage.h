@@ -6,8 +6,8 @@
 
 //定数
 //ﾏｯﾌﾟﾁｯﾌﾟ画像
-#define MAP_X 45		//デフォルト
-#define MAP_Y 45
+#define MAP_X 40		//デフォルト
+#define MAP_Y 40
 #define MAP_START_Y 40	//はじまりの村
 #define MAP_START_X 40
 #define MAP_M_X 40		//モブ

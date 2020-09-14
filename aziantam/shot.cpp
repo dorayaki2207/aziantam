@@ -73,7 +73,7 @@ void ShotGameInit()
 }
 
 
-void ShotControl(XY pPos)
+void ShotControl(XY pPos, int speed)
 {
 	for (int sh = 0; sh < SHOT_MAX; sh++)
 	{
@@ -89,10 +89,26 @@ void ShotControl(XY pPos)
 			//プレイヤーに重ねる(回復
 			if (shot[sh].charType == MAGIC_TYPE_HEAL)
 			{
-				if (shot[sh].moveDir == DIR_RIGHT) shot[sh].pos.x = pPos.x;
-				if (shot[sh].moveDir == DIR_LEFT) shot[sh].pos.x = pPos.x;
-				if (shot[sh].moveDir == DIR_DOWN) shot[sh].pos.y = pPos.y;
-				if (shot[sh].moveDir == DIR_UP) shot[sh].pos.y = pPos.y;
+				if (shot[sh].moveDir == DIR_RIGHT)
+				{
+					shot[sh].pos.x = pPos.x;
+					shot[sh].moveSpeed = speed;
+				}
+				if (shot[sh].moveDir == DIR_LEFT)
+				{
+					shot[sh].pos.x = pPos.x;
+					shot[sh].moveSpeed = speed;
+				}
+				if (shot[sh].moveDir == DIR_DOWN)
+				{
+					shot[sh].pos.y = pPos.y;
+					shot[sh].moveSpeed = speed;
+				}
+				if (shot[sh].moveDir == DIR_UP)
+				{
+					shot[sh].pos.y = pPos.y;
+					shot[sh].moveSpeed = speed;
+				}
 			}
 
 			//寿命を減らす(射程距離)

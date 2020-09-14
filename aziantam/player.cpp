@@ -17,6 +17,10 @@ int lifeCheckCnt;
 int healCheckCnt;
 int speedCnt;
 
+bool endTextFlag;
+int endTexCnt;
+int eTextImage;
+
 //ﾌﾟﾚｲﾔｰ情報の初期化
 void PlayerSystemInit(void)
 {
@@ -28,8 +32,13 @@ void PlayerSystemInit(void)
 	player.animCnt = 0;										//ｷｬﾗｸﾀのｱﾆﾒｰｼｮﾝ
 	player.hitFlag = false;
 
+	endTextFlag = false;
+	endTexCnt = 0;
+
 	LoadDivGraph("char/boy_player.png", 16, 4, 4
 		, player.size.x, player.size.y, playerImage);
+
+	eTextImage = LoadGraph("item/text.png");
 }
 //プレイヤーの初期化
 void PlayerGameInit(void)
@@ -41,6 +50,9 @@ void PlayerGameInit(void)
 	lifeCheckCnt = 0;
 	healCheckCnt = 0;
 	speedCnt = 0;
+
+	endTextFlag = false;
+	endTexCnt = 0;
 }
 
 //死亡確認
@@ -50,6 +62,22 @@ bool PlayerDid()
 	{
 		return true;
 	}
+	return false;
+}
+
+bool ClearSet(void)
+{
+	if (SetEnemyMoment())
+	{
+		endTextFlag = true;
+		
+		if ((player.pos.x >= CLEAR_MINI_X && player.pos.x <= CLEAR_MAX_X)
+			&& (player.pos.y >= CLEAR_MINI_Y && player.pos.y <= CLEAR_MAX_Y))
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
@@ -258,6 +286,8 @@ void PlayerGameDraw(void)
 				, playerImage[(player.moveDir * 4) + (player.animCnt / 30) % 4], true);
 		}
 	}
+
+
 //	DrawBox(SCROLL_X_MIN, SCROLL_Y_MIN, SCROLL_X_MAX, SCROLL_Y_MAX, 0xFFFFFF, false);
 	XY indexPos;
 	indexPos = Pos2Index(player.pos);
@@ -288,6 +318,14 @@ void PlayerTextDraw()
 	DrawBox(212, 330, 212 + player.lifeMax/2, 340, GetColor(255, 0, 0), true);
 	DrawBox(212, 330, 212 + player.life/2, 340, GetColor(0, 255, 0), true);
 	DrawBox(212, 330, 212 + player.lifeMax/2, 340, GetColor(255, 255, 0), false);
+}
+
+void EndTextDraw(void)
+{
+	if (endTextFlag)
+	{
+		DrawGraph((SCREEN_SIZE_X - 400) / 2, 10, eTextImage, true);
+	}
 }
 
 
@@ -377,7 +415,6 @@ void MapChange(void)
 		{
 			stageID = STAGE_ID_START;
 			SetInitMoment(stageID);
-
 		}
 	}
 	else
@@ -435,6 +472,7 @@ void MapChange(void)
 	}
 
 }
+
 //ステージ移動時専用の初期化関数
 void SetInitMoment(STAGE_ID stageID)
 {
