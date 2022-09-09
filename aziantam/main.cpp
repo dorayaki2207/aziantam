@@ -135,6 +135,8 @@ bool SystemInit(void)
 	setImage = LoadGraph("item/set.png");
 	readImage[0] = LoadGraph("item/book1.png");
 	readImage[1] = LoadGraph("item/book2.png");
+
+
 	//-----•Ï”‚Ì‰Šú‰»
 	//¼°İŠÖ˜A
 	SceneCounter = 0;

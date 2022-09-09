@@ -3,6 +3,7 @@
 #include "KeyCheck.h"
 #include "Item.h"
 #include "Battle.h"
+#include "Player.h"
 
 int testbkImage;		//Ã½Ä—p”wŒi
 
@@ -96,13 +97,15 @@ void BattleGameDraw(void)
 
 	}
 	//-----î•ñˆ—
-	DrawFormatString(0, 0, 0xFFFFFF, "Battle : %d", SceneCounter);
+	//DrawFormatString(0, 0, 0xFFFFFF, "Battle : %d", SceneCounter);
 
-	SetDrawBright(200, 200, 200);
+	
 	DrawBox(BOX_X, BOX_Y, BOX_END_X, BOX_END_Y, 0xFFFFFF, true);
-	SetDrawBright(255, 255, 255);
+	
 	DrawBox(BOX_X, BOX_Y, BOX_END_X, BOX_END_Y, 0xFF22FF, false);
 
+	DrawString(352, 500, "‰Î         …         •—         ‰ñ•œ", 0x000000);
+	PlayerBattleDraw();
 
 	//±²ÃÑ
 	ItemB_Draw();

@@ -1,2 +1,4 @@
 ﻿  Player.cpp
-  ファイル.vcxproj -> C:\Users\どら焼き\Desktop\アジアンタム\aziantam\ISHIBASHI_test\Debug\ファイル.exe
+C:\Users\yuriy\Desktop\Git\aziantam\ISHIBASHI_test\Player.cpp(320,34): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\yuriy\Desktop\Git\aziantam\ISHIBASHI_test\Player.cpp(321,30): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  ファイル.vcxproj -> C:\Users\yuriy\Desktop\Git\aziantam\ISHIBASHI_test\Debug\ファイル.exe

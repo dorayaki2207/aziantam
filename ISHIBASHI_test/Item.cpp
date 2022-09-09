@@ -308,6 +308,7 @@ void ItemB_Draw(void)
 			DrawGraph((SCREEN_SIZE_X - ITEM_B_SIZE) / 2, (BOX_Y - ITEM_B_SIZE) / 2, itemFBImage[type], true);
 		}
 	}
+
 	//所持ｱｲﾃﾑ残量表示用
 	//火の御札
 	DrawGraph(350, BOX_Y +120, itemFIImage[MAGIC_TYPE_FIRE], true);
@@ -327,7 +328,7 @@ void ItemB_Draw(void)
 	DrawFormatString(680, BOX_Y + 150, 0xFF22FF, "%d", itemF[MAGIC_TYPE_HEAL].point);
 
 
-	DrawFormatString(0, 100, 0xFFFFFF, "lookCnt:%d", lookCnt);
+	//DrawFormatString(0, 100, 0xFFFFFF, "lookCnt:%d", lookCnt);
 }
 
 //-----アイテムとプレイヤーの当たり判定　(true : あたり, false : はずれ)

@@ -18,6 +18,8 @@ int moveCheckCnt;
 //int testImage[4];
 //int test2Image[4];
 
+int pIcon;
+
 void PlayerSystemInit(void)
 {
 	//-----ïœêîÇÃèâä˙âª
@@ -32,7 +34,7 @@ void PlayerSystemInit(void)
 	LoadDivGraph("aitem/bossDT3.png", DIR_MAX*PLAYER_MAX
 		, DIR_MAX, PLAYER_MAX, player.size.x, player.size.y, playerImage[0], true);
 
-
+	pIcon = LoadGraph("aitem/icon.png");
 //	LoadDivGraph("aitem/hard.png", 4, 4, 1, 32, 40, testImage);
 //	LoadDivGraph("aitem/bb.png", 4, 4, 1, 32, 40, test2Image);
 }
@@ -309,6 +311,14 @@ void PlayerGameDraw(void)
 
 //	DrawGraph(100, 100, testImage[((player.animCnt / 20) % 4)], true);
 //	DrawGraph(150, 100, test2Image[((player.animCnt / 20) % 4)], true);
+}
+
+void PlayerBattleDraw(void)
+{
+	DrawGraph(100, 480, pIcon, true);
+
+	DrawBox(85, 600, player.lifeMax *1.5, 610, 0x55FFFF, true);
+	DrawBox(85, 600, player.life*1.5, 610, 0xFF55FF, true);
 }
 
 void GetPos()

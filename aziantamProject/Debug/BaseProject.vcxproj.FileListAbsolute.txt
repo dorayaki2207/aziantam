@@ -8,3 +8,4 @@ C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.exe
 C:\Users\Owner\Desktop\aziantamProject\Debug\BaseProject.pdb
 C:\Users\user\Desktop\aziantamProject\Debug\BaseProject.exe
 C:\Users\user\Desktop\aziantamProject\Debug\BaseProject.pdb
+C:\Users\yuriy\Desktop\Git\aziantam\aziantamProject\Debug\BaseProject.exe

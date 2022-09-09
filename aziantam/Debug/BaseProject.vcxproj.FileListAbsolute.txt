@@ -1,2 +1,3 @@
 C:\Users\どら焼き\Desktop\aziantam\aziantam\Debug\BaseProject.exe
 C:\Users\どら焼き\Desktop\aziantam\aziantam\Debug\BaseProject.pdb
+C:\Users\yuriy\Desktop\Git\aziantam\aziantam\Debug\BaseProject.exe
